@@ -1,0 +1,776 @@
+{
+	"name" : "Chrome",
+	"id" : 303118592,
+	"cookies" : [
+		{
+			"id" : 1020226816,
+			"value" : "no",
+			"baseDomain" : "janne.info",
+			"name" : "sid",
+			"categories" : {
+				"validityDuration" : "6 months - 1 year" }
+		},
+		{
+			"id" : 371598080,
+			"value" : "44.92435.99552-6528284281",
+			"baseDomain" : "juri.com",
+			"name" : "__cfduid",
+			"categories" : {
+				"validityDuration" : "6 months - 1 year" }
+
+		},
+		{
+			"id" : 568095488,
+			"value" : "no",
+			"baseDomain" : "malik.ch",
+			"name" : "CONSENT",
+			"categories" : {
+				"validityDuration" : "6 months - 1 year" }
+
+		},
+		{
+			"id" : 271256832,
+			"value" : "735.68263267359444195",
+			"baseDomain" : "finnjawittich.ch",
+			"name" : "__utma",
+			"categories" : {
+				"validityDuration" : "6 months - 1 year" }
+
+		},
+		{
+			"id" : 981145856,
+			"value" : "614.35613153723213268",
+			"baseDomain" : "niklas.com",
+			"name" : "__cfduid",
+			"categories" : {
+				"validityDuration" : "6 months - 1 year" }
+
+		},
+		{
+			"id" : 667899648,
+			"value" : "61.33999.26764-6687454162",
+			"baseDomain" : "jari.com",
+			"name" : "__user_id",
+			"categories" : {
+				"validityDuration" : "6 months - 1 year" }
+
+		},
+		{
+			"id" : 493969152,
+			"value" : "7495544",
+			"baseDomain" : "teo.de",
+			"name" : "sid",
+			"categories" : {
+				"validityDuration" : "6 months - 1 year" }
+
+		},
+		{
+			"id" : 1044185344,
+			"value" : "no",
+			"baseDomain" : "bultmann.net",
+			"name" : "__gid",
+			"categories" : {
+				"validityDuration" : "6 months - 1 year" }
+
+		},
+		{
+			"id" : 388318464,
+			"value" : "no",
+			"baseDomain" : "gunkel.com",
+			"name" : "__gid",
+			"categories" : {
+				"validityDuration" : "6 months - 1 year" }
+
+		},
+		{
+			"id" : 268307200,
+			"value" : "",
+			"baseDomain" : "filip.net",
+			"name" : "NID",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 798804736,
+			"value" : "8621965541.38858.89779276.19132588",
+			"baseDomain" : "marschek.info",
+			"name" : "sid",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 519861504,
+			"value" : "15.86462.18616-1547911196",
+			"baseDomain" : "marlendemut.name",
+			"name" : "__gads",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 276689152,
+			"value" : "yes",
+			"baseDomain" : "vieweg.name",
+			"name" : "__ga",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 1015168768,
+			"value" : "yes",
+			"baseDomain" : "nathalie.net",
+			"name" : "__utma",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 185513728,
+			"value" : "499.18826778887611649",
+			"baseDomain" : "tilllanghirt.name",
+			"name" : "__gid",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 859400448,
+			"value" : "null",
+			"baseDomain" : "filip.ch",
+			"name" : "CONSENT",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 1043668224,
+			"value" : "null",
+			"baseDomain" : "weiss.com",
+			"name" : "__user_id",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 288092928,
+			"value" : "true",
+			"baseDomain" : "levke.net",
+			"name" : "NID",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 477569792,
+			"value" : "no",
+			"baseDomain" : "helinhorna.de",
+			"name" : "__user_id",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 298048768,
+			"value" : "",
+			"baseDomain" : "kufahl.name",
+			"name" : "__cfduid",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 301648128,
+			"value" : "no",
+			"baseDomain" : "marekhold.org",
+			"name" : "__gid",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 667625216,
+			"value" : "7341135198.57592.51986611.71871371",
+			"baseDomain" : "reus.name",
+			"name" : "__user_id",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 176557824,
+			"value" : "",
+			"baseDomain" : "freimuth.de",
+			"name" : "sid",
+			"categories" : {
+				"validityDuration" : "3 years - 10 years" }
+
+		},
+		{
+			"id" : 661377280,
+			"value" : "7865242635.92135.59592736.35756271",
+			"baseDomain" : "smilla.info",
+			"name" : "__utma",
+			"categories" : {
+				"validityDuration" : "3 years - 10 years" }
+
+		},
+		{
+			"id" : 394196224,
+			"value" : "de_DE",
+			"baseDomain" : "dariagruber.net",
+			"name" : "__gads",
+			"categories" : {
+				"validityDuration" : "3 years - 10 years" }
+
+		},
+		{
+			"id" : 271571712,
+			"value" : "2678544137-395356986676-6889929879634-216",
+			"baseDomain" : "mathis.net",
+			"name" : "__gads",
+			"categories" : {
+				"validityDuration" : "3 years - 10 years" }
+
+		},
+		{
+			"id" : 904624896,
+			"value" : "0",
+			"baseDomain" : "olivergolling.de",
+			"name" : "__cfduid",
+			"categories" : {
+				"validityDuration" : "3 years - 10 years" }
+
+		},
+		{
+			"id" : 922830080,
+			"value" : "679.21248514883918295",
+			"baseDomain" : "lewinsteigauf.de",
+			"name" : "__utma",
+			"categories" : {
+				"validityDuration" : "3 years - 10 years" }
+
+		},
+		{
+			"id" : 879862016,
+			"value" : "75.24287.16476-8277239822",
+			"baseDomain" : "monabenninger.org",
+			"name" : "ANID",
+			"categories" : {
+				"validityDuration" : "3 years - 10 years" }
+
+		},
+		{
+			"id" : 271191808,
+			"value" : "null",
+			"baseDomain" : "nora.com",
+			"name" : "__cfduid",
+			"categories" : {
+				"validityDuration" : "3 years - 10 years" }
+
+		},
+		{
+			"id" : 962029312,
+			"value" : "no",
+			"baseDomain" : "kähler.net",
+			"name" : "__user_id",
+			"categories" : {
+				"validityDuration" : "3 years - 10 years" }
+
+		},
+		{
+			"id" : 424950016,
+			"value" : "2581664767-883316536143-4434299222859-385",
+			"baseDomain" : "felix.net",
+			"name" : "ANID",
+			"categories" : {
+				"validityDuration" : "3 years - 10 years" }
+
+		},
+		{
+			"id" : 679660800,
+			"value" : "de_DE",
+			"baseDomain" : "rücker.net",
+			"name" : "__gid",
+			"categories" : {
+				"validityDuration" : "more than 10 years" }
+
+		},
+		{
+			"id" : 596230912,
+			"value" : "no",
+			"baseDomain" : "lenyaflottmann.ch",
+			"name" : "sid",
+			"categories" : {
+				"validityDuration" : "more than 10 years" }
+
+		},
+		{
+			"id" : 695849728,
+			"value" : "8929832577.59852.34893524.11161931",
+			"baseDomain" : "schwatlo.com",
+			"name" : "__ga",
+			"categories" : {
+				"validityDuration" : "more than 10 years" }
+
+		},
+		{
+			"id" : 1026862336,
+			"value" : "9433725261.51521.44619541.47854226",
+			"baseDomain" : "lindner.de",
+			"name" : "__ga",
+			"categories" : {
+				"validityDuration" : "more than 10 years" }
+
+		},
+		{
+			"id" : 224557312,
+			"value" : "de_DE",
+			"baseDomain" : "ahrenberg.net",
+			"name" : "__cfduid",
+			"categories" : {
+				"validityDuration" : "more than 10 years" }
+
+		},
+		{
+			"id" : 1008662272,
+			"value" : "1479423635.98184.94586882.48223831",
+			"baseDomain" : "achilles.name",
+			"name" : "__ga",
+			"categories" : {
+				"validityDuration" : "more than 10 years" }
+
+		},
+		{
+			"id" : 352501504,
+			"value" : "true",
+			"baseDomain" : "valentino.de",
+			"name" : "ANID",
+			"categories" : {
+				"validityDuration" : "more than 10 years" }
+
+		},
+		{
+			"id" : 661823744,
+			"value" : "true",
+			"baseDomain" : "devin.de",
+			"name" : "__gads",
+			"categories" : {
+				"validityDuration" : "more than 10 years" }
+
+		},
+		{
+			"id" : 381723904,
+			"value" : "yes",
+			"baseDomain" : "michael.de",
+			"name" : "__cfduid",
+			"categories" : {
+				"validityDuration" : "more than 10 years" }
+
+		},
+		{
+			"id" : 28945152,
+			"value" : "",
+			"baseDomain" : "robertkoha.de",
+			"name" : "NID",
+			"categories" : {
+				"validityDuration" : "more than 10 years" }
+
+		},
+		{
+			"id" : 77736704,
+			"value" : "1",
+			"baseDomain" : "möldner.net",
+			"name" : "__gid",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 853415168,
+			"value" : "no",
+			"baseDomain" : "franziskafranzmann.info",
+			"name" : "NID",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 307056896,
+			"value" : "yes",
+			"baseDomain" : "kilian.ch",
+			"name" : "__gid",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 304733952,
+			"value" : "",
+			"baseDomain" : "thorben.info",
+			"name" : "__user_id",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 990385920,
+			"value" : "751.14478799777518336",
+			"baseDomain" : "mohammed.com",
+			"name" : "__cfduid",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 273090816,
+			"value" : "de_DE",
+			"baseDomain" : "kral.info",
+			"name" : "__user_id",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 666402048,
+			"value" : "null",
+			"baseDomain" : "theresaihly.ch",
+			"name" : "__gid",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 20943616,
+			"value" : "",
+			"baseDomain" : "joelinebeyer.de",
+			"name" : "NID",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 887390976,
+			"value" : "5846878",
+			"baseDomain" : "franz.name",
+			"name" : "__user_id",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 108887296,
+			"value" : "371.55788587837385239",
+			"baseDomain" : "bornscheuer.name",
+			"name" : "CONSENT",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 414329088,
+			"value" : "null",
+			"baseDomain" : "thaleahajek.info",
+			"name" : "__cfduid",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 415942400,
+			"value" : "true",
+			"baseDomain" : "ryan.name",
+			"name" : "ANID",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 686255872,
+			"value" : "yes",
+			"baseDomain" : "mustafa.ch",
+			"name" : "__gads",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 844198144,
+			"value" : "null",
+			"baseDomain" : "tschirch.com",
+			"name" : "__gads",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 15357184,
+			"value" : "no",
+			"baseDomain" : "ostwald.ch",
+			"name" : "NID",
+			"categories" : {
+				"validityDuration" : "1 year - 3 years" }
+
+		},
+		{
+			"id" : 412842752,
+			"value" : "693.88738888763725644",
+			"baseDomain" : "marta.com",
+			"name" : "CONSENT"
+		},
+		{
+			"id" : 130079488,
+			"value" : "1146773914-221556439487-9357711476686-637",
+			"baseDomain" : "selim.de",
+			"name" : "__ga"
+		},
+		{
+			"id" : 110290176,
+			"value" : "de_DE",
+			"baseDomain" : "sewald.info",
+			"name" : "__gads"
+		},
+		{
+			"id" : 370213120,
+			"value" : "6434196553.69328.65894226.38859125",
+			"baseDomain" : "bilal.com",
+			"name" : "ANID"
+		},
+		{
+			"id" : 914468608,
+			"value" : "2369399515-979486774792-7248758613359-548",
+			"baseDomain" : "ney.org",
+			"name" : "CONSENT"
+		},
+		{
+			"id" : 1008781056,
+			"value" : "EUR",
+			"baseDomain" : "helenkoczulla.ch",
+			"name" : "__ga"
+		},
+		{
+			"id" : 202496256,
+			"value" : "de_DE",
+			"baseDomain" : "poehn.org",
+			"name" : "NID"
+		},
+		{
+			"id" : 668347648,
+			"value" : "1263139",
+			"baseDomain" : "fionahesse.name",
+			"name" : "__utma"
+		},
+		{
+			"id" : 508388096,
+			"value" : "de_DE",
+			"baseDomain" : "boris.com",
+			"name" : "__ga"
+		},
+		{
+			"id" : 716649216,
+			"value" : "1",
+			"baseDomain" : "just.name",
+			"name" : "__gid"
+		},
+		{
+			"id" : 564022528,
+			"value" : "true",
+			"baseDomain" : "dohring.name",
+			"name" : "NID"
+		},
+		{
+			"id" : 535419136,
+			"value" : "54.73375.19649-1956134468",
+			"baseDomain" : "tamarakrüger.ch",
+			"name" : "CONSENT"
+		},
+		{
+			"id" : 835622656,
+			"value" : "1",
+			"baseDomain" : "magdalena.de",
+			"name" : "__ga"
+		},
+		{
+			"id" : 842276608,
+			"value" : "0",
+			"baseDomain" : "schüppel.com",
+			"name" : "__user_id"
+		},
+		{
+			"id" : 1007173888,
+			"value" : "no",
+			"baseDomain" : "tang.name",
+			"name" : "__gads"
+		},
+		{
+			"id" : 33293568,
+			"value" : "3974188234-192734172422-5494779817147-918",
+			"baseDomain" : "arianajacob.ch",
+			"name" : "CONSENT"
+		},
+		{
+			"id" : 148196096,
+			"value" : "8344586554.16392.85315444.96755853",
+			"baseDomain" : "lamos.ch",
+			"name" : "__user_id"
+		},
+		{
+			"id" : 726108928,
+			"value" : "yes",
+			"baseDomain" : "balck.de",
+			"name" : "NID"
+		},
+		{
+			"id" : 639612160,
+			"value" : "yes",
+			"baseDomain" : "malucha.net",
+			"name" : "__gads"
+		},
+		{
+			"id" : 733786368,
+			"value" : "0",
+			"baseDomain" : "ritschel.info",
+			"name" : "__gid"
+		},
+		{
+			"id" : 825327360,
+			"value" : "yes",
+			"baseDomain" : "senafleischmann.de",
+			"name" : "NID"
+		},
+		{
+			"id" : 681670400,
+			"value" : "1",
+			"baseDomain" : "salihgöhler.com",
+			"name" : "__utma"
+		},
+		{
+			"id" : 11839744,
+			"value" : "1",
+			"baseDomain" : "valentin.com",
+			"name" : "__utma"
+		},
+		{
+			"id" : 349953280,
+			"value" : "4746263544.18469.39133326.82521841",
+			"baseDomain" : "romina.info",
+			"name" : "__gid"
+		},
+		{
+			"id" : 783495936,
+			"value" : "985.52577162117169768",
+			"baseDomain" : "dario.ch",
+			"name" : "sid"
+		},
+		{
+			"id" : 921821952,
+			"value" : "true",
+			"baseDomain" : "erik.com",
+			"name" : "ANID"
+		},
+		{
+			"id" : 43457792,
+			"value" : "yes",
+			"baseDomain" : "giulia.org",
+			"name" : "CONSENT"
+		},
+		{
+			"id" : 252283136,
+			"value" : "0",
+			"baseDomain" : "elinagiesa.name",
+			"name" : "__user_id"
+		},
+		{
+			"id" : 992634624,
+			"value" : "yes",
+			"baseDomain" : "marahering.org",
+			"name" : "__gads"
+		},
+		{
+			"id" : 485019392,
+			"value" : "",
+			"baseDomain" : "lenaschreiner.ch",
+			"name" : "CONSENT"
+		},
+		{
+			"id" : 949424384,
+			"value" : "1",
+			"baseDomain" : "nils.name",
+			"name" : "CONSENT"
+		},
+		{
+			"id" : 99988736,
+			"value" : "0",
+			"baseDomain" : "mariellaotte.name",
+			"name" : "__utma"
+		},
+		{
+			"id" : 107420416,
+			"value" : "21.57159.36269-9771862726",
+			"baseDomain" : "carlos.ch",
+			"name" : "NID"
+		},
+		{
+			"id" : 456538880,
+			"value" : "2446657626-216336739715-3796926487581-212",
+			"baseDomain" : "lakomy.ch",
+			"name" : "__cfduid"
+		},
+		{
+			"id" : 92570880,
+			"value" : "",
+			"baseDomain" : "herwig.org",
+			"name" : "__ga"
+		},
+		{
+			"id" : 1062232320,
+			"value" : "yes",
+			"baseDomain" : "gutjahr.name",
+			"name" : "__user_id"
+		},
+		{
+			"id" : 909725440,
+			"value" : "99.27429.56838-8173578648",
+			"baseDomain" : "leviritter.org",
+			"name" : "CONSENT"
+		},
+		{
+			"id" : 747251456,
+			"value" : "0",
+			"baseDomain" : "alishakutscherauer.info",
+			"name" : "NID"
+		},
+		{
+			"id" : 573536512,
+			"value" : "48.84797.95696-7441556341",
+			"baseDomain" : "schönenberger.info",
+			"name" : "CONSENT"
+		},
+		{
+			"id" : 449416448,
+			"value" : "863.18328848858665767",
+			"baseDomain" : "lillianrangen.name",
+			"name" : "ANID"
+		},
+		{
+			"id" : 644940544,
+			"value" : "12.81567.33646-3237836315",
+			"baseDomain" : "josefinegiesa.org",
+			"name" : "__user_id"
+		},
+		{
+			"id" : 93623040,
+			"value" : "1926373417-776661646722-5811289261137-462",
+			"baseDomain" : "bianca.name",
+			"name" : "__utma"
+		},
+		{
+			"id" : 493350144,
+			"value" : "EUR",
+			"baseDomain" : "laura.de",
+			"name" : "__ga"
+		}
+	]
+}

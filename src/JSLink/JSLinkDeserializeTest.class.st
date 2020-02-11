@@ -1,0 +1,70 @@
+Class {
+	#name : #JSLinkDeserializeTest,
+	#superclass : #TestCase,
+	#instVars : [
+		'mapper'
+	],
+	#category : #'JSLink-Tests'
+}
+
+{ #category : #running }
+JSLinkDeserializeTest >> application [
+	^ 'FOO'
+]
+
+{ #category : #running }
+JSLinkDeserializeTest >> deserialize: anObject [
+	^ self deserializer deserialize: anObject
+]
+
+{ #category : #running }
+JSLinkDeserializeTest >> deserializer [
+	^ mapper deserializer
+			serializerWrapper: JSLinkPlatform current class httpMessageBrokerClass serializer;
+			yourself
+]
+
+{ #category : #running }
+JSLinkDeserializeTest >> setUp [
+	super setUp.
+	mapper := JSLinkMapperFactory forExecutionHandler: self stubExecutionHandler
+]
+
+{ #category : #running }
+JSLinkDeserializeTest >> stubExecutionHandler [
+	^ JSLinkExecutionHandler new
+			application: self application;
+			yourself
+]
+
+{ #category : #tests }
+JSLinkDeserializeTest >> testDeserializeArray [
+	self assert: (self deserialize: '[33,"foo"]') equals: #(33 'foo')
+]
+
+{ #category : #tests }
+JSLinkDeserializeTest >> testDeserializeNull [
+	self assert: (self deserialize: 'null') equals: nil
+]
+
+{ #category : #tests }
+JSLinkDeserializeTest >> testDeserializeProxy [
+	| proxy |
+	proxy := self deserialize: '{"__pyclass__":"MyClass","__pyid__":"abcde12345"}'.
+	self assert: proxy pythonClass equals: #MyClass.
+	self assert: proxy application equals: self deserializer application.
+	self assert: proxy application equals: 'FOO'.
+	self assert: proxy pythonVariable equals: 'abcde12345' asJSGI
+]
+
+{ #category : #tests }
+JSLinkDeserializeTest >> testDeserializeProxyInArray [
+	| proxy arr |
+	arr := self deserialize: '[{"__pyclass__":"MyClass","__pyid__":"abcde12345"}]'.
+	self assert: arr size equals: 1.
+	proxy := arr first.
+	self assert: proxy pythonClass equals: #MyClass.
+	self assert: proxy application equals: self deserializer application.
+	self assert: proxy application equals: 'FOO'.
+	self assert: proxy pythonVariable equals: 'abcde12345' asJSGI
+]
