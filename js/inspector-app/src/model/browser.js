@@ -1,5 +1,5 @@
 var SoEntity = require('./entity');
-var ViewedObject = require('../introspection/ViewedObject.js');
+var ViewBuilder = require('../gtoolkit/phlow/view_builder.js');
 
 class SoBrowser extends SoEntity {
     constructor (id, name) {
@@ -48,22 +48,6 @@ class SoBrowser extends SoEntity {
             .priority(2)
             .items(() => this.cookies)
             .itemFormat(cookie => cookie.getName());
-    }
-
-    gtViewRawBrowser(builder) {
-        return builder.table()
-            .title('Raw')
-            .priority(9998)
-            .items(() => ViewedObject.viewsFor(this))
-            .column('Item', item => item.name)
-            .column('Value', item => item.object)
-    }
-
-    gtViewPrintBrowser(builder) {
-        return builder.textEditor()
-            .title('Print')
-            .priority(9999)
-            .setString('a(n) ' + this.constructor.name)
     }
 
     gtViewCookieDetails(builder) {

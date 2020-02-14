@@ -10,23 +10,23 @@ Class {
 }
 
 { #category : #'instance creation' }
-JSLinkObject class >> fromProxy: aProxy [
-	| obj |
-	obj := self new.
-	obj pythonVariable: aProxy pythonVariable.
-	self assert: obj pythonClass asString = aProxy pythonVariable.
-	^ obj
-]
-
-{ #category : #'instance creation' }
-JSLinkObject class >> fromPythonReference: pythonVar [
+JSLinkObject class >> fromJavaScriptReference: pythonVar [
 	^ super new
-			pythonVariable: pythonVar;
+			javaScriptVariable: pythonVar;
 			yourself.
 ]
 
 { #category : #'instance creation' }
-JSLinkObject class >> newPythonVar [
+JSLinkObject class >> fromProxy: aProxy [
+	| obj |
+	obj := self new.
+	obj javaScriptVariable: aProxy javaScriptVariable.
+	self assert: obj javaScriptClass asString = aProxy javaScriptVariable.
+	^ obj
+]
+
+{ #category : #'instance creation' }
+JSLinkObject class >> newJavaScriptVar [
 	^ JSLinkPlatform current newRandomName asJSGIdentifier
 ]
 
@@ -60,7 +60,7 @@ JSLinkObject >> basicCreateObjectArgs: posArgs [
 { #category : #'as yet unclassified' }
 JSLinkObject >> basicCreateObjectArgs: posArgs nameArgs: nameArgs [
 	^ self basicCreateObjectExpr: 
-			(self pythonConstructor 
+			(self javaScriptConstructor 
 				callWith: posArgs 
 				with: nameArgs asDictionary)
 ]
@@ -69,10 +69,10 @@ JSLinkObject >> basicCreateObjectArgs: posArgs nameArgs: nameArgs [
 JSLinkObject >> basicCreateObjectExpr: anExpression [
 	| varName |
 	self isCreated ifTrue: [ ^ self ].
-	varName := self newPythonVar.
+	varName := self newJavaScriptVar.
 	pythonVariable := varName.
 	self application commandFactory << (
-		self registerIdPyExpression: anExpression).
+		self registerIdJSExpression: anExpression).
 	self registerObject.
 	self application commandFactory send.
 ]
@@ -108,13 +108,38 @@ JSLinkObject >> isCreated [
 ]
 
 { #category : #p3generator }
-JSLinkObject >> isJavaScriptValue [
+JSLinkObject >> isJavaScriptGenerable [
 	^ true
 ]
 
 { #category : #p3generator }
-JSLinkObject >> isPythonGenerable [
+JSLinkObject >> isJavaScriptValue [
 	^ true
+]
+
+{ #category : #'as yet unclassified' }
+JSLinkObject >> javaScriptClass [
+	self subclassResponsibility
+]
+
+{ #category : #'as yet unclassified' }
+JSLinkObject >> javaScriptClassName [
+	^ self javaScriptClass attributeIdentifier name
+]
+
+{ #category : #'as yet unclassified' }
+JSLinkObject >> javaScriptConstructor [
+	^ self javaScriptClass
+]
+
+{ #category : #'as yet unclassified' }
+JSLinkObject >> javaScriptRegistryExpression [
+	^ #registry callWith: #()
+]
+
+{ #category : #accessing }
+JSLinkObject >> javaScriptVariable [
+	^ pythonVariable
 ]
 
 { #category : #accessing }
@@ -123,38 +148,13 @@ JSLinkObject >> module [
 ]
 
 { #category : #'instance creation' }
-JSLinkObject >> newPythonVar [
-	^ self class newPythonVar
+JSLinkObject >> newJavaScriptVar [
+	^ self class newJavaScriptVar
 ]
 
 { #category : #'as yet unclassified' }
-JSLinkObject >> pythonClass [
-	self subclassResponsibility
-]
-
-{ #category : #'as yet unclassified' }
-JSLinkObject >> pythonClassName [
-	^ self pythonClass attributeIdentifier name
-]
-
-{ #category : #'as yet unclassified' }
-JSLinkObject >> pythonConstructor [
-	^ self pythonClass
-]
-
-{ #category : #'as yet unclassified' }
-JSLinkObject >> pythonRegistryExpression [
-	^ #registry callWith: #()
-]
-
-{ #category : #accessing }
-JSLinkObject >> pythonVariable [
-	^ pythonVariable
-]
-
-{ #category : #'as yet unclassified' }
-JSLinkObject >> registerIdPyExpression: objExpr [
-	^ self pythonRegistryExpression => #register_with_id callWith: (Array with: objExpr with: self id)
+JSLinkObject >> registerIdJSExpression: objExpr [
+	^ self javaScriptRegistryExpression => #register_with_id callWith: (Array with: objExpr with: self id)
 ]
 
 { #category : #'as yet unclassified' }
@@ -163,12 +163,12 @@ JSLinkObject >> registerObject [
 ]
 
 { #category : #'as yet unclassified' }
-JSLinkObject >> resolveIdPyExpression [
-	^ self pythonRegistryExpression => #resolve callWith: (Array with: self id)
+JSLinkObject >> resolveIdJSExpression [
+	^ self javaScriptRegistryExpression => #resolve callWith: (Array with: self id)
 ]
 
 { #category : #'as yet unclassified' }
 JSLinkObject >> writeJavaScriptOn: aStream [
 	self assert: self isCreated.
-	self resolveIdPyExpression writeJavaScriptOn: aStream
+	self resolveIdJSExpression writeJavaScriptOn: aStream
 ]

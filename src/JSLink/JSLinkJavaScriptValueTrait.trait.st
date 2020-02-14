@@ -1,17 +1,17 @@
 Trait {
-	#name : #JSLinkPythonValueTrait,
+	#name : #JSLinkJavaScriptValueTrait,
 	#traits : 'JSGAttributeAccess',
 	#classTraits : 'JSGAttributeAccess classTrait',
 	#category : #'JSLink-JSGenerator'
 }
 
 { #category : #'attribute access' }
-JSLinkPythonValueTrait >> attributeNamed: aString [
+JSLinkJavaScriptValueTrait >> attributeNamed: aString [
 	"Returns an instance of P3GAttributeAccess to access the attribute with aString as name."
 	^ JSGAttributeReference target: self attributeIdentifier: aString asJSGIdentifier
 ]
 
 { #category : #testing }
-JSLinkPythonValueTrait >> isJavaScriptValue [
+JSLinkJavaScriptValueTrait >> isJavaScriptValue [
 	^ true
 ]

@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #accessing }
-JSLinkHttpMessageBroker class >> pythonMethodArg [
+JSLinkHttpMessageBroker class >> javaScriptMethodArg [
 	^ 'http'
 ]
 
@@ -60,7 +60,7 @@ JSLinkHttpMessageBroker >> primSendMessage: dict [
 
 	ans := [ ZnClient new
 					beOneShot;
-					url: self pythonUri , '/' , (dict at: #type);
+					url: self javaScriptUri , '/' , (dict at: #type);
 					entity: (ZnEntity json: (self serializer serialize: dict));
 					post; 
 					response.

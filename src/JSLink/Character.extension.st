@@ -1,11 +1,11 @@
 Extension { #name : #Character }
 
 { #category : #'*JSLink' }
-Character >> isJavaScriptValue [
+Character >> isJavaScriptGenerable [
 	^ true
 ]
 
 { #category : #'*JSLink' }
-Character >> isPythonGenerable [
+Character >> isJavaScriptValue [
 	^ true
 ]

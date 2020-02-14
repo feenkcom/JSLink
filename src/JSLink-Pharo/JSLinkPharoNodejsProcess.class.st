@@ -1,5 +1,5 @@
 Class {
-	#name : #JSLinkPharoPipenvProcess,
+	#name : #JSLinkPharoNodejsProcess,
 	#superclass : #JSLinkAbstractProcess,
 	#instVars : [
 		'process',
@@ -12,24 +12,24 @@ Class {
 }
 
 { #category : #initialization }
-JSLinkPharoPipenvProcess class >> pipenvPath [
+JSLinkPharoNodejsProcess class >> pipenvPath [
 	^ PipenvPath isEmptyOrNil 
 			ifTrue: [ PipenvPath := self resolvePipenvPath ]
 			ifFalse: [ PipenvPath ]
 ]
 
 { #category : #initialization }
-JSLinkPharoPipenvProcess class >> pipenvPath: aString [
+JSLinkPharoNodejsProcess class >> pipenvPath: aString [
 	PipenvPath := aString
 ]
 
 { #category : #accessing }
-JSLinkPharoPipenvProcess class >> platform [
+JSLinkPharoNodejsProcess class >> platform [
 	^ JSLinkPharoPlatform current
 ]
 
 { #category : #initialization }
-JSLinkPharoPipenvProcess class >> resolvePipenvPath [
+JSLinkPharoNodejsProcess class >> resolvePipenvPath [
 	^ (OSSUnixSubprocess new
 				command: '/usr/bin/which';
 				arguments: (Array with: 'pipenv');
@@ -41,7 +41,7 @@ JSLinkPharoPipenvProcess class >> resolvePipenvPath [
 ]
 
 { #category : #initialization }
-JSLinkPharoPipenvProcess class >> signalPipenvNotFound [
+JSLinkPharoNodejsProcess class >> signalPipenvNotFound [
 	"
 	PythonBridge use the unix command `which` to find the route of the `pipenv` command. From Pharo
 	we could not find the route, therefore you have to set it mannualy.
@@ -56,36 +56,36 @@ JSLinkPharoPipenvProcess class >> signalPipenvNotFound [
 ]
 
 { #category : #accessing }
-JSLinkPharoPipenvProcess >> environmentVariables [
+JSLinkPharoNodejsProcess >> environmentVariables [
 	^ environmentVariables
 ]
 
 { #category : #accessing }
-JSLinkPharoPipenvProcess >> errorMessage [
+JSLinkPharoNodejsProcess >> errorMessage [
 	^ process stderrStream contents
 ]
 
 { #category : #initialization }
-JSLinkPharoPipenvProcess >> initialize [
+JSLinkPharoNodejsProcess >> initialize [
 	super initialize.
 	environmentVariables := Dictionary new.
 	self setDefaultEnvironmentVariables
 ]
 
 { #category : #testing }
-JSLinkPharoPipenvProcess >> isRunning [
+JSLinkPharoNodejsProcess >> isRunning [
 	^ process
 		ifNil: [ false ]
 		ifNotNil: [ process isRunning ]
 ]
 
 { #category : #private }
-JSLinkPharoPipenvProcess >> newProcess [
+JSLinkPharoNodejsProcess >> newProcess [
 	| newProcess |
 	newProcess := OSSUnixSubprocess new
 				command: '/usr/bin/nodejs';
 				arguments: self processArguments;
-				workingDirectory: (FileLocator imageDirectory / 'js/inspector-app') resolve fullName;
+				workingDirectory: (self workingDirectory / 'js/inspector-app') resolve fullName;
 				addAllEnvVariablesFromParentWithoutOverride;
 "				redirectStdout;
 				redirectStderr;"
@@ -97,23 +97,23 @@ JSLinkPharoPipenvProcess >> newProcess [
 ]
 
 { #category : #accessing }
-JSLinkPharoPipenvProcess >> process [
+JSLinkPharoNodejsProcess >> process [
 	^ process
 ]
 
 { #category : #private }
-JSLinkPharoPipenvProcess >> processArguments [
+JSLinkPharoNodejsProcess >> processArguments [
 	| args |
 	args := OrderedCollection new.
 	args
-		add: (FileLocator imageDirectory / 'js/inspector-app/src/app.js') resolve fullName;
-		add: self settings pythonSocketAddress port asString;
+		add: (FileLocator imageDirectory / 'pharo-local/iceberg/feenkcom/JSLink/js/inspector-app/src/app.js') resolve fullName;
+		add: self settings javaScriptSocketAddress port asString;
 		add: self settings pharoSocketAddress port asString.
 	^ args
 ]
 
 { #category : #initialization }
-JSLinkPharoPipenvProcess >> setDefaultEnvironmentVariables [
+JSLinkPharoNodejsProcess >> setDefaultEnvironmentVariables [
 	environmentVariables
 		at: 'LC_ALL' put: 'en_US.UTF-8';
 		at: 'LANG' put: 'en_US.UTF-8';
@@ -122,13 +122,13 @@ JSLinkPharoPipenvProcess >> setDefaultEnvironmentVariables [
 ]
 
 { #category : #'start-stop' }
-JSLinkPharoPipenvProcess >> start [
+JSLinkPharoNodejsProcess >> start [
 	process := self newProcess.
 	process run.
 ]
 
 { #category : #'start-stop' }
-JSLinkPharoPipenvProcess >> stop [
+JSLinkPharoNodejsProcess >> stop [
 	process ifNil: [ ^ self ].
 	[process queryExitStatus ifNil: [ process terminate ]] 
 		on: Error 

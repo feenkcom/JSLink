@@ -14,7 +14,7 @@ JSLinkHttpMessageBrokerTest >> answer: aDictionary [
 
 { #category : #utils }
 JSLinkHttpMessageBrokerTest >> buildAndStartStubServer [
-	stubServer := ZnServer on: settings pythonSocketAddress port.
+	stubServer := ZnServer on: settings javaScriptSocketAddress port.
 	stubServer start.
 	stubServer onRequestRespond: [ :req | self primHandle: req ]
 ]

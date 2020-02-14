@@ -164,14 +164,14 @@ JSLinkApplication >> initialize [
 JSLinkApplication >> initializeHandlers [
 	loggingHandler := JSLinkLoggingHandler application: self.
 	communicationHandler := JSLinkCommunicationHandler application: self.
-	processHandler := JSLinkPythonHandler application: self.
+	processHandler := JSLinkJavaScriptHandler application: self.
 	executionHandler := JSLinkExecutionHandler application: self
 ]
 
 { #category : #testing }
-JSLinkApplication >> isPythonReady [
+JSLinkApplication >> isJavaScriptReady [
 	"Ensures python webserver is ready for receiving commands"
-	^ self communicationHandler isPythonReady
+	^ self communicationHandler isJavaScriptReady
 ]
 
 { #category : #testing }
@@ -248,7 +248,7 @@ JSLinkApplication >> stop [
 JSLinkApplication >> waitInitialization [
 	"Timeout of 10 seconds and try every 0.5 seconds"
 	1 to: 10 by: 0.5 do: [ :t |
-		self isPythonReady 
+		self isJavaScriptReady 
 				ifTrue: [ ^ self ]
 				ifFalse: [ (Delay forMilliseconds: 500) wait ] ].
 	Error signal: 'Python application initialization failed! You should try to manually install the Pipenv environment. Have a look at the section "Manually creating Pipenv environment" in https://objectprofile.github.io/PythonBridge/pages/pharo-installation'.

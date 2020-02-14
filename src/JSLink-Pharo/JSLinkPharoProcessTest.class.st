@@ -5,9 +5,9 @@ Class {
 }
 
 { #category : #utils }
-JSLinkPharoProcessTest >> createTmpPythonFile [
+JSLinkPharoProcessTest >> createTmpJavaScriptFile [
 	| file |
-	file := FileLocator workingDirectory / 'tmp.py'.
+	file := FileLocator workingDirectory / 'tmp.js'.
 	file writeStream close.
 	^ file
 ]
@@ -24,5 +24,5 @@ JSLinkPharoProcessTest >> destroyTmpFile: aFile [
 
 { #category : #hooks }
 JSLinkPharoProcessTest >> processClass [
-	^ JSLinkPharoPipenvProcess
+	^ JSLinkPharoNodejsProcess
 ]

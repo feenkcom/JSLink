@@ -70,6 +70,21 @@ JSLinkCommand >> isValid [
 ]
 
 { #category : #accessing }
+JSLinkCommand >> javaScriptCode [
+	| py3CodeStream |
+	py3CodeStream := String new writeStream.
+	self instructions do: [ :instr | 
+			"If making a call, it should be await"
+			instr class = JSGCall ifTrue:
+				[ py3CodeStream << 'await ' ].
+			instr writeJavaScriptOn: py3CodeStream.
+			py3CodeStream 
+				<< ';';
+				<< String lf ].
+	^ py3CodeStream contents
+]
+
+{ #category : #accessing }
 JSLinkCommand >> observers [
 	^ observers
 ]
@@ -97,21 +112,6 @@ JSLinkCommand >> promise [
 { #category : #accessing }
 JSLinkCommand >> promise: anObject [
 	promise := anObject
-]
-
-{ #category : #'as yet unclassified' }
-JSLinkCommand >> pythonCode [
-	| py3CodeStream |
-	py3CodeStream := String new writeStream.
-	self instructions do: [ :instr | 
-			"If making a call, it should be await"
-			instr class = JSGCall ifTrue:
-				[ py3CodeStream << 'await ' ].
-			instr writeJavaScriptOn: py3CodeStream.
-			py3CodeStream 
-				<< ';';
-				<< String lf ].
-	^ py3CodeStream contents
 ]
 
 { #category : #accessing }

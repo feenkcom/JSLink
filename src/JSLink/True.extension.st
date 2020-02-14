@@ -1,11 +1,11 @@
 Extension { #name : #True }
 
 { #category : #'*JSLink' }
-True >> isJavaScriptValue [
+True >> isJavaScriptGenerable [
 	^ true
 ]
 
 { #category : #'*JSLink' }
-True >> isPythonGenerable [
+True >> isJavaScriptValue [
 	^ true
 ]

@@ -16,7 +16,7 @@ JSLinkExecutionHandler >> buildMessageFromCommand: command [
 	| message |
 	message := JSLinkEnqueueCommandMessage 
 					commandId: command id 
-					statements: command pythonCode 
+					statements: command javaScriptCode 
 					bindings: (command bindings asDictionary collect: [ :obj | self serialize: obj ]).
 	message addBinding: #pharoCommandId -> (self serialize: command id).
 	^ message
@@ -84,7 +84,7 @@ JSLinkExecutionHandler >> notifyCallbackHandler: msg [
 { #category : #handlers }
 JSLinkExecutionHandler >> notifyErrorHandler: errorMsg [
 	| error |
-	error := JSLinkPythonError new
+	error := JSLinkJavaScriptError new
 					application: self application;
 					command: (commandQueue getCommand: errorMsg commandId);
 					errorMessage: errorMsg errorMessage;
@@ -119,7 +119,7 @@ JSLinkExecutionHandler >> registerObject: aPythonObject [
 	weakRegistry 
 		registerObject: aPythonObject 
 		finalizer: (JSLinkRegistryFinalizer 
-							pythonVariable: aPythonObject pythonVariable 
+							javaScriptVariable: aPythonObject javaScriptVariable 
 							executionHandler: self)
 ]
 
@@ -138,11 +138,14 @@ JSLinkExecutionHandler >> registerPromiseForCommand: aCommand [
 { #category : #'as yet unclassified' }
 JSLinkExecutionHandler >> safeTriggerDebugger: error [
 	| sem |
-	sem := Semaphore new.
+
+	promiseRegistry signalPromiseId: error command id with: error.
+
+	"sem := Semaphore new.
 	[ [ self triggerDebugger: error ] ensure: [ sem signal ] ]
 		on: JSLinkPythonError fork: [ :e | JSLinkPlatform current uiManager spawnDebuggerOnException: e ].
 	sem wait.
-	^ error proceedAction: error defaultProceedAction
+	^ error proceedAction: error defaultProceedAction"
 ]
 
 { #category : #'private protocol' }

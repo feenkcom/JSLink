@@ -1,5 +1,5 @@
 Class {
-	#name : #JSLinkPythonHandler,
+	#name : #JSLinkJavaScriptHandler,
 	#superclass : #JSLinkHandler,
 	#instVars : [
 		'process'
@@ -8,33 +8,33 @@ Class {
 }
 
 { #category : #accessing }
-JSLinkPythonHandler >> errorMessage [
+JSLinkJavaScriptHandler >> errorMessage [
 	^ process errorMessage
 ]
 
 { #category : #initialization }
-JSLinkPythonHandler >> initializeHandler [
+JSLinkJavaScriptHandler >> initializeHandler [
 	super initializeHandler.
 	process := JSLinkPlatform current process: self application
 ]
 
 { #category : #testing }
-JSLinkPythonHandler >> isRunning [
+JSLinkJavaScriptHandler >> isRunning [
 	^ process isRunning
 ]
 
 { #category : #accessing }
-JSLinkPythonHandler >> platform [
+JSLinkJavaScriptHandler >> platform [
 	^ JSLinkPlatform current
 ]
 
 { #category : #testing }
-JSLinkPythonHandler >> start [
+JSLinkJavaScriptHandler >> start [
 	"self platform ensureEnvironmentForApp: self application."
 	^ process start
 ]
 
 { #category : #testing }
-JSLinkPythonHandler >> stop [
+JSLinkJavaScriptHandler >> stop [
 	^ process stop
 ]

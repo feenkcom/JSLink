@@ -11,7 +11,7 @@ JSLinkPharoPlatform class >> httpMessageBrokerClass [
 
 { #category : #hooks }
 JSLinkPharoPlatform class >> pipenvProcessClass [
-	^ JSLinkPharoPipenvProcess
+	^ JSLinkPharoNodejsProcess
 ]
 
 { #category : #accessing }
@@ -96,7 +96,7 @@ JSLinkPharoPlatform >> folderForApplication: application [
 { #category : #utils }
 JSLinkPharoPlatform >> forceInstallEnvironmentForApp: application [
 	| proc |
-	self assert: JSLinkPharoPipenvProcess pipenvPath isEmptyOrNil not description: 'pipenv is apparently not accessible at a standard location. Please, have a look at the Troubleshooting section of https://objectprofile.github.io/PythonBridge/pages/pharo-installation'.
+	self assert: JSLinkPharoNodejsProcess pipenvPath isEmptyOrNil not description: 'pipenv is apparently not accessible at a standard location. Please, have a look at the Troubleshooting section of https://objectprofile.github.io/PythonBridge/pages/pharo-installation'.
 	proc := OSSUnixSubprocess new
 				command: '/bin/bash';
 				addAllEnvVariablesFromParentWithoutOverride;

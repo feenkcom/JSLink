@@ -1,5 +1,5 @@
 Class {
-	#name : #JSLinkPythonError,
+	#name : #JSLinkJavaScriptError,
 	#superclass : #Notification,
 	#instVars : [
 		'command',
@@ -12,79 +12,79 @@ Class {
 }
 
 { #category : #accessing }
-JSLinkPythonError >> application [
+JSLinkJavaScriptError >> application [
 	^ application
 ]
 
 { #category : #accessing }
-JSLinkPythonError >> application: anObject [
+JSLinkJavaScriptError >> application: anObject [
 	application := anObject
 ]
 
 { #category : #accessing }
-JSLinkPythonError >> command [
+JSLinkJavaScriptError >> command [
 	^ command
 ]
 
 { #category : #accessing }
-JSLinkPythonError >> command: anObject [
+JSLinkJavaScriptError >> command: anObject [
 	command := anObject
 ]
 
 { #category : #accessing }
-JSLinkPythonError >> defaultAction [
+JSLinkJavaScriptError >> defaultAction [
 	"No one has handled this error, but now give them a chance to decide how to debug it.  If none handle this either then open debugger (see UnhandedError-defaultAction)"
 
 	^ JSLinkPlatform current uiManager spawnDebuggerOnException: self
 ]
 
 { #category : #'as yet unclassified' }
-JSLinkPythonError >> defaultProceedAction [
+JSLinkJavaScriptError >> defaultProceedAction [
 	^ JSLinkDropQueue new
 ]
 
 { #category : #accessing }
-JSLinkPythonError >> errorMessage [
+JSLinkJavaScriptError >> errorMessage [
 	^ errorMessage
 ]
 
 { #category : #accessing }
-JSLinkPythonError >> errorMessage: anObject [
+JSLinkJavaScriptError >> errorMessage: anObject [
 	errorMessage := anObject
 ]
 
 { #category : #initialization }
-JSLinkPythonError >> initialize [
+JSLinkJavaScriptError >> initialize [
 	super initialize.
 	proceedAction := self defaultProceedAction
 ]
 
 { #category : #accessing }
-JSLinkPythonError >> isResumable [
+JSLinkJavaScriptError >> isResumable [
 	^ true
 ]
 
 { #category : #accessing }
-JSLinkPythonError >> messageText [
+JSLinkJavaScriptError >> messageText [
 	^ errorMessage
 ]
 
 { #category : #accessing }
-JSLinkPythonError >> proceedAction [
+JSLinkJavaScriptError >> proceedAction [
 	^ proceedAction
 ]
 
 { #category : #accessing }
-JSLinkPythonError >> proceedAction: anObject [
+JSLinkJavaScriptError >> proceedAction: anObject [
 	proceedAction := anObject
 ]
 
 { #category : #tracing }
-JSLinkPythonError >> trace [
+JSLinkJavaScriptError >> trace [
 	^ trace
 ]
 
 { #category : #tracing }
-JSLinkPythonError >> trace: aTrace [
+JSLinkJavaScriptError >> trace: aTrace [
 	trace := aTrace
 ]

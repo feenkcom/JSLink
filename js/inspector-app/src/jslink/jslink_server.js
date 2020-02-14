@@ -1,6 +1,9 @@
 var express = require('express');
 var EvalCommand = require('./eval_command');
 
+var globals = {};
+
+
 /**
  * I define an API for accessing views for objects based on objects ids.
  * 
@@ -8,7 +11,7 @@ var EvalCommand = require('./eval_command');
  * The remote inspector is the one that knows how to determine which objects
  * is associated with an id and perform the request.
  */
-class InspectionServer {
+class JSLinkServer {
     constructor(remoteInspector, listenPortNumber, responsePortNumber) {
         this.remoteInspector = remoteInspector;
         this.app = express();
@@ -44,7 +47,7 @@ class InspectionServer {
 		// We're just executing immediately for now.
 		this.logRequest(request, null);
 		let cmd = new EvalCommand(request.body.commandId, request.body.statements, request.body.bindings);
-		cmd.execute({});
+		cmd.execute(globals);
         return {};
     }
 
@@ -55,4 +58,4 @@ class InspectionServer {
     }
 }
 
-module.exports = InspectionServer;
+module.exports = JSLinkServer;

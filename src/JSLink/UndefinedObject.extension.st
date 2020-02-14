@@ -1,11 +1,11 @@
 Extension { #name : #UndefinedObject }
 
 { #category : #'*JSLink' }
-UndefinedObject >> isJavaScriptValue [
+UndefinedObject >> isJavaScriptGenerable [
 	^ true
 ]
 
 { #category : #'*JSLink' }
-UndefinedObject >> isPythonGenerable [
+UndefinedObject >> isJavaScriptValue [
 	^ true
 ]

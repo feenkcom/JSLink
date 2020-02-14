@@ -39,7 +39,7 @@ JSLinkMessageBrokerTest >> buildAndStartStubServer [
 JSLinkMessageBrokerTest >> defaultSettings [
 	^ JSLinkSettings 
 		pharoSocketAddress: (JSLinkSocketAddress ipOrName: 'localhost' port: 6538)
-		pythonSocketAddress: (JSLinkSocketAddress ipOrName: 'localhost' port: 6539)
+		javaScriptSocketAddress: (JSLinkSocketAddress ipOrName: 'localhost' port: 6539)
 ]
 
 { #category : #utils }
@@ -57,14 +57,14 @@ JSLinkMessageBrokerTest >> initialize [
 	handlerBlock := [ :r |  ]
 ]
 
+{ #category : #accessing }
+JSLinkMessageBrokerTest >> javaScriptUri [
+	^ 'http://' , settings javaScriptSocketAddress printAddress
+]
+
 { #category : #hooks }
 JSLinkMessageBrokerTest >> messageBrokerClass [
 	self subclassResponsibility
-]
-
-{ #category : #accessing }
-JSLinkMessageBrokerTest >> pythonUri [
-	^ 'http://' , settings pythonSocketAddress printAddress
 ]
 
 { #category : #utils }

@@ -30,13 +30,18 @@ JSLinkBinding >> initialize [
 ]
 
 { #category : #testing }
-JSLinkBinding >> isJavaScriptValue [
+JSLinkBinding >> isJavaScriptGenerable [
 	^ true
 ]
 
 { #category : #testing }
-JSLinkBinding >> isPythonGenerable [
+JSLinkBinding >> isJavaScriptValue [
 	^ true
+]
+
+{ #category : #'instance creation' }
+JSLinkBinding >> javaScriptVariable [
+	^ key asJSGI
 ]
 
 { #category : #accessing }
@@ -59,12 +64,7 @@ JSLinkBinding >> object: anObject [
 	object := anObject
 ]
 
-{ #category : #'instance creation' }
-JSLinkBinding >> pythonVariable [
-	^ key asJSGI
-]
-
 { #category : #testing }
 JSLinkBinding >> writeJavaScriptOn: aStream [
-	self pythonVariable writeJavaScriptOn: aStream
+	self javaScriptVariable writeJavaScriptOn: aStream
 ]

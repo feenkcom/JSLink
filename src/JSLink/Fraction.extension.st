@@ -1,11 +1,11 @@
 Extension { #name : #Fraction }
 
 { #category : #'*JSLink' }
-Fraction >> isJavaScriptValue [
+Fraction >> isJavaScriptGenerable [
 	^ true
 ]
 
 { #category : #'*JSLink' }
-Fraction >> isPythonGenerable [
+Fraction >> isJavaScriptValue [
 	^ true
 ]

@@ -34,7 +34,19 @@ async function notify(obj, notification_id) {
 	console.log(obj);
 	data["type"] = "EVAL";
 	data["id"] = notification_id;
-	data["value"] = serialize(obj);
+	data["value"] = serialize(obj, false);
+	return await send_response(data); }
+
+
+
+async function notify_immediate(obj, notification_id) {
+	let data = {};
+
+	console.log("Notify immediate: " + notification_id);
+	console.log(obj);
+	data["type"] = "EVAL";
+	data["id"] = notification_id;
+	data["value"] = serialize(obj, true);
 	return await send_response(data); }
 
 
@@ -75,6 +87,7 @@ function set_response_port(portNumber) {
 
 exports.observer = observer;
 exports.notify = notify;
+exports.notify_immediate = notify_immediate;
 exports.notify_observer = notify_observer;
 exports.notify_error = notify_error;
 exports.set_response_port = set_response_port;

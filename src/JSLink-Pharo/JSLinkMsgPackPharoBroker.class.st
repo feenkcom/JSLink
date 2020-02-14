@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #accessing }
-JSLinkMsgPackPharoBroker class >> pythonMethodArg [
+JSLinkMsgPackPharoBroker class >> javaScriptMethodArg [
 	^ 'msgpack'
 ]
 

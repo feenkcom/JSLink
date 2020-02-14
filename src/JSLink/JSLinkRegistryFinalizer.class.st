@@ -9,9 +9,9 @@ Class {
 }
 
 { #category : #accessing }
-JSLinkRegistryFinalizer class >> pythonVariable: aPythonVariable executionHandler: executionHandler [
+JSLinkRegistryFinalizer class >> javaScriptVariable: aPythonVariable executionHandler: executionHandler [
 	^ self new
-		pythonVariable: aPythonVariable;
+		javaScriptVariable: aPythonVariable;
 		executionHandler: executionHandler
 		yourself
 ]
@@ -36,12 +36,12 @@ JSLinkRegistryFinalizer >> finalize [
 ]
 
 { #category : #accessing }
-JSLinkRegistryFinalizer >> pythonVariable [
+JSLinkRegistryFinalizer >> javaScriptVariable [
 	^ pythonVariable
 ]
 
 { #category : #accessing }
-JSLinkRegistryFinalizer >> pythonVariable: anObject [
+JSLinkRegistryFinalizer >> javaScriptVariable: anObject [
 	pythonVariable := anObject
 ]
 

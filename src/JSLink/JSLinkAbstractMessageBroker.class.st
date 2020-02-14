@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #accessing }
-JSLinkAbstractMessageBroker class >> pythonMethodArg [
+JSLinkAbstractMessageBroker class >> javaScriptMethodArg [
 	self subclassResponsibility
 ]
 
@@ -60,13 +60,13 @@ JSLinkAbstractMessageBroker >> isRunning [
 ]
 
 { #category : #accessing }
-JSLinkAbstractMessageBroker >> port [
-	^ settings pharoSocketAddress port
+JSLinkAbstractMessageBroker >> javaScriptUri [
+	^ 'http://' , settings javaScriptSocketAddress printAddress
 ]
 
 { #category : #accessing }
-JSLinkAbstractMessageBroker >> pythonUri [
-	^ 'http://' , settings pythonSocketAddress printAddress
+JSLinkAbstractMessageBroker >> port [
+	^ settings pharoSocketAddress port
 ]
 
 { #category : #private }

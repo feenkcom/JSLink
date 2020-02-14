@@ -19,8 +19,8 @@ JSLinkDeserializer >> application [
 JSLinkDeserializer >> buildProxyFor: rawObject [
 	| proxy |
 	proxy :=  JSLinkProxyObject 
-					pythonClass: (rawObject at: #__pyclass__)
-					pythonVar: (rawObject at: #__pyid__) asJSGI
+					javaScriptClass: (rawObject at: #__pyclass__)
+					var: (rawObject at: #__pyid__) asJSGI
 					application: self application.
 	self executionHandler registerObject: proxy.
 	^ proxy

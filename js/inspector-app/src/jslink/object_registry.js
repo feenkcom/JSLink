@@ -2,6 +2,8 @@ const uuidv1 = require('uuid/v1');
 
 var mapper = new Map();
 
+// Only non-primitive values are stored in the registry.
+// Integers, Strings, Booleans and Arrays are considered primitive
 function is_primitive(obj) {
 	let objType = typeof obj;
 	return Number.isInteger(obj) || 
@@ -10,6 +12,7 @@ function is_primitive(obj) {
 		Array.isArray(obj) }
 
 
+// The mapping function converts instances of a class when returning to the client
 function addMapping(key_type, mapping_function) {
 	mapper.set(key_type, mapping_function);
 	return key_type; }
@@ -61,6 +64,7 @@ class Registry {
 	prim_register(obj, newObjId) {
 		this.idToObjMap.set(newObjId, obj);
 		this.objToIdMap.set(obj, newObjId);
+		console.log("Registered: " + obj + " -> " + newObjId);
 		return newObjId; }
 
 
@@ -96,18 +100,24 @@ function registry() {
 	return the_registry; }
 
 
-function serialize(obj) {
+function json_replacer(key, obj) {
 	let mappedObj = obj;
 	if (obj != null &
 		typeof(obj) == 'object' && 
 		mapper.has(obj.constructor.name)) {
 			mappedObj = mapper.get(obj.constructor.name)(obj); }
 	if (mappedObj == null || typeof mappedObj == 'number' || is_primitive(mappedObj)) {
-		return JSON.stringify(mappedObj); }
+		return mappedObj; }
 	else {
-		return JSON.stringify({
+		return {
 			"__pyclass__": mappedObj.constructor.name,
-			"__pyid__": the_registry.register(mappedObj) }); } }
+			"__pyid__": the_registry.register(mappedObj) }; } }
+
+
+function serialize(obj, immediate) {
+	if (immediate) {
+		return JSON.stringify(obj) };
+	return JSON.stringify(obj, json_replacer); }
 
 
 function deserialize(obj) {

@@ -17,7 +17,7 @@ JSLinkProcessTest class >> isAbstract [
 JSLinkProcessTest >> defaultSettings [
 	^ JSLinkSettings 
 		pharoSocketAddress: (JSLinkSocketAddress ipOrName: 'localhost' port: 6538)
-		pythonSocketAddress: (JSLinkSocketAddress ipOrName: 'localhost' port: 6539)
+		javaScriptSocketAddress: (JSLinkSocketAddress ipOrName: 'localhost' port: 6539)
 ]
 
 { #category : #running }
@@ -36,7 +36,7 @@ JSLinkProcessTest >> setUp [
 	process := self processClass
 		settings: self defaultSettings
 		workingDirectory: self processClass workingDirectory.
-	process pythonMainFile: self defaultTmpFile
+	process javaScriptMainFile: self defaultTmpFile
 ]
 
 { #category : #running }

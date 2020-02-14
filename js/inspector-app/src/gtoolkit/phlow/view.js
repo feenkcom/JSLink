@@ -24,6 +24,7 @@ class View {
             priority: this.viewPriority,
         }
     }
+
 }
 
 module.exports = View;

@@ -23,7 +23,7 @@ JSLinkSendCommandTest >> testAddObserver [
 		self assert: obj equals: 33.
 		self deny: promise isSignaled.
 		callbackExecuted := true ].
-	self cf << (observer pythonNotify: 33).
+	self cf << (observer javaScriptNotify: 33).
 	self cf << 2.
 	self cfSend.
 	promiseSem signal.
@@ -42,7 +42,7 @@ JSLinkSendCommandTest >> testCallbackReturnValue [
 		self deny: promise isSignaled.
 		callbackExecuted := true.
 		5 ].
-	self cf << (observer pythonNotify: 33).
+	self cf << (observer javaScriptNotify: 33).
 	self cfSend.
 	promiseSem signal.
 	self assert: promise waitForValue equals: 5.
@@ -60,7 +60,7 @@ JSLinkSendCommandTest >> testInvalidCallbackReturn [
 		self deny: promise isSignaled.
 		callbackExecuted := true.
 		self ].
-	self cf << (observer pythonNotify: 33).
+	self cf << (observer javaScriptNotify: 33).
 	self cfSend.
 	promiseSem signal.
 	self assert: promise waitForValue equals: nil.

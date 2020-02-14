@@ -1,26 +1,26 @@
 Class {
-	#name : #JSLinkPythonObjectTest,
+	#name : #JSLinkJavaScriptObjectTest,
 	#superclass : #JSLinkApplicationTest,
 	#category : #'JSLink-Tests'
 }
 
 { #category : #tests }
-JSLinkPythonObjectTest >> setUp [
+JSLinkJavaScriptObjectTest >> setUp [
 
 	super setUp.
 	"self cf << (#PythonBridge asP3GI => #object_registry) import"
 ]
 
 { #category : #tests }
-JSLinkPythonObjectTest >> stubPythonObjectExpression [
+JSLinkJavaScriptObjectTest >> stubJavaScriptObjectExpression [
 
 	^ #registry asJSGI callWith: #()
 ]
 
 { #category : #tests }
-JSLinkPythonObjectTest >> testProxyIdentity [
+JSLinkJavaScriptObjectTest >> testProxyIdentity [
 	| obj |
-	self cf << self stubPythonObjectExpression.
+	self cf << self stubJavaScriptObjectExpression.
 	obj := self cfSend waitForValue.
 	self assert: obj class equals: JSLinkProxyObject.
 	self assertInstanceClass: obj name: 'Registry'.
@@ -29,18 +29,18 @@ JSLinkPythonObjectTest >> testProxyIdentity [
 ]
 
 { #category : #tests }
-JSLinkPythonObjectTest >> testSimpleObjectIdentity [
+JSLinkJavaScriptObjectTest >> testSimpleObjectIdentity [
 	| obj |
-	obj := JSLinkObject new basicCreateObjectExpr: self stubPythonObjectExpression.
+	obj := JSLinkObject new basicCreateObjectExpr: self stubJavaScriptObjectExpression.
 	self cf << obj.
 	self assert: self cfSend waitForValue equals: obj.
 	self assertExpression: (self resolveId: obj id) equals: obj
 ]
 
 { #category : #tests }
-JSLinkPythonObjectTest >> testSimpleProxy [
+JSLinkJavaScriptObjectTest >> testSimpleProxy [
 	| obj |
-	self cf << self stubPythonObjectExpression.
+	self cf << self stubJavaScriptObjectExpression.
 	obj := self cfSend waitForValue.
 	self assert: obj class equals: JSLinkProxyObject.
 	self assertInstanceClass: obj name: 'Registry'.

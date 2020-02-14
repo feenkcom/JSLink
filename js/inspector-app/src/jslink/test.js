@@ -4,7 +4,7 @@
 
 class TestClass {
 	constructor() {
-		this.a_value = null; }
+		this.a_value = "an initial value"; }
 
 	set(newValue) {
 		this.a_value = newValue;

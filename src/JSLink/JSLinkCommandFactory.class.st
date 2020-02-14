@@ -7,19 +7,20 @@ Class {
 		'observers',
 		'transformBlock',
 		'command',
-		'instructions'
+		'instructions',
+		'immediate'
 	],
 	#category : #'JSLink-Execution'
 }
 
 { #category : #streaming }
-JSLinkCommandFactory >> << aPythonStatement [
-	instructions add: aPythonStatement
+JSLinkCommandFactory >> << aJavaScriptStatement [
+	instructions add: aJavaScriptStatement
 ]
 
 { #category : #bindings }
 JSLinkCommandFactory >> addBinding: aBinding [
-	bindingsDictionary at: aBinding pythonVariable name put: aBinding object.
+	bindingsDictionary at: aBinding javaScriptVariable name put: aBinding object.
 	^ aBinding
 ]
 
@@ -42,6 +43,13 @@ JSLinkCommandFactory >> application [
 { #category : #accessing }
 JSLinkCommandFactory >> application: anObject [
 	application := anObject
+]
+
+{ #category : #configuration }
+JSLinkCommandFactory >> beImmediate [
+	"Set the receiver so that the object is returned, instead of a proxy"
+
+	immediate := true.
 ]
 
 { #category : #bindings }
@@ -83,15 +91,18 @@ JSLinkCommandFactory >> initialize [
 
 { #category : #accessing }
 JSLinkCommandFactory >> instructionsWithNotifyAtEnd [
-	| instructionsCopy |
+	| instructionsCopy notifyInstruction |
 	instructionsCopy := instructions copy.
 	instructionsCopy ifEmpty: [ instructionsCopy := OrderedCollection with: nil ].
 	instructionsCopy last isJavaScriptValue ifFalse: [ 
 		instructionsCopy := instructionsCopy asOrderedCollection.
 		instructionsCopy add: nil ].
+	notifyInstruction := immediate 
+		ifTrue: [ self setNotifyImmediateToInstruction: instructionsCopy last ]
+		ifFalse: [ self setNotifyToInstruction: instructionsCopy last ].
 	instructionsCopy 
 		at: instructionsCopy size 
-		put: (self setNotifyToInstruction: instructionsCopy last).
+		put: notifyInstruction.
 	^ instructionsCopy
 ]
 
@@ -110,6 +121,7 @@ JSLinkCommandFactory >> reset [
 	bindingsDictionary := Dictionary new.
 	observers := OrderedCollection new.
 	command := JSLinkCommand new.
+	immediate := false.
 	transformBlock := #yourself
 ]
 
@@ -126,6 +138,12 @@ JSLinkCommandFactory >> sendAndWait [
 { #category : #send }
 JSLinkCommandFactory >> sendCommand [
 	^ self application send: self buildCommand
+]
+
+{ #category : #initialization }
+JSLinkCommandFactory >> setNotifyImmediateToInstruction: aJSgInstruction [
+	^ 'notify_immediate' asJSGIdentifier 
+			callWith: (Array with: aJSgInstruction with: command id)
 ]
 
 { #category : #initialization }

@@ -79,12 +79,12 @@ JSLinkAbstractProcess >> isRunning [
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess >> pythonMainFile [
+JSLinkAbstractProcess >> javaScriptMainFile [
 	^ pythonMainFile ifNil: [ self workingDirectory / 'start_bridge.py' ]
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess >> pythonMainFile: anObject [
+JSLinkAbstractProcess >> javaScriptMainFile: anObject [
 	pythonMainFile := anObject
 ]
 

@@ -19,7 +19,7 @@ JSLinkCommunicationHandler >> initializeHandler [
 ]
 
 { #category : #testing }
-JSLinkCommunicationHandler >> isPythonReady [
+JSLinkCommunicationHandler >> isJavaScriptReady [
 	| semaphore ans |
 	semaphore := Semaphore new.
 	[ ans := [self sendMessage: JSLinkIsAliveMessage new.

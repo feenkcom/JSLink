@@ -35,7 +35,7 @@ JSLinkPlatform class >> getConcretePlatform [
 ]
 
 { #category : #hooks }
-JSLinkPlatform class >> globalPythonProcessClass [
+JSLinkPlatform class >> globalJavaScriptProcessClass [
 	self subclassResponsibility
 ]
 
@@ -93,7 +93,7 @@ JSLinkPlatform >> defaultMessageBrokerClass [
 JSLinkPlatform >> defaultSettings [
 	^ JSLinkSettings 
 		pharoSocketAddress: (JSLinkSocketAddress ipOrName: 'localhost' port: (7000 + 99 atRandom))
-		pythonSocketAddress: (JSLinkSocketAddress ipOrName: 'localhost' port: (6900 + 99 atRandom))
+		javaScriptSocketAddress: (JSLinkSocketAddress ipOrName: 'localhost' port: (6900 + 99 atRandom))
 ]
 
 { #category : #hooks }

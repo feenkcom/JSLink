@@ -60,30 +60,30 @@ JSLinkObserver >> initialize [
 ]
 
 { #category : #testing }
-JSLinkObserver >> isJavaScriptValue [
+JSLinkObserver >> isJavaScriptGenerable [
 	^ true
 ]
 
 { #category : #testing }
-JSLinkObserver >> isPythonGenerable [
+JSLinkObserver >> isJavaScriptValue [
 	^ true
+]
+
+{ #category : #'error handling' }
+JSLinkObserver >> javaScriptNotify [
+	^ self javaScriptNotify: nil
+]
+
+{ #category : #'error handling' }
+JSLinkObserver >> javaScriptNotify: anObject [
+	^ (self callWith: (Array with: anObject))
+		await: true;
+		yourself
 ]
 
 { #category : #'error handling' }
 JSLinkObserver >> pharoNotify: anObject [
 	^ callback cull: anObject
-]
-
-{ #category : #'error handling' }
-JSLinkObserver >> pythonNotify [
-	^ self pythonNotify: nil
-]
-
-{ #category : #'error handling' }
-JSLinkObserver >> pythonNotify: anObject [
-	^ (self callWith: (Array with: anObject))
-		await: true;
-		yourself
 ]
 
 { #category : #testing }

@@ -37,6 +37,12 @@ JSLinkCF class >> applicationClass [
 	^ JSLinkApplication
 ]
 
+{ #category : #configuration }
+JSLinkCF class >> beImmediate [
+
+	self current beImmediate.
+]
+
 { #category : #'as yet unclassified' }
 JSLinkCF class >> bindingAt: varName put: anObject [
 	^ self current bindingAt: varName put: anObject

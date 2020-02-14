@@ -1,5 +1,5 @@
 Class {
-	#name : #JSLinkPythonErrorHandlingTest,
+	#name : #JSLinkJavaScriptErrorHandlingTest,
 	#superclass : #JSLinkApplicationTest,
 	#category : #'JSLink-Tests'
 }

@@ -1,11 +1,11 @@
 Extension { #name : #SequenceableCollection }
 
 { #category : #'*JSLink' }
-SequenceableCollection >> isJavaScriptValue [
+SequenceableCollection >> isJavaScriptGenerable [
 	^ true
 ]
 
 { #category : #'*JSLink' }
-SequenceableCollection >> isPythonGenerable [
+SequenceableCollection >> isJavaScriptValue [
 	^ true
 ]
