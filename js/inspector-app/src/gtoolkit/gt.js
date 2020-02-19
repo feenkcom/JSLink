@@ -1,4 +1,4 @@
-var ViewBuilder = require('../phlow/view_builder');
+var ViewBuilder = require('./phlow/view_builder');
 var builder = new ViewBuilder();
 
 

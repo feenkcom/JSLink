@@ -110,8 +110,8 @@ function json_replacer(key, obj) {
 		return mappedObj; }
 	else {
 		return {
-			"__pyclass__": mappedObj.constructor.name,
-			"__pyid__": the_registry.register(mappedObj) }; } }
+			"__jsclass__": mappedObj.constructor.name,
+			"__registryid__": the_registry.register(mappedObj) }; } }
 
 
 function serialize(obj, immediate) {
@@ -124,8 +124,8 @@ function deserialize(obj) {
 	let result;
 
 	console.log("deserialize: " + obj);
-	if (obj.__pyid__) {
-		result = the_registry.resolve(obj.__py__id); }
+	if (obj.__registryid__) {
+		result = the_registry.resolve(obj.__registryid__); }
 	else {
 		result = JSON.parse(obj) }
 	console.log("result = " + result);
