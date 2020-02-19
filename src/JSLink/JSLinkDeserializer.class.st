@@ -19,8 +19,8 @@ JSLinkDeserializer >> application [
 JSLinkDeserializer >> buildProxyFor: rawObject [
 	| proxy |
 	proxy :=  JSLinkProxyObject 
-					javaScriptClass: (rawObject at: #__pyclass__)
-					var: (rawObject at: #__pyid__) asJSGI
+					javaScriptClass: (rawObject at: #__jsclass__)
+					var: (rawObject at: #__registryid__) asJSGI
 					application: self application.
 	self executionHandler registerObject: proxy.
 	^ proxy
@@ -39,12 +39,12 @@ JSLinkDeserializer >> objectRegistry [
 { #category : #'private protocol' }
 JSLinkDeserializer >> privateDeserialize: rawObj [
 	rawObj isCollection ifFalse: [ ^ rawObj ].
-	rawObj isDictionary and: [ (rawObj includesKey: #__pyid__) 
+	rawObj isDictionary and: [ (rawObj includesKey: #__registryid__) 
 		ifTrue: [ ^ self reifyProxyFor: rawObj ] ].
 	^ rawObj collect: [ :elem | self privateDeserialize: elem ]
 ]
 
 { #category : #'private protocol' }
 JSLinkDeserializer >> reifyProxyFor: rawObj [
-	^ self objectRegistry resolve: (rawObj at: #__pyid__) ifAbsent: [ self buildProxyFor: rawObj ]
+	^ self objectRegistry resolve: (rawObj at: #__registryid__) ifAbsent: [ self buildProxyFor: rawObj ]
 ]

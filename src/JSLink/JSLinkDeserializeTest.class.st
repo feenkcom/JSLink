@@ -50,7 +50,7 @@ JSLinkDeserializeTest >> testDeserializeNull [
 { #category : #tests }
 JSLinkDeserializeTest >> testDeserializeProxy [
 	| proxy |
-	proxy := self deserialize: '{"__pyclass__":"MyClass","__pyid__":"abcde12345"}'.
+	proxy := self deserialize: '{"__jsclass__":"MyClass","__registryid__":"abcde12345"}'.
 	self assert: proxy javaScriptClass equals: #MyClass.
 	self assert: proxy application equals: self deserializer application.
 	self assert: proxy application equals: 'FOO'.
@@ -60,7 +60,7 @@ JSLinkDeserializeTest >> testDeserializeProxy [
 { #category : #tests }
 JSLinkDeserializeTest >> testDeserializeProxyInArray [
 	| proxy arr |
-	arr := self deserialize: '[{"__pyclass__":"MyClass","__pyid__":"abcde12345"}]'.
+	arr := self deserialize: '[{"__jsclass__":"MyClass","__registryid__":"abcde12345"}]'.
 	self assert: arr size equals: 1.
 	proxy := arr first.
 	self assert: proxy javaScriptClass equals: #MyClass.
