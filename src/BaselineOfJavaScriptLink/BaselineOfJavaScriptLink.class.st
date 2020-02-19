@@ -15,7 +15,7 @@ BaselineOfJavaScriptLink >> baseline: spec [
 				with: [ spec repository: 'github://pharo-contributions/OSSubprocess/repository' ].
 			spec
 				baseline: 'JavaScriptGenerator' 
-				with: [ spec repository: 'github://feenkcom/JavaScriptGenerator:akg/repository' ].
+				with: [ spec repository: 'github://feenkcom/JavaScriptGenerator/repository' ].
 			spec baseline: 'NeoJSON' with: [
                 spec
                     repository: 'github://svenvc/NeoJSON/repository' ].
