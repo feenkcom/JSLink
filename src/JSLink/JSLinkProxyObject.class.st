@@ -2,8 +2,8 @@ Class {
 	#name : #JSLinkProxyObject,
 	#superclass : #JSLinkObject,
 	#instVars : [
-		'pythonClass',
-		'application'
+		'application',
+		'javaScriptClass'
 	],
 	#category : #'JSLink-Core'
 }
@@ -84,7 +84,7 @@ JSLinkProxyObject >> gtLocalViewsFor: aView inContext: aContext [
 	title := String streamContents: [ :stream |
 				stream
 					<< 'Proxy to a(n): ';
-					<< pythonClass ].
+					<< javaScriptClass ].
 	resultingView := ((aView composite
 		views: (self gtViewsInContext: aContext))
 		labelled: title).
@@ -148,29 +148,29 @@ JSLinkProxyObject >> gtViewsInContext: aContext [
 JSLinkProxyObject >> isGtViewedObject [
 	"Answer a boolean indicating whether the receiver is a GtViewedProxy"
 
-	^ pythonClass = #GtViewedObject
+	^ javaScriptClass = #GtViewedObject
 ]
 
 { #category : #accessing }
 JSLinkProxyObject >> javaScriptClass [
-	^ pythonClass
+	^ javaScriptClass
 ]
 
 { #category : #accessing }
 JSLinkProxyObject >> javaScriptClass: anObject [
-	pythonClass := anObject
+	javaScriptClass := anObject
 ]
 
 { #category : #accessing }
 JSLinkProxyObject >> javaScriptVariable: pyVar [
-	pythonVariable := pyVar
+	javaScriptVariable := pyVar
 ]
 
 { #category : #printing }
 JSLinkProxyObject >> printOn: str [
 	str 
-		<< (pythonClass asString first isVowel ifTrue: ['an '] ifFalse: ['a ']);
-		<< pythonClass asString;
+		<< (javaScriptClass asString first isVowel ifTrue: ['an '] ifFalse: ['a ']);
+		<< javaScriptClass asString;
 		<< ' (Proxy)'
 ]
 
@@ -180,7 +180,7 @@ JSLinkProxyObject >> viewProxyDo: aBlock [
 
 	| viewProxy |
 
-	viewProxy := pythonClass = #GtViewedObject
+	viewProxy := javaScriptClass = #GtViewedObject
 		ifTrue: [ self ]
 		ifFalse: [ self getViewProxy ].
 	aBlock value: viewProxy.

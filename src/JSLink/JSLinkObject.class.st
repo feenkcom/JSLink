@@ -4,7 +4,7 @@ Class {
 	#traits : 'JSGAttributeAccess + JSGCallable',
 	#classTraits : 'JSGAttributeAccess classTrait + JSGCallable classTrait',
 	#instVars : [
-		'pythonVariable'
+		'javaScriptVariable'
 	],
 	#category : #'JSLink-Core'
 }
@@ -70,7 +70,7 @@ JSLinkObject >> basicCreateObjectExpr: anExpression [
 	| varName |
 	self isCreated ifTrue: [ ^ self ].
 	varName := self newJavaScriptVar.
-	pythonVariable := varName.
+	javaScriptVariable := varName.
 	self application commandFactory << (
 		self registerIdJSExpression: anExpression).
 	self registerObject.
@@ -99,12 +99,12 @@ JSLinkObject >> ensureCreateObject [
 
 { #category : #accessing }
 JSLinkObject >> id [
-	^ pythonVariable name
+	^ javaScriptVariable name
 ]
 
 { #category : #'as yet unclassified' }
 JSLinkObject >> isCreated [
-	^ pythonVariable notNil
+	^ javaScriptVariable notNil
 ]
 
 { #category : #p3generator }
@@ -139,7 +139,7 @@ JSLinkObject >> javaScriptRegistryExpression [
 
 { #category : #accessing }
 JSLinkObject >> javaScriptVariable [
-	^ pythonVariable
+	^ javaScriptVariable
 ]
 
 { #category : #accessing }
