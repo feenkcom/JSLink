@@ -199,6 +199,8 @@ JSLinkMessageBrokerTest >> testIsRunning [
 { #category : #tests }
 JSLinkMessageBrokerTest >> testRMessageWithParams [
 	| flag |
+
+	self skip: 'MsgPack not yet working'.
 	flag := false.
 	self for: JSLinkCallbackMessage setCallback: [ :msg |
 		flag := true.
@@ -227,6 +229,8 @@ JSLinkMessageBrokerTest >> testRMessageWithParams [
 { #category : #tests }
 JSLinkMessageBrokerTest >> testRSyncMessage [
 	| flag |
+
+	self skip: 'MsgPack not yet working'.
 	flag := false.
 	self for: JSLinkRSyncMessage setCallback: [ :msg |
 		flag := true.
