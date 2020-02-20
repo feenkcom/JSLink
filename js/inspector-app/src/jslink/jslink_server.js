@@ -1,3 +1,4 @@
+var logger = require('./logger');
 var express = require('express');
 var EvalCommand = require('./eval_command');
 
@@ -23,7 +24,7 @@ class JSLinkServer {
     
     _initializeRoutes() {     
         this.app.post('/IS_ALIVE', (req, res) => {
-			console.log('IS_ALIVE');
+			logger.debug('IS_ALIVE');
             res.json({});
         });
 
@@ -37,7 +38,7 @@ class JSLinkServer {
             var host = runningServer.address().address
             var port = runningServer.address().port
             
-            console.log("Inspection service listening at http://%s:%s", host, port)
+            logger.info("Inspection service listening at http://%s:%s", host, port)
         });
         return runningServer;
     }
@@ -52,9 +53,9 @@ class JSLinkServer {
     }
 
     logRequest(req, res) {
-        console.log('Received request: ' + req.get('host')+req.originalUrl);
-		console.log('Body:');
-		console.log(req.body);
+        logger.debug('Received request: ' + req.get('host')+req.originalUrl);
+		logger.debug('Body:');
+		logger.debug(req.body);
     }
 }
 

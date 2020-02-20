@@ -1,3 +1,4 @@
+var logger = require('./logger');
 var notify_response = require('./notify_response');
 var observer = notify_response.observer;
 var notify = notify_response.notify;
@@ -34,13 +35,13 @@ class EvalCommand {
 			boundStatements = boundStatements + this.statements;
 			boundStatements = boundStatements + "}\n\n";
 			boundStatements = boundStatements + "doIt()\n";
-			boundStatements = boundStatements + "    .then(function() { console.log(\"doIt() done\"); })\n"
+			boundStatements = boundStatements + "    .then(function() { logger.silly(\"doIt() done\"); })\n"
 			boundStatements = boundStatements + "    .catch(function(err) {\n";
 			boundStatements = boundStatements + "        notify_error(err, command) } ); }\n";
-			console.log('EvalCommand executing: ' + boundStatements);
+			logger.debug('EvalCommand executing: ' + boundStatements);
 			eval(boundStatements); }
 		catch(err) {
-			console.log(err);
+			logger.error(err);
 			notify_error(err, this); } }
 
 	get_command_id() {

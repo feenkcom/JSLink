@@ -11,8 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
     "bent": "^7.0.6",
-    "uuid": "^3.4.0"
+    "express": "^4.17.1",
+    "uuid": "^3.4.0",
+    "winston": "^3.2.1"
   }
 }

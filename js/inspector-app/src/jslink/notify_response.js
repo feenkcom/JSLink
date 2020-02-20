@@ -1,3 +1,4 @@
+var logger = require('./logger');
 const bent = require('bent');
 const getJSON = bent('json', 'POST');
 const uuidv1 = require('uuid/v1');
@@ -13,10 +14,10 @@ async function send_response(data) {
 	let url = 'http://localhost:' + response_port + '/' + data['type'];
     data['__sync'] = uuidv1();
 
-	console.log("send_response() to: " + url + " " + data['__sync']);
+	logger.debug("send_response() to: " + url + " " + data['__sync']);
 	let result = await getJSON(url, data);
-	console.log("send_response() returning from: " + data['__sync']);
-	console.log(result);
+	logger.debug("send_response() returning from: " + data['__sync']);
+	logger.debug(result);
 	return result; }
 
 
@@ -30,8 +31,8 @@ function observer(commandId, observerId) {
 async function notify(obj, notification_id) {
 	let data = {};
 
-	console.log("Notify: " + notification_id);
-	console.log(obj);
+	logger.debug("Notify: " + notification_id);
+	logger.debug(obj);
 	data["type"] = "EVAL";
 	data["id"] = notification_id;
 	data["value"] = serialize(obj, false);
@@ -42,8 +43,8 @@ async function notify(obj, notification_id) {
 async function notify_immediate(obj, notification_id) {
 	let data = {};
 
-	console.log("Notify immediate: " + notification_id);
-	console.log(obj);
+	logger.debug("Notify immediate: " + notification_id);
+	logger.debug(obj);
 	data["type"] = "EVAL";
 	data["id"] = notification_id;
 	data["value"] = serialize(obj, true);
@@ -54,14 +55,14 @@ async function notify_immediate(obj, notification_id) {
 async function notify_observer(obj, command_id, observer_id) {
 	let data = {};
 
-	console.log("Notify Observer: " + command_id + " " + observer_id);
+	logger.debug("Notify Observer: " + command_id + " " + observer_id);
 	data['type'] = "CALLBACK";
 	data['commandId'] = command_id;
 	data['observerId'] = observer_id;
 	data['value'] = serialize(obj);
 	let response = await send_response(data);
-	console.log("Notify Observer: response = ");
-	console.log(response);
+	logger.debug("Notify Observer: response = ");
+	logger.debug(response);
 	return deserialize(response.value); }
 
 
@@ -69,8 +70,8 @@ async function notify_observer(obj, command_id, observer_id) {
 async function notify_error(err, command) {
 	let data = {};
 
-	console.log("Notify Error: " + command.get_command_id());
-	console.log(err);
+	logger.debug("Notify Error: " + command.get_command_id());
+	logger.debug(err);
 	data['type'] = "ERR";
 	data['errMsg'] = err;
 	data['trace'] = err.stack;
@@ -80,7 +81,7 @@ async function notify_error(err, command) {
 
 
 function set_response_port(portNumber) {
-	console.log("Response Port = " + portNumber);
+	logger.debug("Response Port = " + portNumber);
 	response_port = portNumber; }
 
 

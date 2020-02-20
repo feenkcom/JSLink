@@ -1,3 +1,4 @@
+var logger = require('./logger');
 const uuidv1 = require('uuid/v1');
 
 var mapper = new Map();
@@ -64,7 +65,7 @@ class Registry {
 	prim_register(obj, newObjId) {
 		this.idToObjMap.set(newObjId, obj);
 		this.objToIdMap.set(obj, newObjId);
-		console.log("Registered: " + obj + " -> " + newObjId);
+		logger.debug("Registered: " + obj + " -> " + newObjId);
 		return newObjId; }
 
 
@@ -123,12 +124,12 @@ function serialize(obj, immediate) {
 function deserialize(obj) {
 	let result;
 
-	console.log("deserialize: " + obj);
+	logger.debug("deserialize: " + obj);
 	if (obj.__registryid__) {
 		result = the_registry.resolve(obj.__registryid__); }
 	else {
 		result = JSON.parse(obj) }
-	console.log("result = " + result);
+	logger.debug("result = " + result);
 	return result; }
 
 
