@@ -45,7 +45,7 @@ class Registry {
 		if (obj == null || is_primitive(obj)) {
 			return new RegisterForbiddenObject(obj); }
 		if (this.objToIdMap.has(obj)) {
-			let objId = this.objToIdMap(obj);
+			let objId = this.objToIdMap.get(obj);
 			if (objId == newObjId) {
 				return newObjId; }
 			else {
