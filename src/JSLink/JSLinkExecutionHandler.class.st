@@ -139,7 +139,7 @@ JSLinkExecutionHandler >> registerPromiseForCommand: aCommand [
 JSLinkExecutionHandler >> safeTriggerDebugger: error [
 	| sem |
 
-	promiseRegistry signalPromiseId: error command id with: error.
+	[ promiseRegistry signalPromiseId: error command id with: error ] fork.
 
 	"sem := Semaphore new.
 	[ [ self triggerDebugger: error ] ensure: [ sem signal ] ]

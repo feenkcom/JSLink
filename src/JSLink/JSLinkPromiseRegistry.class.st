@@ -40,6 +40,6 @@ JSLinkPromiseRegistry >> removePromiseId: id [
 JSLinkPromiseRegistry >> signalPromiseId: id with: anObject [
 	| promise |
 	semaphore critical: [ 
-		promise := promiseTable at: id.
-		promise signalWithValue: anObject ]
+		promise := promiseTable at: id ].
+	promise signalWithValue: anObject.
 ]
