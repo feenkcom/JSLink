@@ -1,7 +1,8 @@
 {
-  "name": "app",
+  "name": "JSLink",
   "version": "1.0.0",
-  "description": "",
+  "description": "node.js server for Pharo JSLink",
+  "repository": "https://github.com/feenkcom/JSLink",
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
@@ -9,7 +10,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "bent": "^7.0.6",
     "express": "^4.17.1",
