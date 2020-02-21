@@ -6,21 +6,22 @@ Class {
 		'environmentVariables'
 	],
 	#classVars : [
+		'NodejsPath',
 		'PipenvPath'
 	],
 	#category : #'JSLink-Pharo-Processes'
 }
 
 { #category : #initialization }
-JSLinkPharoNodejsProcess class >> pipenvPath [
-	^ PipenvPath isEmptyOrNil 
-			ifTrue: [ PipenvPath := self resolvePipenvPath ]
-			ifFalse: [ PipenvPath ]
+JSLinkPharoNodejsProcess class >> nodejsPath [
+	^ NodejsPath isEmptyOrNil 
+			ifTrue: [ NodejsPath := self resolveNodejsPath ]
+			ifFalse: [ NodejsPath ]
 ]
 
 { #category : #initialization }
-JSLinkPharoNodejsProcess class >> pipenvPath: aString [
-	PipenvPath := aString
+JSLinkPharoNodejsProcess class >> nodejsPath: aString [
+	NodejsPath := aString
 ]
 
 { #category : #accessing }
@@ -29,30 +30,48 @@ JSLinkPharoNodejsProcess class >> platform [
 ]
 
 { #category : #initialization }
-JSLinkPharoNodejsProcess class >> resolvePipenvPath [
-	^ (OSSUnixSubprocess new
-				command: '/usr/bin/which';
-				arguments: (Array with: 'pipenv');
-				addAllEnvVariablesFromParentWithoutOverride;
+JSLinkPharoNodejsProcess class >> resolveNodejsPath [
+	| proc |
+	
+	proc := OSSUnixSubprocess new
+				command: 'which';
+				arguments: (Array with: 'nodejs');
 				redirectStdout;
-				terminateOnShutdown;
-				runAndWaitOnExitDo: [ :command :outString | ^ outString trim ]) 
-					ifEmpty: [ self signalPipenvNotFound ]
+				terminateOnShutdown.
+	JSLinkPharoPlatform subProcessEnvironmentDictionary keysAndValuesDo: [ :key :value |
+		proc environmentAt: key put: value ].
+	(proc 	runAndWaitOnExitDo: [ :command :outString | ^ outString trim ]) 
+		ifEmpty: [ self signalCommandNotFound: 'nodejs' ]
 ]
 
 { #category : #initialization }
-JSLinkPharoNodejsProcess class >> signalPipenvNotFound [
-	"
-	PythonBridge use the unix command `which` to find the route of the `pipenv` command. From Pharo
-	we could not find the route, therefore you have to set it mannualy.
+JSLinkPharoNodejsProcess class >> resolveNpmPath [
+	| proc |
+
+	proc := OSSUnixSubprocess new
+				command: 'which';
+				arguments: (Array with: 'npm');
+				addAllEnvVariablesFromParentWithoutOverride;
+				redirectStdout;
+				terminateOnShutdown.
+	JSLinkPharoPlatform subProcessEnvironmentDictionary keysAndValuesDo: [ :key :value |
+		proc environmentAt: key put: value ].
+	(proc 	runAndWaitOnExitDo: [ :command :outString | ^ outString trim ]) 
+		ifEmpty: [ self signalCommandNotFound: 'npm' ]
+]
+
+{ #category : #initialization }
+JSLinkPharoNodejsProcess class >> signalCommandNotFound: commandString [
+	"JSLink use the unix command `which` to find the full path of the supplied command. From Pharo
+	we could not find the path, therefore you have to set it mannualy.
 		
-	To find the path of Pipenv in your system run the command `which pipenv` in the terminal.
+	To find the path of a command in your system run the command `which <command>` in the terminal.
 	To set the path in PythonBridge send the following message:
 	
-	PBProcessHandler pipEnvPath: '/PATH/TO/PIPENV/BINARY'
-	
-	"
-	Error signal: 'Error: Pipenv command could not be found.'
+	JSLinkPharoNodejsProcess nodeJSPath: '/path/to/nodejs'.
+	JSLinkPharoNodejsProcess npmPath: '/path/to/npm'."
+
+	Error signal: 'Error: ', commandString, ' command could not be found.'
 ]
 
 { #category : #accessing }
@@ -83,10 +102,9 @@ JSLinkPharoNodejsProcess >> isRunning [
 JSLinkPharoNodejsProcess >> newProcess [
 	| newProcess |
 	newProcess := OSSUnixSubprocess new
-				command: '/usr/bin/nodejs';
+				command: 'nodejs';
 				arguments: self processArguments;
-				workingDirectory: (self workingDirectory / 'js/inspector-app') resolve fullName;
-				addAllEnvVariablesFromParentWithoutOverride;
+				workingDirectory: self workingDirectory resolve fullName;
 "				redirectStdout;
 				redirectStderr;"
 				terminateOnShutdown;
@@ -104,9 +122,10 @@ JSLinkPharoNodejsProcess >> process [
 { #category : #private }
 JSLinkPharoNodejsProcess >> processArguments [
 	| args |
+
 	args := OrderedCollection new.
 	args
-		add: (FileLocator imageDirectory / 'pharo-local/iceberg/feenkcom/JSLink/js/inspector-app/src/app.js') resolve fullName;
+		add: (self workingDirectory / 'src/app.js') resolve fullName;
 		add: self settings javaScriptSocketAddress port asString;
 		add: self settings pharoSocketAddress port asString.
 	^ args
@@ -114,11 +133,8 @@ JSLinkPharoNodejsProcess >> processArguments [
 
 { #category : #initialization }
 JSLinkPharoNodejsProcess >> setDefaultEnvironmentVariables [
-	environmentVariables
-		at: 'LC_ALL' put: 'en_US.UTF-8';
-		at: 'LANG' put: 'en_US.UTF-8';
-		at: 'PIPENV_VENV_IN_PROJECT' put: '1';
-		at: 'PIP_DEFAULT_TIMEOUT' put: '100'
+
+	environmentVariables := JSLinkPharoPlatform subProcessEnvironmentDictionary.
 ]
 
 { #category : #'start-stop' }

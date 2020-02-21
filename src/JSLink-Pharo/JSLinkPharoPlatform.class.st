@@ -26,6 +26,25 @@ JSLinkPharoPlatform class >> socketMessageBrokerClass [
 	^ JSLinkHttpMessageBroker 
 ]
 
+{ #category : #accessing }
+JSLinkPharoPlatform class >> subProcessEnvironmentDictionary [
+	"Answer the dictionary to be used when running subprocesses.
+	On linux, Pharo adds the VM directory to the path, which contains non-standard versions of libssl and libcrypto.  Other applications, such as nodejs and npm, should use the default installation."
+
+	| dict ldLibraryPath paths vmDir vmPath |
+
+	dict := Smalltalk os environment asDictionary.
+	ldLibraryPath := dict at: 'LD_LIBRARY_PATH' ifAbsent: [ ^dict ].
+	paths := $: split: ldLibraryPath.
+	vmDir := FileLocator vmDirectory resolve.
+	vmPath := paths detect: [ :each | each asFileReference = vmDir ]
+					ifNone: [ nil ].
+	vmPath ifNil: [ ^dict ].
+	paths remove: vmPath.
+	dict at: 'LD_LIBRARY_PATH' put: (':' join: paths).
+	^dict
+]
+
 { #category : #private }
 JSLinkPharoPlatform class >> uiManagerClass [
 	^ JSLinkPharoUiManager
@@ -58,11 +77,12 @@ JSLinkPharoPlatform >> ensureApplicationSymlinks: application [
 	| appFolder |
 	appFolder := self folderForApplication: application.
 	self ensureFolderSymlinkFor: appFolder.
-	self ensurePBridge: (self folderForApplication: application class baseApplication) symlinkIn: appFolder
+
 ]
 
 { #category : #'as yet unclassified' }
 JSLinkPharoPlatform >> ensureEnvironmentForApp: anApplication [
+
 	self ensureApplicationSymlinks: anApplication.
 	self installEnvironmentForApp: anApplication.
 ]
@@ -75,14 +95,6 @@ JSLinkPharoPlatform >> ensureFolderSymlinkFor: aFolder [
 		self createSymlinkFor: aFolder on: symlinkRef ]
 ]
 
-{ #category : #'private - symlinks' }
-JSLinkPharoPlatform >> ensurePBridge: pbridgeFolder symlinkIn: aFolder [
-	| symlinkRef |
-	symlinkRef := aFolder / 'PythonBridge'.
-	symlinkRef exists ifFalse: [ 
-		self createSymlinkFor: pbridgeFolder on: symlinkRef ].
-]
-
 { #category : #utils }
 JSLinkPharoPlatform >> folderForApplication: application [
 	^ (IceRepository registry 
@@ -90,29 +102,37 @@ JSLinkPharoPlatform >> folderForApplication: application [
 			ifNone: [ 
 				self inform: 'Please add a clone of this project to Iceberg to access to the resources'.
 				"For travis!"
-				^ '.' asFileReference ]) location
+				^ '.' asFileReference ]) location / 'js'
 ]
 
 { #category : #utils }
 JSLinkPharoPlatform >> forceInstallEnvironmentForApp: application [
-	| proc |
-	self assert: JSLinkPharoNodejsProcess pipenvPath isEmptyOrNil not description: 'pipenv is apparently not accessible at a standard location. Please, have a look at the Troubleshooting section of https://objectprofile.github.io/PythonBridge/pages/pharo-installation'.
+	| proc workingDir npm |
+	self assert: JSLinkPharoNodejsProcess nodejsPath isEmptyOrNil not description: 
+'Unable to find the nodejs command.
+Please ensure it is installed and in the default path for the pharo process.'.
+	npm := JSLinkPharoNodejsProcess resolveNpmPath.
+	self assert: npm isEmptyOrNil not description: 
+'Unable to find the npm command.
+Please ensure it is installed and in the default path for the pharo process.'.
+	workingDir := self folderForApplication: application.
 	proc := OSSUnixSubprocess new
-				command: '/bin/bash';
-				addAllEnvVariablesFromParentWithoutOverride;
-				arguments: (Array 
-					with: ((self folderForApplication: application) / 'install_env.sh') fullName);
-				terminateOnShutdown;
-				runAndWait.
-	(proc exitStatus = 0 or: [ proc exitStatus < -1000 or: [ proc exitStatus > SmallInteger maxVal ] ]) ifFalse: [ 
-		self signalPipenvCreateEnvFailed ]
+				workingDirectory: workingDir resolve fullName;
+				command: npm;
+				arguments: { 'install' };
+				terminateOnShutdown.
+	self class subProcessEnvironmentDictionary keysAndValuesDo: [ :key :value |
+		proc environmentAt: key put: value ].
+	proc runAndWait.
+	proc isSuccess ifFalse: [ 
+		self signalInstallEnvFailed ]
 ]
 
 { #category : #utils }
 JSLinkPharoPlatform >> installEnvironmentForApp: application [
 	| folder |
 	folder := self folderForApplication: application.
-	(folder / '.venv') exists ifFalse: [ 
+	(folder / 'node_modules') exists ifFalse: [ 
 		self forceInstallEnvironmentForApp: application ]
 ]
 
@@ -122,14 +142,8 @@ JSLinkPharoPlatform >> newRandomName [
 ]
 
 { #category : #private }
-JSLinkPharoPlatform >> signalPipenvCreateEnvFailed [
-	"
-	Python bridge attempt of creating Pipenv environment failed. To attempt to generate the Pipenv
-	environment manually go the project git folder. It may be the PythonBridge, KerasBridge or your
-	Bridge, because each of them has a different Pipfile and Pipenv environment.
-	
-	To remove the current Pipenv environment run in the folder the command: `pipenv --rm`
-	To manually create the Pipenv environment run in the folder the command: `bash install_env.sh`
-	"
-	Error signal: 'Attempt for creating Pipenv environment failed.'
+JSLinkPharoPlatform >> signalInstallEnvFailed [
+	"The attempt to install all the required packages with npm failed for some reason"
+
+	Error signal: 'npm install failed.'
 ]

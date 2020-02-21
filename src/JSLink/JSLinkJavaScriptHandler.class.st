@@ -30,7 +30,7 @@ JSLinkJavaScriptHandler >> platform [
 
 { #category : #testing }
 JSLinkJavaScriptHandler >> start [
-	"self platform ensureEnvironmentForApp: self application."
+	self platform ensureEnvironmentForApp: self application.
 	^ process start
 ]
 
