@@ -56,7 +56,7 @@ JSLinkObserver >> id [
 { #category : #initialization }
 JSLinkObserver >> initialize [
 	super initialize.
-	id := JSLinkUtils newP3VariableName
+	id := JSLinkUtils newVariableName
 ]
 
 { #category : #testing }
@@ -65,7 +65,7 @@ JSLinkObserver >> isJavaScriptGenerable [
 ]
 
 { #category : #testing }
-JSLinkObserver >> isJavaScriptValue [
+JSLinkObserver >> isLanguageLinkValue [
 	^ true
 ]
 
@@ -87,8 +87,8 @@ JSLinkObserver >> pharoNotify: anObject [
 ]
 
 { #category : #testing }
-JSLinkObserver >> writeJavaScriptOn: aStream [
+JSLinkObserver >> writeLinkLanguageOn: aStream [
 	(#observer asJSGI callWith: (Array 
 											with: self command id
-											with: self id)) writeJavaScriptOn: aStream
+											with: self id)) writeLinkLanguageOn: aStream
 ]

@@ -1,5 +1,5 @@
 Class {
-	#name : #JSLinkHttpMessageBroker,
+	#name : #LanguageLinkHttpMessageBroker,
 	#superclass : #JSLinkAbstractMessageBroker,
 	#instVars : [
 		'server'
@@ -8,17 +8,17 @@ Class {
 }
 
 { #category : #accessing }
-JSLinkHttpMessageBroker class >> javaScriptMethodArg [
+LanguageLinkHttpMessageBroker class >> javaScriptMethodArg [
 	^ 'http'
 ]
 
 { #category : #accessing }
-JSLinkHttpMessageBroker class >> serializerClass [
+LanguageLinkHttpMessageBroker class >> serializerClass [
 	^ JSLinkNeoJsonSerializer
 ]
 
 { #category : #private }
-JSLinkHttpMessageBroker >> handleRMessage: dict [
+LanguageLinkHttpMessageBroker >> handleRMessage: dict [
 	| msgClass |
 	msgClass := self resolveMessageFromType: (dict at: #type).
 	StringSignal emit: 'msgClass = ', msgClass name asString.
@@ -26,26 +26,26 @@ JSLinkHttpMessageBroker >> handleRMessage: dict [
 ]
 
 { #category : #private }
-JSLinkHttpMessageBroker >> invalidMethod [
+LanguageLinkHttpMessageBroker >> invalidMethod [
 	^ (ZnResponse statusLine: ZnStatusLine badRequest)
 		entity: (ZnEntity text: 'Bad method');
 		yourself
 ]
 
 { #category : #private }
-JSLinkHttpMessageBroker >> invalidType [
+LanguageLinkHttpMessageBroker >> invalidType [
 	^ (ZnResponse statusLine: ZnStatusLine notFound)
 		entity: (ZnEntity text: 'Invalid type');
 		yourself
 ]
 
 { #category : #testing }
-JSLinkHttpMessageBroker >> isRunning [
+LanguageLinkHttpMessageBroker >> isRunning [
 	^ server notNil
 ]
 
 { #category : #private }
-JSLinkHttpMessageBroker >> preventTestForkedPDestroyServer [
+LanguageLinkHttpMessageBroker >> preventTestForkedPDestroyServer [
 	| env |
 	env := CurrentExecutionEnvironment value.
 	(env isKindOf: TestExecutionEnvironment) ifTrue: [ 
@@ -55,7 +55,7 @@ JSLinkHttpMessageBroker >> preventTestForkedPDestroyServer [
 ]
 
 { #category : #private }
-JSLinkHttpMessageBroker >> primSendMessage: dict [
+LanguageLinkHttpMessageBroker >> primSendMessage: dict [
 	| ans |
 
 	ans := [ ZnClient new
@@ -64,13 +64,13 @@ JSLinkHttpMessageBroker >> primSendMessage: dict [
 					entity: (ZnEntity json: (self serializer serialize: dict));
 					post; 
 					response.
-			] on: Error do: [ :err | JSLinkCommunicationError signal: 'Request fail' ].
-	ans status = 200 ifFalse: [ JSLinkCommunicationError signal: 'Request fail' ].
+			] on: Error do: [ :err | LanguageLinkCommunicationError signal: 'Request fail' ].
+	ans status = 200 ifFalse: [ LanguageLinkCommunicationError signal: 'Request fail' ].
 	^ self serializer deserialize: ans contents
 ]
 
 { #category : #private }
-JSLinkHttpMessageBroker >> prim_handle: req [
+LanguageLinkHttpMessageBroker >> prim_handle: req [
 	"Because of the nature of HTTP, answers of sync messages are not received through this method, but as 	the answers of HTTP requests. This channel is only for RMessages."
 
 	StringSignal emit: 'prim_handle:'.
@@ -89,7 +89,7 @@ JSLinkHttpMessageBroker >> prim_handle: req [
 				StringSignal emit: 'response: ', ansDict printString.
 				^ ZnResponse ok: (ZnEntity json: (self serializer serialize: ansDict)) ] 
 			on: Error 
-			do: [ :e | StringSignal emit: 'Error: ', e printString.
+			do: [ :e | StringSignal emit: 'Error: ', e printString. self halt.
 				debugMode
 							ifTrue: [ e pass ]
 							ifFalse: [ ZnResponse serverError: e printString  ] ] ]
@@ -98,25 +98,25 @@ JSLinkHttpMessageBroker >> prim_handle: req [
 ]
 
 { #category : #messaging }
-JSLinkHttpMessageBroker >> sendAsyncMessage: msg [
+LanguageLinkHttpMessageBroker >> sendAsyncMessage: msg [
 	self primSendMessage: msg encode.
 ]
 
 { #category : #messaging }
-JSLinkHttpMessageBroker >> sendSyncMessage: msg [
+LanguageLinkHttpMessageBroker >> sendSyncMessage: msg [
 	| ansDict |
 	ansDict := self primSendMessage: msg encode.
 	^ msg createAnswer decode: ansDict
 ]
 
 { #category : #accessing }
-JSLinkHttpMessageBroker >> setDebugMode [
+LanguageLinkHttpMessageBroker >> setDebugMode [
 	super setDebugMode.
 	server ifNotNil: [ server debugMode: true ]
 ]
 
 { #category : #'start-stop' }
-JSLinkHttpMessageBroker >> start [
+LanguageLinkHttpMessageBroker >> start [
 	server := ZnServer on: self port.
 	server debugMode: debugMode.
 	server start.
@@ -129,6 +129,6 @@ JSLinkHttpMessageBroker >> start [
 ]
 
 { #category : #'start-stop' }
-JSLinkHttpMessageBroker >> stop [
+LanguageLinkHttpMessageBroker >> stop [
 	server ifNotNil: [ server stop ]
 ]

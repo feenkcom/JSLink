@@ -1,16 +1,11 @@
 Class {
 	#name : #JSLinkDeserializeTest,
-	#superclass : #TestCase,
+	#superclass : #JSLinkTestCase,
 	#instVars : [
 		'mapper'
 	],
 	#category : #'JSLink-Tests'
 }
-
-{ #category : #running }
-JSLinkDeserializeTest >> application [
-	^ 'FOO'
-]
 
 { #category : #running }
 JSLinkDeserializeTest >> deserialize: anObject [
@@ -20,19 +15,20 @@ JSLinkDeserializeTest >> deserialize: anObject [
 { #category : #running }
 JSLinkDeserializeTest >> deserializer [
 	^ mapper deserializer
-			serializerWrapper: JSLinkPlatform current class httpMessageBrokerClass serializer;
+			serializerWrapper: self application settings messageBrokerStrategy serializer;
 			yourself
 ]
 
 { #category : #running }
 JSLinkDeserializeTest >> setUp [
+
 	super setUp.
-	mapper := JSLinkMapperFactory forExecutionHandler: self stubExecutionHandler
+	mapper := JSLinkMapperFactory forExecutionHandler: self application executionHandler
 ]
 
 { #category : #running }
 JSLinkDeserializeTest >> stubExecutionHandler [
-	^ JSLinkExecutionHandler new
+	^ LanguageLinkExecutionHandler new
 			application: self application;
 			yourself
 ]
@@ -53,7 +49,6 @@ JSLinkDeserializeTest >> testDeserializeProxy [
 	proxy := self deserialize: '{"__jsclass__":"MyClass","__registryid__":"abcde12345"}'.
 	self assert: proxy javaScriptClass equals: #MyClass.
 	self assert: proxy application equals: self deserializer application.
-	self assert: proxy application equals: 'FOO'.
 	self assert: proxy javaScriptVariable equals: 'abcde12345' asJSGI
 ]
 
@@ -65,6 +60,5 @@ JSLinkDeserializeTest >> testDeserializeProxyInArray [
 	proxy := arr first.
 	self assert: proxy javaScriptClass equals: #MyClass.
 	self assert: proxy application equals: self deserializer application.
-	self assert: proxy application equals: 'FOO'.
 	self assert: proxy javaScriptVariable equals: 'abcde12345' asJSGI
 ]

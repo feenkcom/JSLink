@@ -6,6 +6,6 @@ True >> isJavaScriptGenerable [
 ]
 
 { #category : #'*JSLink' }
-True >> isJavaScriptValue [
+True >> isLanguageLinkValue [
 	^ true
 ]

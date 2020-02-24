@@ -14,19 +14,19 @@ JSLinkLoggingHandlerTest >> logs [
 
 { #category : #initialization }
 JSLinkLoggingHandlerTest >> setUp [
-	logger := JSLinkLoggingHandler new
+	logger := LanguageLinkLoggingHandler new
 ]
 
 { #category : #tests }
 JSLinkLoggingHandlerTest >> testAddLog [
-	logger log: (JSLinkLog message: 'Foo').
+	logger log: (LanguageLinkLog message: 'Foo').
 	self assert: logger logs first message equals: 'Foo'
 ]
 
 { #category : #tests }
 JSLinkLoggingHandlerTest >> testErrorLog [
-	logger log: (JSLinkLog message: 'Foo').
+	logger log: (LanguageLinkLog message: 'Foo').
 	self assert: logger errorLogs isEmpty.
-	logger log: (JSLinkErrorLog message: 'Bar').
+	logger log: (LanguageLinkErrorLog message: 'Bar').
 	self assert: logger errorLogs first message equals: 'Bar'.
 ]

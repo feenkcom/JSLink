@@ -5,44 +5,10 @@ Class {
 }
 
 { #category : #hooks }
-JSLinkPharoPlatform class >> httpMessageBrokerClass [
-	^ JSLinkHttpMessageBroker
-]
-
-{ #category : #hooks }
-JSLinkPharoPlatform class >> pipenvProcessClass [
-	^ JSLinkPharoNodejsProcess
-]
-
-{ #category : #accessing }
-JSLinkPharoPlatform class >> priority [
-	^ 10
-]
-
-{ #category : #hooks }
 JSLinkPharoPlatform class >> socketMessageBrokerClass [
 
 	"^ JSLinkMsgPackPharoBroker"
-	^ JSLinkHttpMessageBroker 
-]
-
-{ #category : #accessing }
-JSLinkPharoPlatform class >> subProcessEnvironmentDictionary [
-	"Answer the dictionary to be used when running subprocesses.
-	On linux, Pharo adds the VM directory to the path, which contains non-standard versions of libssl and libcrypto.  Other applications, such as nodejs and npm, should use the default installation."
-
-	| dict ldLibraryPath paths vmDir vmPath |
-
-	dict := Smalltalk os environment asDictionary.
-	ldLibraryPath := dict at: 'LD_LIBRARY_PATH' ifAbsent: [ ^dict ].
-	paths := $: split: ldLibraryPath.
-	vmDir := FileLocator vmDirectory resolve.
-	vmPath := paths detect: [ :each | each asFileReference = vmDir ]
-					ifNone: [ nil ].
-	vmPath ifNil: [ ^dict ].
-	paths remove: vmPath.
-	dict at: 'LD_LIBRARY_PATH' put: (':' join: paths).
-	^dict
+	^ LanguageLinkHttpMessageBroker 
 ]
 
 { #category : #private }
@@ -65,11 +31,6 @@ JSLinkPharoPlatform >> createSymlinkFor: originalFile on: targetFile [
 									with: targetFile asFileReference fullName);
 				terminateOnShutdown;
 				runAndWaitOnExitDo: [ :command | ^ self ].
-]
-
-{ #category : #'message broker strategy' }
-JSLinkPharoPlatform >> defaultMessageBrokerClass [
-	^ self class socketMessageBrokerClass
 ]
 
 { #category : #hooks }

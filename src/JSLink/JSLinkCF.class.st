@@ -8,8 +8,8 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-JSLinkCF class >> << aPythonStatement [
-	^ self current << aPythonStatement
+JSLinkCF class >> << aJSStatement [
+	^ self current << aJSStatement
 ]
 
 { #category : #'as yet unclassified' }
@@ -97,8 +97,8 @@ JSLinkCF class >> send [
 ]
 
 { #category : #'old api' }
-JSLinkCF class >> send: aPythonStatement [
-	self << aPythonStatement.
+JSLinkCF class >> send: aStatement [
+	self << aStatement.
 	^ self send
 ]
 

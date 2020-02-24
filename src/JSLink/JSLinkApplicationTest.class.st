@@ -5,11 +5,15 @@ Class {
 }
 
 { #category : #accessing }
-JSLinkApplicationTest class >> appResource [
-	^ JSLinkApplicationTestResource
+JSLinkApplicationTest class >> resources [
+	^ super resources , { JSLinkApplicationTestResource. }
 ]
 
-{ #category : #initialization }
-JSLinkApplicationTest >> applicationClass [
-	^ JSLinkApplication
+{ #category : #running }
+JSLinkApplicationTest >> setUp [ 
+	"Subclasses of JSLinkApplicationTest require a running server"
+
+	super setUp.
+	application := self class appResource current application.
+	commandFactory := self class appResource current commandFactory.
 ]

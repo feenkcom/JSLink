@@ -29,7 +29,10 @@ JSLinkRegistryFinalizer >> executionHandler: anObject [
 { #category : #finalization }
 JSLinkRegistryFinalizer >> finalize [
 	| cf |
-	executionHandler isRunning ifFalse: [ ^ self ].
+	executionHandler isRunning ifFalse: 
+		[ StringSignal emit: 'JSLink not finalizing: ', pythonVariable name printString.
+		^ self ].
+	StringSignal emit: 'JSLink finalizing: ', pythonVariable name printString.
 	cf := executionHandler newCommandFactory.
 	cf << (self removeId: pythonVariable name).
 	cf send.

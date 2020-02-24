@@ -1,5 +1,5 @@
 Class {
-	#name : #JSLinkPharoNodejsProcess,
+	#name : #PharoLinkPharoProcess,
 	#superclass : #LanguageLinkAbstractProcess,
 	#instVars : [
 		'process',
@@ -13,24 +13,24 @@ Class {
 }
 
 { #category : #initialization }
-JSLinkPharoNodejsProcess class >> nodejsPath [
+PharoLinkPharoProcess class >> nodejsPath [
 	^ NodejsPath isEmptyOrNil 
 			ifTrue: [ NodejsPath := self resolveNodejsPath ]
 			ifFalse: [ NodejsPath ]
 ]
 
 { #category : #initialization }
-JSLinkPharoNodejsProcess class >> nodejsPath: aString [
+PharoLinkPharoProcess class >> nodejsPath: aString [
 	NodejsPath := aString
 ]
 
 { #category : #accessing }
-JSLinkPharoNodejsProcess class >> platform [
+PharoLinkPharoProcess class >> platform [
 	^ JSLinkPharoPlatform current
 ]
 
 { #category : #initialization }
-JSLinkPharoNodejsProcess class >> resolveNodejsPath [
+PharoLinkPharoProcess class >> resolveNodejsPath [
 	| proc |
 	
 	proc := OSSUnixSubprocess new
@@ -45,7 +45,7 @@ JSLinkPharoNodejsProcess class >> resolveNodejsPath [
 ]
 
 { #category : #initialization }
-JSLinkPharoNodejsProcess class >> resolveNpmPath [
+PharoLinkPharoProcess class >> resolveNpmPath [
 	| proc |
 
 	proc := OSSUnixSubprocess new
@@ -61,7 +61,7 @@ JSLinkPharoNodejsProcess class >> resolveNpmPath [
 ]
 
 { #category : #initialization }
-JSLinkPharoNodejsProcess class >> signalCommandNotFound: commandString [
+PharoLinkPharoProcess class >> signalCommandNotFound: commandString [
 	"JSLink use the unix command `which` to find the full path of the supplied command. From Pharo
 	we could not find the path, therefore you have to set it mannualy.
 		
@@ -75,34 +75,34 @@ JSLinkPharoNodejsProcess class >> signalCommandNotFound: commandString [
 ]
 
 { #category : #accessing }
-JSLinkPharoNodejsProcess >> environmentVariables [
+PharoLinkPharoProcess >> environmentVariables [
 	^ environmentVariables
 ]
 
 { #category : #accessing }
-JSLinkPharoNodejsProcess >> errorMessage [
+PharoLinkPharoProcess >> errorMessage [
 	^ process stderrStream contents
 ]
 
 { #category : #initialization }
-JSLinkPharoNodejsProcess >> initialize [
+PharoLinkPharoProcess >> initialize [
 	super initialize.
 	environmentVariables := Dictionary new.
 	self setDefaultEnvironmentVariables
 ]
 
 { #category : #testing }
-JSLinkPharoNodejsProcess >> isRunning [
+PharoLinkPharoProcess >> isRunning [
 	^ process
 		ifNil: [ false ]
 		ifNotNil: [ process isRunning ]
 ]
 
 { #category : #private }
-JSLinkPharoNodejsProcess >> newProcess [
+PharoLinkPharoProcess >> newProcess [
 	| newProcess |
 	newProcess := OSSUnixSubprocess new
-				command: 'nodejs';
+				command: self settings serverExecutable fullName;
 				arguments: self processArguments;
 				workingDirectory: self workingDirectory resolve fullName;
 "				redirectStdout;
@@ -115,12 +115,12 @@ JSLinkPharoNodejsProcess >> newProcess [
 ]
 
 { #category : #accessing }
-JSLinkPharoNodejsProcess >> process [
+PharoLinkPharoProcess >> process [
 	^ process
 ]
 
 { #category : #private }
-JSLinkPharoNodejsProcess >> processArguments [
+PharoLinkPharoProcess >> processArguments [
 	| args |
 
 	args := OrderedCollection new.
@@ -132,19 +132,19 @@ JSLinkPharoNodejsProcess >> processArguments [
 ]
 
 { #category : #initialization }
-JSLinkPharoNodejsProcess >> setDefaultEnvironmentVariables [
+PharoLinkPharoProcess >> setDefaultEnvironmentVariables [
 
 	environmentVariables := JSLinkPharoPlatform subProcessEnvironmentDictionary.
 ]
 
 { #category : #'start-stop' }
-JSLinkPharoNodejsProcess >> start [
+PharoLinkPharoProcess >> start [
 	process := self newProcess.
 	process run.
 ]
 
 { #category : #'start-stop' }
-JSLinkPharoNodejsProcess >> stop [
+PharoLinkPharoProcess >> stop [
 	process ifNil: [ ^ self ].
 	[process queryExitStatus ifNil: [ process terminate ]] 
 		on: Error 

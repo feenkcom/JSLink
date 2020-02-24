@@ -1,21 +1,18 @@
 Class {
 	#name : #JSLinkExcecutionHandlerTest,
-	#superclass : #TestCase,
+	#superclass : #JSLinkTestCase,
 	#instVars : [
-		'execHandler',
-		'commandFactory'
+		'execHandler'
 	],
 	#category : #'JSLink-Tests'
 }
 
 { #category : #initialization }
 JSLinkExcecutionHandlerTest >> setUp [
-	| app |
-	app := JSLinkStubApplication new.
-	execHandler := JSLinkExecutionHandler new 
-							application: app;
-							yourself.
-	commandFactory := JSLinkCommandFactory new.
+
+	super setUp.
+	execHandler := self application executionHandler.
+
 ]
 
 { #category : #accessing }

@@ -70,7 +70,7 @@ JSLinkProxyObject >> declarativeViews [
 JSLinkProxyObject >> getViewProxy [
 	"Answer a GtViewedProxy on the receiver"
 
-	^ JSLinkCF newCommandFactory
+	^ self application newCommandFactory
 		<< (#GtViewedObject asJSGIdentifier <- (#require asJSGIdentifier callWith: { '../gtoolkit/gt' })) beLetDeclaration;
 		<< (#viewedObject asJSGIdentifier <- self) beLetDeclaration;
 		<< (#GtViewedObject asJSGIdentifier callWith: { #viewedObject asJSGIdentifier }) new;
@@ -84,7 +84,7 @@ JSLinkProxyObject >> gtLocalViewsFor: aView inContext: aContext [
 	title := String streamContents: [ :stream |
 				stream
 					<< 'Proxy to a(n): ';
-					<< javaScriptClass ].
+					<< (javaScriptClass ifNil: [ '<None>' ]) ].
 	resultingView := ((aView composite
 		views: (self gtViewsInContext: aContext))
 		labelled: title).

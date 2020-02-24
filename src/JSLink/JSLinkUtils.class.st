@@ -5,11 +5,11 @@ Class {
 }
 
 { #category : #'instance creation' }
-JSLinkUtils class >> newP3Variable [
-	^ self newP3VariableName asJSGI
+JSLinkUtils class >> newVariable [
+	^ self newVariableName asJSGI
 ]
 
 { #category : #'instance creation' }
-JSLinkUtils class >> newP3VariableName [
-	^ JSLinkPlatform current newRandomName
+JSLinkUtils class >> newVariableName [
+	^ 'js' , UUID new asString36
 ]

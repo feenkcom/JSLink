@@ -6,6 +6,6 @@ Dictionary >> isJavaScriptGenerable [
 ]
 
 { #category : #'*JSLink' }
-Dictionary >> isJavaScriptValue [
+Dictionary >> isLanguageLinkValue [
 	^ true
 ]

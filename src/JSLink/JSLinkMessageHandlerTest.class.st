@@ -8,7 +8,7 @@ Class {
 JSLinkMessageHandlerTest >> testAsyncMessage [
 	| flag msg handler |
 	flag := false.
-	msg := JSLinkAsyncMessage new.
+	msg := LanguageLinkAsyncMessage new.
 	handler := JSLinkMessageHandler 
 						forMessage: msg 
 						callback: [ :aMsg |
@@ -25,7 +25,7 @@ JSLinkMessageHandlerTest >> testAsyncMessage [
 JSLinkMessageHandlerTest >> testRAsyncMessage [
 	| flag msg handler |
 	flag := false.
-	msg := JSLinkRAsyncMessage new.
+	msg := LanguageLinkRAsyncMessage new.
 	handler := JSLinkMessageHandler 
 						forMessage: msg 
 						callback: [ :aMsg |
@@ -43,7 +43,7 @@ JSLinkMessageHandlerTest >> testRSyncMessage [
 	| flag msg handler ans |
 	flag := false.
 	ans := nil.
-	msg := JSLinkRSyncMessage new.
+	msg := LanguageLinkRSyncMessage new.
 	handler := JSLinkMessageHandler 
 						forMessage: msg 
 						callback: [ :aMsg |
@@ -62,7 +62,7 @@ JSLinkMessageHandlerTest >> testSyncMessage [
 	| flag msg handler ans |
 	flag := false.
 	ans := nil.
-	msg := JSLinkSyncMessage new.
+	msg := LanguageLinkSyncMessage new.
 	handler := JSLinkMessageHandler 
 						forMessage: msg 
 						callback: [ :aMsg |

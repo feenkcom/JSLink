@@ -6,8 +6,11 @@ Class {
 
 { #category : #tests }
 JSLinkCommandTest >> testNewCommandHasEmtptyBindings [
-	| command |
-	command := JSLinkCommand new.
+	| command application |
+
+	application := JSLinkApplication new.
+	application settings: LanguageLinkSettings jsDefaultSettings.
+	command := application newCommand.
 	self assert: command id isString.
 	self assert: command id notEmpty.
 	self assert: command bindings equals: #().
@@ -16,7 +19,7 @@ JSLinkCommandTest >> testNewCommandHasEmtptyBindings [
 { #category : #tests }
 JSLinkCommandTest >> testNotValidBindingsKeyNotString [
 	| command |
-	command := JSLinkCommand new.
+	command := LanguageLinkCommand new.
 	command bindings: { 33 -> 'bar' }.
 	self deny: command isValid
 ]
@@ -24,7 +27,7 @@ JSLinkCommandTest >> testNotValidBindingsKeyNotString [
 { #category : #tests }
 JSLinkCommandTest >> testNotValidBindingsNotAssoc [
 	| command |
-	command := JSLinkCommand new.
+	command := LanguageLinkCommand new.
 	command bindings: { '33' -> 'bar'. 'foo' }.
 	self deny: command isValid
 ]

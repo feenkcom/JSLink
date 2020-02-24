@@ -9,7 +9,11 @@ Class {
 
 { #category : #initialization }
 JSLinkCommandFactoryTest >> setUp [
-	factory := JSLinkCommandFactory new
+	| application |
+
+	application := JSLinkApplication new.
+	application settings: LanguageLinkSettings jsDefaultSettings.
+	factory := application newCommandFactory.
 ]
 
 { #category : #tests }

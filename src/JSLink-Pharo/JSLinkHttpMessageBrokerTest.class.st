@@ -14,7 +14,7 @@ JSLinkHttpMessageBrokerTest >> answer: aDictionary [
 
 { #category : #utils }
 JSLinkHttpMessageBrokerTest >> buildAndStartStubServer [
-	stubServer := ZnServer on: settings javaScriptSocketAddress port.
+	stubServer := ZnServer on: settings serverSocketAddress port.
 	stubServer start.
 	stubServer onRequestRespond: [ :req | self primHandle: req ]
 ]
@@ -31,7 +31,7 @@ JSLinkHttpMessageBrokerTest >> errorResponse [
 
 { #category : #hooks }
 JSLinkHttpMessageBrokerTest >> messageBrokerClass [
-	^ JSLinkHttpMessageBroker
+	^ LanguageLinkHttpMessageBroker
 ]
 
 { #category : #private }
@@ -59,7 +59,7 @@ JSLinkHttpMessageBrokerTest >> sendMessageToBroker: dict answerBlock: aBlock [
 	ans := ZnEasy 
 				post: self brokerUri , '/' , (dict at: #type)
 				data: (ZnEntity json: (NeoJSONWriter toString: dict)).
-	ans status = 200 ifFalse: [ JSLinkCommunicationError signal: ans status asString ].
+	ans status = 200 ifFalse: [ LanguageLinkCommunicationError signal: ans status asString ].
 	aBlock value: (self decodeAnswer: ans contents)
 ]
 

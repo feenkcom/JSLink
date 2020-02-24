@@ -11,5 +11,5 @@ JSLinkStubApplication >> handlers [
 
 { #category : #initialization }
 JSLinkStubApplication >> initializeHandlers [
-	loggingHandler := JSLinkLoggingHandler application: self.
+	loggingHandler := LanguageLinkLoggingHandler application: self.
 ]

@@ -2,21 +2,12 @@ Class {
 	#name : #JSLinkTestCase,
 	#superclass : #TestCase,
 	#instVars : [
+		'application',
 		'commandFactory',
 		'promise'
 	],
 	#category : #'JSLink-Tests'
 }
-
-{ #category : #accessing }
-JSLinkTestCase class >> appResource [
-	self subclassResponsibility
-]
-
-{ #category : #accessing }
-JSLinkTestCase class >> resources [
-	^ super resources , (Array with: self appResource)
-]
 
 { #category : #initialization }
 JSLinkTestCase >> app [
@@ -25,12 +16,7 @@ JSLinkTestCase >> app [
 
 { #category : #initialization }
 JSLinkTestCase >> application [
-	^ self applicationClass uniqueInstance
-]
-
-{ #category : #initialization }
-JSLinkTestCase >> applicationClass [
-	self subclassResponsibility 
+	^ application
 ]
 
 { #category : #asserting }
@@ -65,7 +51,13 @@ JSLinkTestCase >> cfSend [
 
 { #category : #initialization }
 JSLinkTestCase >> commandFactory [
-	^ self application commandFactory
+	^ commandFactory
+]
+
+{ #category : #'instance creation' }
+JSLinkTestCase >> newCommand [ 
+
+	^ self application newCommand.
 ]
 
 { #category : #asserting }
@@ -81,5 +73,7 @@ JSLinkTestCase >> resolveId: anId [
 { #category : #running }
 JSLinkTestCase >> setUp [
 	super setUp.
-	self cf reset
+	application := JSLinkApplication newWith: LanguageLinkSettings jsDefaultSettings.
+	commandFactory := application newCommandFactory.
+	self cf reset.
 ]

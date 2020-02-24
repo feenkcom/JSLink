@@ -71,7 +71,7 @@ JSLinkMsgPackPharoBroker >> primHandle: dict [
 
 { #category : #private }
 JSLinkMsgPackPharoBroker >> primSendMessage: dict [
-	msgStream ifNil: [ JSLinkCommunicationError signal ].
+	msgStream ifNil: [ LanguageLinkCommunicationError signal ].
 	msgStream nextPut: dict
 ]
 

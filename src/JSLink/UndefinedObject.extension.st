@@ -6,6 +6,6 @@ UndefinedObject >> isJavaScriptGenerable [
 ]
 
 { #category : #'*JSLink' }
-UndefinedObject >> isJavaScriptValue [
+UndefinedObject >> isLanguageLinkValue [
 	^ true
 ]

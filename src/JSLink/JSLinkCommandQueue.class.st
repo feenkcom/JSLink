@@ -36,7 +36,7 @@ JSLinkCommandQueue >> currentCommand [
 
 { #category : #accessing }
 JSLinkCommandQueue >> debugMode [
-	^ JSLinkApplication debugMode
+	^ executionHandler debugMode
 ]
 
 { #category : #accessing }
@@ -79,11 +79,11 @@ JSLinkCommandQueue >> finishCommandId: id [
 		ifTrue: [ currentIndex := commandIndex + 1.
 			self
 				trace:
-					(JSLinkErrorLog
+					(LanguageLinkErrorLog
 						message: 'Out of sync command queue. Pharo is delayed.') ]
 		ifFalse: [ self
 				trace:
-					(JSLinkErrorLog
+					(LanguageLinkErrorLog
 						message: 'Out of sync command queue. Python is delayed.') ].
 	self cleanIndex: commandIndex.
 	^ false

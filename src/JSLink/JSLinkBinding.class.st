@@ -26,7 +26,7 @@ JSLinkBinding class >> wrap: anObject [
 { #category : #initialization }
 JSLinkBinding >> initialize [
 	super initialize.
-	key := JSLinkUtils newP3VariableName
+	key := JSLinkUtils newVariableName
 ]
 
 { #category : #testing }
@@ -35,7 +35,7 @@ JSLinkBinding >> isJavaScriptGenerable [
 ]
 
 { #category : #testing }
-JSLinkBinding >> isJavaScriptValue [
+JSLinkBinding >> isLanguageLinkValue [
 	^ true
 ]
 
@@ -65,6 +65,6 @@ JSLinkBinding >> object: anObject [
 ]
 
 { #category : #testing }
-JSLinkBinding >> writeJavaScriptOn: aStream [
-	self javaScriptVariable writeJavaScriptOn: aStream
+JSLinkBinding >> writeLinkLanguageOn: aStream [
+	self javaScriptVariable writeLinkLanguageOn: aStream
 ]

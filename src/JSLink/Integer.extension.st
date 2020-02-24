@@ -6,6 +6,6 @@ Integer >> isJavaScriptGenerable [
 ]
 
 { #category : #'*JSLink' }
-Integer >> isJavaScriptValue [
+Integer >> isLanguageLinkValue [
 	^ true
 ]

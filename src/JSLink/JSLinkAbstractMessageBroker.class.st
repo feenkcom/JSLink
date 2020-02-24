@@ -39,7 +39,7 @@ JSLinkAbstractMessageBroker >> addCallback: aBlock messageClass: messageClass [
 { #category : #private }
 JSLinkAbstractMessageBroker >> handle: dict reverseMessageClass: msgClass [
 	| handler |
-	(messageCallbacks includesKey: msgClass) ifFalse: [ JSLinkCommunicationError signal ].
+	(messageCallbacks includesKey: msgClass) ifFalse: [ LanguageLinkCommunicationError signal ].
 	handler := JSLinkMessageHandler 
 						forMessage: (msgClass decodeFrom: dict) 
 						callback: (messageCallbacks at: msgClass).
@@ -61,12 +61,12 @@ JSLinkAbstractMessageBroker >> isRunning [
 
 { #category : #accessing }
 JSLinkAbstractMessageBroker >> javaScriptUri [
-	^ 'http://' , settings javaScriptSocketAddress printAddress
+	^ 'http://' , settings serverSocketAddress printAddress
 ]
 
 { #category : #accessing }
 JSLinkAbstractMessageBroker >> port [
-	^ settings pharoSocketAddress port
+	^ settings clientSocketAddress port
 ]
 
 { #category : #private }

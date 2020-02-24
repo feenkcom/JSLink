@@ -1,9 +1,8 @@
 Class {
 	#name : #JSLinkCommandQueueTest,
-	#superclass : #TestCase,
+	#superclass : #JSLinkTestCase,
 	#instVars : [
-		'queue',
-		'app'
+		'queue'
 	],
 	#category : #'JSLink-Tests'
 }
@@ -11,9 +10,10 @@ Class {
 { #category : #initialization }
 JSLinkCommandQueueTest >> setUp [
 	| execHandler |
-	app := JSLinkStubApplication new.
-	execHandler := JSLinkExecutionHandler basicNew 
-							application: app;
+
+	super setUp.
+	execHandler := LanguageLinkExecutionHandler basicNew 
+							application: self application;
 							yourself.
 	queue := JSLinkCommandQueue executionHandler: execHandler
 ]
@@ -21,8 +21,8 @@ JSLinkCommandQueueTest >> setUp [
 { #category : #tests }
 JSLinkCommandQueueTest >> testCleaningCommand [
 	| cc1 cc2 |
-	cc1 := JSLinkCommand new.
-	cc2 := JSLinkCommand new.
+	cc1 := LanguageLinkCommand new.
+	cc2 := LanguageLinkCommand new.
 	queue enqueueCommand: cc1.
 	queue enqueueCommand: cc2.
 	self assert: (queue finishCommand: cc1).
@@ -41,7 +41,7 @@ JSLinkCommandQueueTest >> testEmptyQueue [
 { #category : #tests }
 JSLinkCommandQueueTest >> testEnqueue [
 	| c |
-	c := JSLinkCommand new.
+	c := LanguageLinkCommand new.
 	queue enqueueCommand: c.
 	self assert: queue list size equals: 1.
 	self assert: queue currentCommand equals: c.
@@ -51,7 +51,7 @@ JSLinkCommandQueueTest >> testEnqueue [
 { #category : #tests }
 JSLinkCommandQueueTest >> testFinishCommand [
 	| cc |
-	cc := JSLinkCommand new.
+	cc := LanguageLinkCommand new.
 	queue enqueueCommand: cc.
 	self assert: (queue finishCommand: cc).
 	self assert: queue isFinished
@@ -60,9 +60,9 @@ JSLinkCommandQueueTest >> testFinishCommand [
 { #category : #tests }
 JSLinkCommandQueueTest >> testFinishCommand2 [
 	| cc |
-	cc := JSLinkCommand new.
+	cc := LanguageLinkCommand new.
 	queue enqueueCommand: cc.
-	queue enqueueCommand: JSLinkCommand new.
+	queue enqueueCommand: LanguageLinkCommand new.
 	self assert: (queue finishCommand: cc).
 	self deny: queue isFinished
 ]
@@ -77,8 +77,8 @@ JSLinkCommandQueueTest >> testFinishNotFoundCommand [
 { #category : #tests }
 JSLinkCommandQueueTest >> testFinishOutOfSync1Command [
 	| cc1 cc2 |
-	cc1 := JSLinkCommand new.
-	cc2 := JSLinkCommand new.
+	cc1 := self newCommand.
+	cc2 := self newCommand.
 	queue enqueueCommand: cc1.
 	queue enqueueCommand: cc2.
 	self deny: (queue finishCommand: cc2).
@@ -88,8 +88,8 @@ JSLinkCommandQueueTest >> testFinishOutOfSync1Command [
 { #category : #tests }
 JSLinkCommandQueueTest >> testFinishOutOfSync2Command [
 	| cc1 cc2 |
-	cc1 := JSLinkCommand new.
-	cc2 := JSLinkCommand new.
+	cc1 := self newCommand.
+	cc2 := self newCommand.
 	queue enqueueCommand: cc1.
 	queue enqueueCommand: cc2.
 	self deny: (queue finishCommand: cc2).
@@ -99,7 +99,7 @@ JSLinkCommandQueueTest >> testFinishOutOfSync2Command [
 
 { #category : #tests }
 JSLinkCommandQueueTest >> testNotFoundCommand [
-	queue enqueueCommand: JSLinkCommand new.
+	queue enqueueCommand: LanguageLinkCommand new.
 	self 
 		should: [ queue finishCommandId: 'aa' ]
 		raise: Error

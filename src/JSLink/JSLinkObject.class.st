@@ -27,7 +27,8 @@ JSLinkObject class >> fromProxy: aProxy [
 
 { #category : #'instance creation' }
 JSLinkObject class >> newJavaScriptVar [
-	^ JSLinkPlatform current newRandomName asJSGIdentifier
+
+	^ JSLinkUtils newVariable
 ]
 
 { #category : #initialization }
@@ -67,14 +68,15 @@ JSLinkObject >> basicCreateObjectArgs: posArgs nameArgs: nameArgs [
 
 { #category : #'as yet unclassified' }
 JSLinkObject >> basicCreateObjectExpr: anExpression [
-	| varName |
+	| varName cf |
 	self isCreated ifTrue: [ ^ self ].
 	varName := self newJavaScriptVar.
 	javaScriptVariable := varName.
-	self application commandFactory << (
+	cf := self application newCommandFactory.
+	cf << (
 		self registerIdJSExpression: anExpression).
 	self registerObject.
-	self application commandFactory send.
+	cf send.
 ]
 
 { #category : #call }
@@ -113,7 +115,7 @@ JSLinkObject >> isJavaScriptGenerable [
 ]
 
 { #category : #p3generator }
-JSLinkObject >> isJavaScriptValue [
+JSLinkObject >> isLanguageLinkValue [
 	^ true
 ]
 
@@ -168,7 +170,7 @@ JSLinkObject >> resolveIdJSExpression [
 ]
 
 { #category : #'as yet unclassified' }
-JSLinkObject >> writeJavaScriptOn: aStream [
+JSLinkObject >> writeLinkLanguageOn: aStream [
 	self assert: self isCreated.
-	self resolveIdJSExpression writeJavaScriptOn: aStream
+	self resolveIdJSExpression writeLinkLanguageOn: aStream
 ]

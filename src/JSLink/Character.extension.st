@@ -6,6 +6,6 @@ Character >> isJavaScriptGenerable [
 ]
 
 { #category : #'*JSLink' }
-Character >> isJavaScriptValue [
+Character >> isLanguageLinkValue [
 	^ true
 ]

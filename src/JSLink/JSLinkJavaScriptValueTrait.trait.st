@@ -12,6 +12,6 @@ JSLinkJavaScriptValueTrait >> attributeNamed: aString [
 ]
 
 { #category : #testing }
-JSLinkJavaScriptValueTrait >> isJavaScriptValue [
+JSLinkJavaScriptValueTrait >> isLanguageLinkValue [
 	^ true
 ]

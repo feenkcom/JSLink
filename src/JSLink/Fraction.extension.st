@@ -6,6 +6,6 @@ Fraction >> isJavaScriptGenerable [
 ]
 
 { #category : #'*JSLink' }
-Fraction >> isJavaScriptValue [
+Fraction >> isLanguageLinkValue [
 	^ true
 ]

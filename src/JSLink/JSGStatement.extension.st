@@ -1,6 +1,6 @@
 Extension { #name : #JSGStatement }
 
 { #category : #'*JSLink' }
-JSGStatement >> isJavaScriptValue [
+JSGStatement >> isLanguageLinkValue [
 	^ false
 ]

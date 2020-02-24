@@ -6,6 +6,6 @@ SequenceableCollection >> isJavaScriptGenerable [
 ]
 
 { #category : #'*JSLink' }
-SequenceableCollection >> isJavaScriptValue [
+SequenceableCollection >> isLanguageLinkValue [
 	^ true
 ]

@@ -35,13 +35,9 @@ JSLinkMapper >> executionHandler [
 
 { #category : #accessing }
 JSLinkMapper >> executionHandler: anObject [
-	executionHandler := anObject
-]
 
-{ #category : #initialization }
-JSLinkMapper >> initialize [
-	super initialize.
-	serializerWrapper := JSLinkPlatform current serializer
+	executionHandler := anObject.
+	serializerWrapper := self application settings messageBrokerStrategy serializer
 ]
 
 { #category : #accessing }

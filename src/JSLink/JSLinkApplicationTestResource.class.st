@@ -2,7 +2,8 @@ Class {
 	#name : #JSLinkApplicationTestResource,
 	#superclass : #TestResource,
 	#instVars : [
-		'application'
+		'application',
+		'commandFactory'
 	],
 	#category : #'JSLink-Tests'
 }
@@ -17,21 +18,22 @@ JSLinkApplicationTestResource >> application [
 	^ application
 ]
 
-{ #category : #initialization }
-JSLinkApplicationTestResource >> applicationClass [
-	^ JSLinkApplication
+{ #category : #accessing }
+JSLinkApplicationTestResource >> commandFactory [
+	^ commandFactory
 ]
 
 { #category : #initialization }
 JSLinkApplicationTestResource >> setUp [
 	super setUp.
-	self applicationClass stop.
-	self applicationClass start.
-	application := self applicationClass uniqueInstance
+	application := JSLinkApplication new initializeWith: LanguageLinkSettings jsDefaultSettings.
+	application start.
+	commandFactory := application newCommandFactory.
+
 ]
 
 { #category : #initialization }
 JSLinkApplicationTestResource >> tearDown [
-	self applicationClass stop.
+	application stop.
 	super tearDown.
 ]

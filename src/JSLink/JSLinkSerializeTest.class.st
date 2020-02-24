@@ -1,6 +1,6 @@
 Class {
 	#name : #JSLinkSerializeTest,
-	#superclass : #TestCase,
+	#superclass : #JSLinkTestCase,
 	#instVars : [
 		'mapper'
 	],
@@ -10,14 +10,14 @@ Class {
 { #category : #tests }
 JSLinkSerializeTest >> serializer [
 	^ mapper serializer
-			serializerWrapper: JSLinkPlatform current class httpMessageBrokerClass serializer;
+			serializerWrapper: self application settings messageBrokerStrategy serializer;
 			yourself
 ]
 
 { #category : #tests }
 JSLinkSerializeTest >> setUp [
 	super setUp.
-	mapper := JSLinkMapperFactory forExecutionHandler: self
+	mapper := JSLinkMapperFactory forExecutionHandler: self application executionHandler
 ]
 
 { #category : #tests }

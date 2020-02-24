@@ -1,9 +1,7 @@
 Class {
-	#name : #JSLinkAbstractProcess,
+	#name : #LanguageLinkAbstractProcess,
 	#superclass : #Object,
 	#instVars : [
-		'pythonMainFile',
-		'debugMode',
 		'settings',
 		'workingDirectory'
 	],
@@ -11,19 +9,20 @@ Class {
 }
 
 { #category : #accessing }
-JSLinkAbstractProcess class >> application: application [
-	^ self 
-		settings: application settings 
-		application: application
+LanguageLinkAbstractProcess class >> application: application [
+	^ self new
+		settings: application settings;
+		workingDirectory: (application settings platform folderForApplication: application);
+		yourself
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess class >> platform [
+LanguageLinkAbstractProcess class >> platform [
 	self subclassResponsibility
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess class >> settings: settings application: application [
+LanguageLinkAbstractProcess class >> settings: settings application: application [
 	^ self 
 		settings: settings 
 		workingDirectory: (JSLinkPlatform current folderForApplication: application)
@@ -31,7 +30,7 @@ JSLinkAbstractProcess class >> settings: settings application: application [
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess class >> settings: settings workingDirectory: fileRef [
+LanguageLinkAbstractProcess class >> settings: settings workingDirectory: fileRef [
 	^ self new
 		settings: settings;
 		workingDirectory: fileRef;
@@ -39,7 +38,7 @@ JSLinkAbstractProcess class >> settings: settings workingDirectory: fileRef [
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess class >> settings: settings workingDirectory: fileRef debugMode: flag [
+LanguageLinkAbstractProcess class >> settings: settings workingDirectory: fileRef debugMode: flag [
 	^ self new
 		settings: settings;
 		workingDirectory: fileRef;
@@ -48,72 +47,73 @@ JSLinkAbstractProcess class >> settings: settings workingDirectory: fileRef debu
 ]
 
 { #category : #hooks }
-JSLinkAbstractProcess class >> workingDirectory [
+LanguageLinkAbstractProcess class >> workingDirectory [
 	^ self platform folderForApplication: JSLinkApplication
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess >> debugMode [
-	^ debugMode
+LanguageLinkAbstractProcess >> debugMode [
+
+	^ settings debugMode
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess >> debugMode: anObject [
+LanguageLinkAbstractProcess >> debugMode: anObject [
 	debugMode := anObject
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess >> errorMessage [
+LanguageLinkAbstractProcess >> errorMessage [
 	self subclassResponsibility
 ]
 
 { #category : #initialization }
-JSLinkAbstractProcess >> initialize [
+LanguageLinkAbstractProcess >> initialize [
 	super initialize.
 	debugMode := false
 ]
 
 { #category : #testing }
-JSLinkAbstractProcess >> isRunning [
+LanguageLinkAbstractProcess >> isRunning [
 	self subclassResponsibility
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess >> javaScriptMainFile [
+LanguageLinkAbstractProcess >> javaScriptMainFile [
 	^ pythonMainFile ifNil: [ self workingDirectory / 'start_bridge.py' ]
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess >> javaScriptMainFile: anObject [
+LanguageLinkAbstractProcess >> javaScriptMainFile: anObject [
 	pythonMainFile := anObject
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess >> settings [
+LanguageLinkAbstractProcess >> settings [
 	^ settings
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess >> settings: anObject [
+LanguageLinkAbstractProcess >> settings: anObject [
 	settings := anObject
 ]
 
 { #category : #'start-stop' }
-JSLinkAbstractProcess >> start [
+LanguageLinkAbstractProcess >> start [
 	self subclassResponsibility
 ]
 
 { #category : #'start-stop' }
-JSLinkAbstractProcess >> stop [
+LanguageLinkAbstractProcess >> stop [
 	self subclassResponsibility
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess >> workingDirectory [
+LanguageLinkAbstractProcess >> workingDirectory [
 	^ workingDirectory
 ]
 
 { #category : #accessing }
-JSLinkAbstractProcess >> workingDirectory: anObject [
+LanguageLinkAbstractProcess >> workingDirectory: anObject [
 	workingDirectory := anObject
 ]

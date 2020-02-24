@@ -1,5 +1,5 @@
 Class {
-	#name : #JSLinkCommunicationError,
+	#name : #LanguageLinkCommunicationError,
 	#superclass : #Error,
 	#category : #'JSLink-Platform'
 }

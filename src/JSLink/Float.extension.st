@@ -6,6 +6,6 @@ Float >> isJavaScriptGenerable [
 ]
 
 { #category : #'*JSLink' }
-Float >> isJavaScriptValue [
+Float >> isLanguageLinkValue [
 	^ true
 ]

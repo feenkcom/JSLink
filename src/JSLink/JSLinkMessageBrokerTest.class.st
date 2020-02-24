@@ -22,12 +22,12 @@ JSLinkMessageBrokerTest >> answer: aDictionary [
 
 { #category : #utils }
 JSLinkMessageBrokerTest >> assertCommunicationError: aBlock [
-	self should: aBlock raise: JSLinkCommunicationError
+	self should: aBlock raise: LanguageLinkCommunicationError
 ]
 
 { #category : #accessing }
 JSLinkMessageBrokerTest >> brokerUri [
-	^ 'http://' , settings pharoSocketAddress printAddress
+	^ 'http://' , settings clientSocketAddress printAddress
 ]
 
 { #category : #initialization }
@@ -37,9 +37,9 @@ JSLinkMessageBrokerTest >> buildAndStartStubServer [
 
 { #category : #running }
 JSLinkMessageBrokerTest >> defaultSettings [
-	^ JSLinkSettings 
-		pharoSocketAddress: (JSLinkSocketAddress ipOrName: 'localhost' port: 6538)
-		javaScriptSocketAddress: (JSLinkSocketAddress ipOrName: 'localhost' port: 6539)
+	^ LanguageLinkSettings 
+		pharoSocketAddress: (LanguageLinkSocketAddress ipOrName: 'localhost' port: 6538)
+		javaScriptSocketAddress: (LanguageLinkSocketAddress ipOrName: 'localhost' port: 6539)
 ]
 
 { #category : #utils }
@@ -59,7 +59,7 @@ JSLinkMessageBrokerTest >> initialize [
 
 { #category : #accessing }
 JSLinkMessageBrokerTest >> javaScriptUri [
-	^ 'http://' , settings javaScriptSocketAddress printAddress
+	^ 'http://' , settings serverSocketAddress printAddress
 ]
 
 { #category : #hooks }
@@ -123,14 +123,14 @@ JSLinkMessageBrokerTest >> tearDown [
 JSLinkMessageBrokerTest >> testEnqueueCommandMessage [
 	| flag msg |
 	flag := false.
-	msg := JSLinkEnqueueCommandMessage 
+	msg := LanguageLinkEnqueueCommandMessage 
 				commandId: '7365'
 				statements: 'foo().cat()'
 				bindings: { #foo -> 42 . #bar -> 'zork' } asDictionary.
 	self setHandler: [ :assoc | | bindings |
-		self assert: assoc key equals: JSLinkEnqueueCommandMessage type.
+		self assert: assoc key equals: LanguageLinkEnqueueCommandMessage type.
 		self assert: assoc value size equals: 4.
-		self assert: (assoc value at: 'type') equals: JSLinkEnqueueCommandMessage type.
+		self assert: (assoc value at: 'type') equals: LanguageLinkEnqueueCommandMessage type.
 		self assert: (assoc value at: 'commandId') equals: '7365'.
 		self assert: (assoc value at: 'statements') equals: 'foo().cat()'.
 		bindings := assoc value at: 'bindings'.
@@ -147,13 +147,13 @@ JSLinkMessageBrokerTest >> testEnqueueCommandMessage [
 JSLinkMessageBrokerTest >> testErrorOnCallback [
 	| flag |
 	flag := false.
-	self for: JSLinkRSyncMessage setCallback: [ :msg |
+	self for: LanguageLinkRSyncMessage setCallback: [ :msg |
 		Error signal.
 		flag := true ].
 	self assertCommunicationError: [ 
 			self 
 				sendMessageToBroker: { 
-					#type -> JSLinkRSyncMessage type.
+					#type -> LanguageLinkRSyncMessage type.
 					#__sync -> 'foobar' } asDictionary
 				answerBlock: [  ] ].
 	self deny: flag
@@ -163,13 +163,13 @@ JSLinkMessageBrokerTest >> testErrorOnCallback [
 JSLinkMessageBrokerTest >> testEvalAnswer [
 	| flag |
 	flag := false.
-	self for: JSLinkUpdatePromiseMessage setCallback: [ :msg |
-		self assert: msg type equals: JSLinkUpdatePromiseMessage type.
+	self for: LanguageLinkUpdatePromiseMessage setCallback: [ :msg |
+		self assert: msg type equals: LanguageLinkUpdatePromiseMessage type.
 		self assert: msg value equals: 'foobar'.
 		self assert: msg promiseId equals: '4fcb36d'.
 		flag := true ].
 	self sendMessageToBroker: { 
-				#type -> JSLinkUpdatePromiseMessage type.
+				#type -> LanguageLinkUpdatePromiseMessage type.
 				#id -> '4fcb36d'.
 				#value -> 'foobar' } asDictionary.
 	self assert: flag
@@ -180,13 +180,13 @@ JSLinkMessageBrokerTest >> testIsAliveMessage [
 	| flag msg |
 	flag := false.
 	self setHandler: [ :assoc |
-		self assert: assoc key equals: JSLinkIsAliveMessage type.
+		self assert: assoc key equals: LanguageLinkIsAliveMessage type.
 		self assert: assoc value associations size equals: 2.
-		self assert: (assoc value at: #type) equals: JSLinkIsAliveMessage type.
+		self assert: (assoc value at: #type) equals: LanguageLinkIsAliveMessage type.
 		self assert: (assoc value at: #__sync) equals: msg syncId.
 		flag := true.
-		self answer: { #type -> JSLinkIsAliveMessage type. #__sync -> msg syncId } asDictionary ].
-	msg := JSLinkIsAliveMessage new.
+		self answer: { #type -> LanguageLinkIsAliveMessage type. #__sync -> msg syncId } asDictionary ].
+	msg := LanguageLinkIsAliveMessage new.
 	broker sendMessage: msg.
 	self assert: flag
 ]
@@ -202,9 +202,9 @@ JSLinkMessageBrokerTest >> testRMessageWithParams [
 
 	self skip: 'MsgPack not yet working'.
 	flag := false.
-	self for: JSLinkCallbackMessage setCallback: [ :msg |
+	self for: LanguageLinkCallbackMessage setCallback: [ :msg |
 		flag := true.
-		self assert: msg type equals: JSLinkCallbackMessage type.
+		self assert: msg type equals: LanguageLinkCallbackMessage type.
 		self assert: msg commandId equals: 10.
 		self assert: msg observerId equals: 'foo'.
 		self assert: msg value equals: 'lalala'.
@@ -214,13 +214,13 @@ JSLinkMessageBrokerTest >> testRMessageWithParams [
 			yourself ].
 	self 
 		sendMessageToBroker: { 
-			#type -> JSLinkCallbackMessage type.
+			#type -> LanguageLinkCallbackMessage type.
 			#commandId -> 10.
 			#observerId -> 'foo'.
 			#value -> 'lalala'.
 			#__sync -> 'zork' } asDictionary
 		answerEquals: { 
-			#type -> JSLinkCallbackMessage type.
+			#type -> LanguageLinkCallbackMessage type.
 			#value -> 13.
 			#__sync -> 'zork' } asDictionary.
 	self assert: flag.
@@ -232,15 +232,15 @@ JSLinkMessageBrokerTest >> testRSyncMessage [
 
 	self skip: 'MsgPack not yet working'.
 	flag := false.
-	self for: JSLinkRSyncMessage setCallback: [ :msg |
+	self for: LanguageLinkRSyncMessage setCallback: [ :msg |
 		flag := true.
 		msg createAnswer ].
 	self 
 		sendMessageToBroker: { 
-			#type -> JSLinkRSyncMessage type.
+			#type -> LanguageLinkRSyncMessage type.
 			#__sync -> 'foobar' } asDictionary
 		answerEquals: { 
-			#type -> JSLinkRSyncMessage type.
+			#type -> LanguageLinkRSyncMessage type.
 			#__sync -> 'foobar' } asDictionary.
 	self assert: flag.
 ]
@@ -250,13 +250,13 @@ JSLinkMessageBrokerTest >> testSyncMessage [
 	| flag msg ans |
 	flag := false.
 	self setHandler: [ :assoc |
-		self assert: assoc key equals: JSLinkSyncMessage type.
+		self assert: assoc key equals: LanguageLinkSyncMessage type.
 		self assert: assoc value associations size equals: 2.
-		self assert: (assoc value at: #type) equals: JSLinkSyncMessage type.
+		self assert: (assoc value at: #type) equals: LanguageLinkSyncMessage type.
 		self assert: (assoc value at: #__sync) equals: msg syncId.
 		flag := true.
-		self answer: { #type -> JSLinkSyncMessage type . #__sync -> msg syncId } asDictionary ].
-	msg := JSLinkSyncMessage new.
+		self answer: { #type -> LanguageLinkSyncMessage type . #__sync -> msg syncId } asDictionary ].
+	msg := LanguageLinkSyncMessage new.
 	ans := broker sendMessage: msg.
 	self assert: ans message equals: msg.
 	self assert: flag
@@ -266,10 +266,10 @@ JSLinkMessageBrokerTest >> testSyncMessage [
 JSLinkMessageBrokerTest >> testWrongRouteAnswer [
 	| flag |
 	flag := false.
-	self for: JSLinkCallbackMessage setCallback: [ :dict |
+	self for: LanguageLinkCallbackMessage setCallback: [ :dict |
 		flag := true ].
 	self assertCommunicationError:  [ self sendMessageToBroker: { 
-								#type -> JSLinkRSyncMessage type.
+								#type -> LanguageLinkRSyncMessage type.
 								#__sync -> 'foobar' } asDictionary ].
 	self deny: flag
 ]

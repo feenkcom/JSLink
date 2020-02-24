@@ -35,7 +35,7 @@ JSLinkJavaScriptError >> command: anObject [
 JSLinkJavaScriptError >> defaultAction [
 	"No one has handled this error, but now give them a chance to decide how to debug it.  If none handle this either then open debugger (see UnhandedError-defaultAction)"
 
-	^ JSLinkPlatform current uiManager spawnDebuggerOnException: self
+	^ self application settings platform uiManager spawnDebuggerOnException: self
 ]
 
 { #category : #'as yet unclassified' }
@@ -66,7 +66,24 @@ JSLinkJavaScriptError >> isResumable [
 
 { #category : #accessing }
 JSLinkJavaScriptError >> messageText [
-	^ errorMessage
+
+	^ messageText ifNil: [ messageText := self messageTextFromError ]
+]
+
+{ #category : #'as yet unclassified' }
+JSLinkJavaScriptError >> messageTextFromError [
+
+	errorMessage ifNil: [ ^'' ].
+	errorMessage isDictionary ifFalse: [ ^'' ].
+	^ String streamContents: [ :stream |
+		errorMessage associations 
+			do: [ :assoc | 
+				stream 
+					<< assoc key;
+					<< ': ';
+					print: assoc value ]
+			separatedBy: 
+				[ stream << ', ' ] ].
 ]
 
 { #category : #accessing }
