@@ -19,10 +19,10 @@ class View {
     }
 
     asDictionaryForExport() {
-        return { 
-            title: this.viewTitle,
-            priority: this.viewPriority,
-        }
+        return [ 
+            [ "title", this.viewTitle ],
+            [ "priority", this.viewPriority ],
+        ]
     }
 
 }

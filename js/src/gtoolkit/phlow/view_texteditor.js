@@ -17,9 +17,10 @@ class TextEditorView extends View {
 
     asDictionaryForExport() {
         let exportData = super.asDictionaryForExport();
-        exportData['viewName'] = 'GtDeclarativeTextEditor';
-        exportData['dataTransport'] = 1;
-        exportData['string'] = this.getString();
+        exportData = exportData.concat([
+            [ "viewName", "GtDeclarativeTextEditor" ],
+            [ "dataTransport", 1 ],
+            [ "string", this.getString() ] ]);
         return exportData;
     }
 }

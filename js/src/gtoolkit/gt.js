@@ -49,6 +49,7 @@ class GtViewedObject {
             .items(() => GtViewedObject.attributesFor(this.object))
             .column('Item', item => item[0])
             .column('Value', item => item[1])
+            .accessor('GtDeclarativeInstanceVarAccessor')
     }
 
     gtViewPrint(aBuilder) {
