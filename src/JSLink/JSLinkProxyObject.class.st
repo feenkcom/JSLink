@@ -58,7 +58,6 @@ JSLinkProxyObject >> declarativeViews [
 			sendAndWait.
 		viewDictionaries := viewMethodNames collect: [ :viewSelector |
 			JSLinkCF newCommandFactory
-				beImmediate;
 				<< ((viewProxy => #getViewDeclaration) callWith: { viewSelector });
 				sendAndWait ] ].
 	rawViews := viewDictionaries collect: [ :viewDictionary | 

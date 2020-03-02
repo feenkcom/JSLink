@@ -116,7 +116,7 @@ function json_replacer(key, obj) {
 
 
 function serialize(obj, immediate) {
-	if (immediate) {
+	if (immediate || obj.__jsLinkImmediate) {
 		return JSON.stringify(obj) };
 	return JSON.stringify(obj, json_replacer); }
 

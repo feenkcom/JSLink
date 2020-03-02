@@ -30,15 +30,18 @@ class TableView extends View {
 
     asDictionaryForExport() {
         let exportData = super.asDictionaryForExport();
-        exportData = exportData.concat([
-		    [ "viewName", "GtDeclarativeColumnedList" ],
-            [ "dataTransport", 1],
-            [ "columnWidths", this.columns.map(column => null) ],
-            [ "columnTitles", this.columns.map(column => column.getTitle()) ],
-            [ "items", this.computeItems().map(item => { 
-                return this.columns.map(
-                    column => column.formatItem(item)); }) ],
-            [ "accessor", this.accessorName ] ]);
+        exportData['viewName'] = 'GtDeclarativeColumnedList';
+        exportData['dataTransport'] = 1;
+        exportData['columnWidths'] = this.columns.map(
+            column => null
+        );
+        exportData['columnTitles'] = this.columns.map(
+            column => column.getTitle()
+        );
+        exportData['items'] = this.computeItems().map(item => { 
+            return this.columns.map(
+                column => column.formatItem(item));
+        });
         return exportData;
     }
 }

@@ -26,8 +26,7 @@ class ListView extends View {
         exportData['viewName'] = 'GtDeclarativeList';
         exportData['dataTransport'] = 1;
         exportData['items'] = this.computeItems().map( 
-            item => { return this.itemFormatCallback(item) }
-        )
+            item => { return this.itemFormatCallback(item) });
         return exportData;
     }
 }
