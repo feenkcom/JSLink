@@ -47,7 +47,7 @@ class SoBrowser extends SoEntity {
             .title('Cookie names')
             .priority(2)
             .items(() => this.cookies)
-            .itemFormat(cookie => cookie.getName());
+            .itemFormat(cookie => cookie.getName())
     }
 
     gtViewCookieDetails(builder) {
@@ -73,7 +73,7 @@ class SoBrowser extends SoEntity {
             .priority(4)
             .items(() => 
                 Array.from(this.cookiesGroupedByBaseDomain().entries()).sort(
-                    (assocA, assocB)=> assocA[1].length <= assocB[1].length))
+                    (assocA, assocB) => assocA[1].length <= assocB[1].length))
             .column('Domain', item => item[0])
             .column('Cookies', item => item[1].length);
     }

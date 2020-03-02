@@ -107,7 +107,10 @@ function json_replacer(key, obj) {
 		typeof(obj) == 'object' && 
 		mapper.has(obj.constructor.name)) {
 			mappedObj = mapper.get(obj.constructor.name)(obj); }
-	if (mappedObj == null || typeof mappedObj == 'number' || is_primitive(mappedObj)) {
+	if (mappedObj == null || 
+			typeof mappedObj == 'number' || 
+			is_primitive(mappedObj) || 
+			mappedObj.__jsLinkImmediate) {
 		return mappedObj; }
 	else {
 		return {
@@ -116,9 +119,13 @@ function json_replacer(key, obj) {
 
 
 function serialize(obj, immediate) {
-	if (immediate || obj.__jsLinkImmediate) {
-		return JSON.stringify(obj) };
-	return JSON.stringify(obj, json_replacer); }
+	let result;
+	if (immediate)
+		{ result = JSON.stringify(obj) }
+	else
+		{ result = JSON.stringify(obj, json_replacer); }
+	logger.silly("serialize: " + result);
+	return result; }
 
 
 function deserialize(obj) {

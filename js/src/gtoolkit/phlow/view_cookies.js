@@ -26,6 +26,7 @@ class CookiesView extends View {
                 name: cookie.getName(),
                 value: cookie.getValue(),
                 baseDomain: cookie.getBaseDomain(),
+				__jsLinkImmediate: true
             }}
         );
         return exportData;

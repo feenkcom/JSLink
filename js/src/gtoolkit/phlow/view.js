@@ -2,6 +2,7 @@ class View {
     constructor() {
         this.viewTitle = 'Unknown';
         this.viewPriority = 1;
+		this.accessor = null;
     }
 
     title(title) {
@@ -17,6 +18,11 @@ class View {
     getTitle() {
         return this.viewTitle;
     }
+
+	set_accessor(accessor_function) {
+		this.accessor = accessor_function;
+		return this;
+	}
 
     asDictionaryForExport() {
         return { 

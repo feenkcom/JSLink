@@ -5,6 +5,8 @@ class ListView extends View {
         super();
         this.itemsCallback = () => {[]};
         this.itemFormatCallback = item => String(item);
+		// Default accessor is to return the item
+		this.accessor = (selection) => this.itemsCallback()[selection-1];
     }
 
     items(itemsCallback) {

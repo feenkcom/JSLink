@@ -6,7 +6,7 @@ class GtViewedObject {
     constructor(obj) {
         this.object = obj; }
 
-    static attributesFor(anObject) {
+    attributesFor(anObject) {
         var attributes = [];
         var keys = Object.keys(anObject);
         var key;
@@ -42,14 +42,24 @@ class GtViewedObject {
 			return this.object[viewName](builder).asDictionaryForExport(); }
 
 
+	sentItem(viewName, selection) {
+		let view;
+		if (['gtViewRaw', 'gtViewPrint'].includes(viewName))
+			view = this[viewName](builder);
+		else
+			view = this.object[viewName](builder);
+		return view.accessor(selection); }
+
+
     gtViewRaw(aBuilder) {
         return aBuilder.table()
             .title('Raw')
             .priority(9998)
-            .items(() => GtViewedObject.attributesFor(this.object))
+            .items(() => this.attributesFor(this.object))
             .column('Item', item => item[0])
             .column('Value', item => item[1])
-            .accessor('GtDeclarativeInstanceVarAccessor')
+            .set_accessor((selection) =>
+				this.attributesFor(this.object)[selection-1][1])
     }
 
     gtViewPrint(aBuilder) {

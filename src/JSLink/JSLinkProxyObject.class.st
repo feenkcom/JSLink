@@ -49,19 +49,20 @@ JSLinkProxyObject >> createObject [
 { #category : #'gt inspector' }
 JSLinkProxyObject >> declarativeViews [
 	"Answer the views for the receiver"
-
-	| viewDictionaries viewMethodNames rawViews |
+	| viewMethodNames rawViews viewDictionary |
 
 	self viewProxyDo: [ :viewProxy | 
-		viewMethodNames := JSLinkCF newCommandFactory 
-			<< (viewProxy => #getGtViewMethodNames) call;
-			sendAndWait.
-		viewDictionaries := viewMethodNames collect: [ :viewSelector |
-			JSLinkCF newCommandFactory
-				<< ((viewProxy => #getViewDeclaration) callWith: { viewSelector });
-				sendAndWait ] ].
-	rawViews := viewDictionaries collect: [ :viewDictionary | 
-		(GtDeclarativeView fromDictionary: viewDictionary) ].
+		viewMethodNames := JSLinkCF newCommandFactory
+				<< (viewProxy => #getGtViewMethodNames) call;
+				sendAndWait.
+		rawViews := viewMethodNames collect: [ :viewSelector |
+				viewDictionary := JSLinkCF newCommandFactory
+					<< ((viewProxy => #getViewDeclaration) callWith: { viewSelector });
+					sendAndWait.
+				((GtDeclarativeView fromDictionary: viewDictionary)
+					accessor: viewProxy;
+					methodName: viewSelector;
+					yourself) ] ].
 	^ rawViews
 ]
 
@@ -108,6 +109,17 @@ JSLinkProxyObject >> gtProxyViewsFor: aView [
 		items: [ 	self declarativeViews ];
 		itemFormat: [ :view | view title ];
 		send: [ :view | view ]
+]
+
+{ #category : #'gt inspector' }
+JSLinkProxyObject >> gtSentItemFor: methodName at: selection [ 
+
+	self assert: (PharoLinkRegistry isPrimitive: methodName).
+	self assert: (PharoLinkRegistry isPrimitive: selection).
+
+	^ application newCommandFactory
+				<< ((self => #sentItem) callWith: { methodName. selection. });
+					sendAndWait.
 ]
 
 { #category : #'gt inspector' }

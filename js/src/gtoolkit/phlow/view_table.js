@@ -5,7 +5,8 @@ class TableView extends View {
         super();
         this.itemsCallback = () => {[]};
         this.columns = [];
-        this.accessorName = null;
+		// Default accessor is to return the item
+		this.accessor = (selection) => this.itemsCallback()[selection-1];
     }
 
     items(itemsCallback) {
@@ -21,11 +22,6 @@ class TableView extends View {
 
     computeItems() {
         return this.itemsCallback();
-    }
-
-    accessor(accessorName) {
-		this.accessorName = accessorName;
-        return this;
     }
 
     asDictionaryForExport() {

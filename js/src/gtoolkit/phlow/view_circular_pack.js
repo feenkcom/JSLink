@@ -35,6 +35,7 @@ class CircularPackView extends View {
             item => {return {
                 name: this.circleNameCallback(item),
                 size: this.circleSizeCallback(item),
+				__jsLinkImmediate: true
             }}
         );
         return exportData;

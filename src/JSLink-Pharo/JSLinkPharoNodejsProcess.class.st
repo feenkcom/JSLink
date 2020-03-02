@@ -6,8 +6,7 @@ Class {
 		'environmentVariables'
 	],
 	#classVars : [
-		'NodejsPath',
-		'PipenvPath'
+		'NodejsPath'
 	],
 	#category : #'JSLink-Pharo-Processes'
 }
@@ -31,17 +30,27 @@ JSLinkPharoNodejsProcess class >> platform [
 
 { #category : #initialization }
 JSLinkPharoNodejsProcess class >> resolveNodejsPath [
+	| path |
+
+	path := self resolveNodejsPath: 'nodejs'.
+	path ifEmpty: [ path := self resolveNodejsPath: 'node' ].
+	path ifEmpty: [ self signalCommandNotFound: 'nodejs/node' ].
+	^path
+]
+
+{ #category : #initialization }
+JSLinkPharoNodejsProcess class >> resolveNodejsPath: commandName [
 	| proc |
 	
 	proc := OSSUnixSubprocess new
 				command: 'which';
-				arguments: (Array with: 'nodejs');
+				arguments: (Array with: commandName);
 				redirectStdout;
 				terminateOnShutdown.
 	JSLinkPharoPlatform subProcessEnvironmentDictionary keysAndValuesDo: [ :key :value |
 		proc environmentAt: key put: value ].
-	(proc 	runAndWaitOnExitDo: [ :command :outString | ^ outString trim ]) 
-		ifEmpty: [ self signalCommandNotFound: 'nodejs' ]
+	proc runAndWaitOnExitDo: [ :command :outString | ^ outString trim ]
+
 ]
 
 { #category : #initialization }
@@ -102,7 +111,7 @@ JSLinkPharoNodejsProcess >> isRunning [
 JSLinkPharoNodejsProcess >> newProcess [
 	| newProcess |
 	newProcess := OSSUnixSubprocess new
-				command: 'nodejs';
+				command: self class nodejsPath;
 				arguments: self processArguments;
 				workingDirectory: self workingDirectory resolve fullName;
 "				redirectStdout;
