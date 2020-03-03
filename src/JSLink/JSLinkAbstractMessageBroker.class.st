@@ -2,7 +2,6 @@ Class {
 	#name : #JSLinkAbstractMessageBroker,
 	#superclass : #Object,
 	#instVars : [
-		'debugMode',
 		'messageCallbacks',
 		'settings'
 	],
@@ -36,6 +35,12 @@ JSLinkAbstractMessageBroker >> addCallback: aBlock messageClass: messageClass [
 	messageCallbacks at: messageClass put: aBlock
 ]
 
+{ #category : #accessing }
+JSLinkAbstractMessageBroker >> debugMode [ 
+
+	^ settings debugMode
+]
+
 { #category : #private }
 JSLinkAbstractMessageBroker >> handle: dict reverseMessageClass: msgClass [
 	| handler |
@@ -51,7 +56,7 @@ JSLinkAbstractMessageBroker >> handle: dict reverseMessageClass: msgClass [
 JSLinkAbstractMessageBroker >> initialize [
 	super initialize.
 	messageCallbacks := Dictionary new.
-	debugMode := false
+
 ]
 
 { #category : #testing }
@@ -96,11 +101,6 @@ JSLinkAbstractMessageBroker >> sendSyncMessage: aMessage [
 { #category : #accessing }
 JSLinkAbstractMessageBroker >> serializer [
 	^ self class serializer
-]
-
-{ #category : #accessing }
-JSLinkAbstractMessageBroker >> setDebugMode [
-	debugMode := true.
 ]
 
 { #category : #accessing }

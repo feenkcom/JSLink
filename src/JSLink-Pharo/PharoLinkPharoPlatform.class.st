@@ -4,13 +4,6 @@ Class {
 	#category : #'JSLink-Pharo-Platform'
 }
 
-{ #category : #hooks }
-PharoLinkPharoPlatform class >> socketMessageBrokerClass [
-
-	"^ JSLinkMsgPackPharoBroker"
-	^ JSLinkHttpMessageBroker 
-]
-
 { #category : #private }
 PharoLinkPharoPlatform class >> uiManagerClass [
 	^ JSLinkPharoUiManager
@@ -47,7 +40,7 @@ PharoLinkPharoPlatform >> ensureFolderSymlinkFor: aFolder [
 ]
 
 { #category : #utils }
-PharoLinkPharoPlatform >> folderForApplication: application [
+PharoLinkPharoPlatform >> folderForApplication [
 
 	^ FileLocator imageDirectory
 ]

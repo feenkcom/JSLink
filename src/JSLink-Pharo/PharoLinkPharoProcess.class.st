@@ -12,83 +12,33 @@ Class {
 	#category : #'JSLink-Pharo-Processes'
 }
 
-{ #category : #initialization }
-PharoLinkPharoProcess class >> nodejsPath [
-	^ NodejsPath isEmptyOrNil 
-			ifTrue: [ NodejsPath := self resolveNodejsPath ]
-			ifFalse: [ NodejsPath ]
-]
-
-{ #category : #initialization }
-PharoLinkPharoProcess class >> nodejsPath: aString [
-	NodejsPath := aString
-]
-
 { #category : #accessing }
 PharoLinkPharoProcess class >> platform [
 	^ JSLinkPharoPlatform current
 ]
 
-{ #category : #initialization }
-PharoLinkPharoProcess class >> resolveNodejsPath [
-	| proc |
-	
-	proc := OSSUnixSubprocess new
-				command: 'which';
-				arguments: (Array with: 'nodejs');
-				redirectStdout;
-				terminateOnShutdown.
-	JSLinkPharoPlatform subProcessEnvironmentDictionary keysAndValuesDo: [ :key :value |
-		proc environmentAt: key put: value ].
-	(proc 	runAndWaitOnExitDo: [ :command :outString | ^ outString trim ]) 
-		ifEmpty: [ self signalCommandNotFound: 'nodejs' ]
-]
+{ #category : #private }
+PharoLinkPharoProcess class >> resolveServerExecutable [
+	"Use the same executable as the receiver"
 
-{ #category : #initialization }
-PharoLinkPharoProcess class >> resolveNpmPath [
-	| proc |
-
-	proc := OSSUnixSubprocess new
-				command: 'which';
-				arguments: (Array with: 'npm');
-				addAllEnvVariablesFromParentWithoutOverride;
-				redirectStdout;
-				terminateOnShutdown.
-	JSLinkPharoPlatform subProcessEnvironmentDictionary keysAndValuesDo: [ :key :value |
-		proc environmentAt: key put: value ].
-	(proc 	runAndWaitOnExitDo: [ :command :outString | ^ outString trim ]) 
-		ifEmpty: [ self signalCommandNotFound: 'npm' ]
-]
-
-{ #category : #initialization }
-PharoLinkPharoProcess class >> signalCommandNotFound: commandString [
-	"JSLink use the unix command `which` to find the full path of the supplied command. From Pharo
-	we could not find the path, therefore you have to set it mannualy.
-		
-	To find the path of a command in your system run the command `which <command>` in the terminal.
-	To set the path in PythonBridge send the following message:
-	
-	JSLinkPharoNodejsProcess nodeJSPath: '/path/to/nodejs'.
-	JSLinkPharoNodejsProcess npmPath: '/path/to/npm'."
-
-	Error signal: 'Error: ', commandString, ' command could not be found.'
+	^ FileLocator vmBinary resolve
 ]
 
 { #category : #accessing }
 PharoLinkPharoProcess >> environmentVariables [
-	^ environmentVariables
+	"Answer the environment variables for the receiver.
+	If the receiver's VM is being used, pass the environment varibales unchanged.
+	If another executable is being used, remove the receiver's vm directory from LD_LIBRARY_PATH"
+
+	^ environmentVariables ifNil: 
+		[ environmentVariables := self settings serverExecutable = FileLocator vmBinary resolve
+			ifTrue: [ Smalltalk os environment asDictionary ]
+			ifFalse: [ self settings platform class subProcessEnvironmentDictionary ] ]
 ]
 
 { #category : #accessing }
 PharoLinkPharoProcess >> errorMessage [
 	^ process stderrStream contents
-]
-
-{ #category : #initialization }
-PharoLinkPharoProcess >> initialize [
-	super initialize.
-	environmentVariables := Dictionary new.
-	self setDefaultEnvironmentVariables
 ]
 
 { #category : #testing }
@@ -109,7 +59,7 @@ PharoLinkPharoProcess >> newProcess [
 				redirectStderr;"
 				terminateOnShutdown;
 				yourself.
-	environmentVariables associationsDo: [ :assoc |
+	self environmentVariables associationsDo: [ :assoc |
 		newProcess environmentAt: assoc key put: assoc value ].
 	^ newProcess
 ]
@@ -124,21 +74,21 @@ PharoLinkPharoProcess >> processArguments [
 	| args |
 
 	args := OrderedCollection new.
+	args 
+		add: self settings serverImage fullName;
+		add: 'clap';
+		add: 'pharoLinkServer'.
+	self debugMode ifTrue: [ args add: '--log' ].
 	args
-		add: (self workingDirectory / 'src/app.js') resolve fullName;
 		add: self settings serverSocketAddress port asString;
 		add: self settings clientSocketAddress port asString.
 	^ args
 ]
 
-{ #category : #initialization }
-PharoLinkPharoProcess >> setDefaultEnvironmentVariables [
-
-	environmentVariables := JSLinkPharoPlatform subProcessEnvironmentDictionary.
-]
-
 { #category : #'start-stop' }
 PharoLinkPharoProcess >> start [
+
+	self assert: process isNil.
 	process := self newProcess.
 	process run.
 ]

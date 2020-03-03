@@ -4,6 +4,12 @@ Class {
 	#category : #'JSLink-Pharo-Processes'
 }
 
+{ #category : #private }
+LanguageLinkManualProcess class >> resolveServerExecutable [
+
+	^ self shouldNotImplement 
+]
+
 { #category : #accessing }
 LanguageLinkManualProcess class >> workingDirectory [
 	^ FileLocator workingDirectory

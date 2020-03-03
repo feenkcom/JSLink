@@ -1,8 +1,14 @@
 Class {
 	#name : #JSLinkApplicationTest,
-	#superclass : #JSLinkTestCase,
+	#superclass : #LanguageLinkTestCase,
 	#category : #'JSLink-Tests'
 }
+
+{ #category : #'as yet unclassified' }
+JSLinkApplicationTest class >> appResource [
+
+	^ JSLinkApplicationTestResource
+]
 
 { #category : #accessing }
 JSLinkApplicationTest class >> resources [

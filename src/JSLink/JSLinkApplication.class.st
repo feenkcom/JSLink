@@ -38,7 +38,7 @@ JSLinkApplication class >> platform [
 
 { #category : #'python hooks file' }
 JSLinkApplication class >> repositoryFileReference [
-	^ self platform folderForApplication: self
+	^ self platform folderForApplication
 ]
 
 { #category : #instructions }
@@ -92,7 +92,7 @@ JSLinkApplication >> initializeHandlers [
 	loggingHandler := LanguageLinkLoggingHandler application: self.
 	communicationHandler := LanguageLinkCommunicationHandler application: self.
 	processHandler := LanguageLinkServerHandler application: self.
-	executionHandler := LanguageLinkExecutionHandler application: self
+	executionHandler := JSLinkExecutionHandler application: self
 ]
 
 { #category : #initialization }

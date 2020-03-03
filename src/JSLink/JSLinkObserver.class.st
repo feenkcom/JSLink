@@ -82,6 +82,24 @@ JSLinkObserver >> javaScriptNotify: anObject [
 ]
 
 { #category : #'error handling' }
+JSLinkObserver >> notifyWith: anObject [
+
+	^ self pharoLinkFormattedCode, ' value: ', anObject printString.
+]
+
+{ #category : #accessing }
+JSLinkObserver >> pharoLinkFormattedCode [
+
+	^ String streamContents: [ :stream |
+		stream
+			<< '[ :anObject | llCommand notify: anObject command: ';
+			<< command id printString;
+			<< ' observer: ';
+			<< id printString;
+			<< ' ]' ]
+]
+
+{ #category : #'error handling' }
 JSLinkObserver >> pharoNotify: anObject [
 	^ callback cull: anObject
 ]

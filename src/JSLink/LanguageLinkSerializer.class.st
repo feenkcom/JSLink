@@ -1,26 +1,26 @@
 Class {
-	#name : #JSLinkSerializer,
-	#superclass : #JSLinkMapper,
+	#name : #LanguageLinkSerializer,
+	#superclass : #LanguageLinkMapper,
 	#category : #'JSLink-Serialization'
 }
 
 { #category : #private }
-JSLinkSerializer class >> deserialize: anObject [
+LanguageLinkSerializer class >> deserialize: anObject [
 	^ JSLinkDeserializer deserialize: anObject
 ]
 
 { #category : #private }
-JSLinkSerializer class >> deserialize: anObject forApplication: application [
+LanguageLinkSerializer class >> deserialize: anObject forApplication: application [
 	^ JSLinkDeserializer deserialize: anObject forApplication: application
 ]
 
 { #category : #private }
-JSLinkSerializer class >> serialize: anObject [
+LanguageLinkSerializer class >> serialize: anObject [
 	^ self new
 		serialize: anObject
 ]
 
 { #category : #api }
-JSLinkSerializer >> serialize: anObject [
+LanguageLinkSerializer >> serialize: anObject [
 	^ serializerWrapper serialize: anObject
 ]

@@ -1,6 +1,6 @@
 Class {
 	#name : #JSLinkBlockFinalizer,
-	#superclass : #JSLinkAbstractFinalizer,
+	#superclass : #LanguageLinkAbstractFinalizer,
 	#instVars : [
 		'block'
 	],

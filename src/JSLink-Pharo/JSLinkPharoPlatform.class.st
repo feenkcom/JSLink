@@ -36,7 +36,7 @@ JSLinkPharoPlatform >> createSymlinkFor: originalFile on: targetFile [
 { #category : #hooks }
 JSLinkPharoPlatform >> ensureApplicationSymlinks: application [
 	| appFolder |
-	appFolder := self folderForApplication: application.
+	appFolder := self folderForApplication.
 	self ensureFolderSymlinkFor: appFolder.
 
 ]
@@ -57,9 +57,10 @@ JSLinkPharoPlatform >> ensureFolderSymlinkFor: aFolder [
 ]
 
 { #category : #utils }
-JSLinkPharoPlatform >> folderForApplication: application [
+JSLinkPharoPlatform >> folderForApplication [
+
 	^ (IceRepository registry 
-			detect: [ :each | each includesPackageNamed: application class package name ] 
+			detect: [ :each | each includesPackageNamed: self class package name ] 
 			ifNone: [ 
 				self inform: 'Please add a clone of this project to Iceberg to access to the resources'.
 				"For travis!"
@@ -76,7 +77,7 @@ Please ensure it is installed and in the default path for the pharo process.'.
 	self assert: npm isEmptyOrNil not description: 
 'Unable to find the npm command.
 Please ensure it is installed and in the default path for the pharo process.'.
-	workingDir := self folderForApplication: application.
+	workingDir := self folderForApplication.
 	proc := OSSUnixSubprocess new
 				workingDirectory: workingDir resolve fullName;
 				command: npm;
@@ -92,7 +93,7 @@ Please ensure it is installed and in the default path for the pharo process.'.
 { #category : #utils }
 JSLinkPharoPlatform >> installEnvironmentForApp: application [
 	| folder |
-	folder := self folderForApplication: application.
+	folder := self folderForApplication.
 	(folder / 'node_modules') exists ifFalse: [ 
 		self forceInstallEnvironmentForApp: application ]
 ]

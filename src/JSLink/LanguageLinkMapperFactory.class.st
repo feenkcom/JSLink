@@ -1,58 +1,59 @@
 Class {
-	#name : #JSLinkMapperFactory,
+	#name : #LanguageLinkMapperFactory,
 	#superclass : #Object,
 	#instVars : [
 		'executionHandler',
 		'serializationMappings',
-		'deserializationMappings'
+		'deserializationMappings',
+		'serializerClass',
+		'deserializerClass'
 	],
 	#category : #'JSLink-Serialization'
 }
 
 { #category : #'as yet unclassified' }
-JSLinkMapperFactory class >> forExecutionHandler: handler [
+LanguageLinkMapperFactory class >> forExecutionHandler: handler [
 	^ self new
 		executionHandler: handler;
 		yourself
 ]
 
 { #category : #initialization }
-JSLinkMapperFactory >> deserializer [
-	^ self deserializerClass
+LanguageLinkMapperFactory >> deserializer [
+	^ deserializerClass
 				mappings: serializationMappings
 				executionHandler: executionHandler
 ]
 
-{ #category : #initialization }
-JSLinkMapperFactory >> deserializerClass [
-	^ JSLinkDeserializer
-]
-
 { #category : #accessing }
-JSLinkMapperFactory >> executionHandler [
+LanguageLinkMapperFactory >> executionHandler [
 	^ executionHandler
 ]
 
 { #category : #accessing }
-JSLinkMapperFactory >> executionHandler: anObject [
-	executionHandler := anObject
+LanguageLinkMapperFactory >> executionHandler: anObject [
+
+	executionHandler := anObject.
+	serializerClass := self settings serializerClass.
+	deserializerClass := self settings deserializerClass.
 ]
 
 { #category : #initialization }
-JSLinkMapperFactory >> initialize [
+LanguageLinkMapperFactory >> initialize [
 	super initialize.
 	serializationMappings := OrderedCollection new.
 	deserializationMappings := OrderedCollection new 
 ]
 
 { #category : #initialization }
-JSLinkMapperFactory >> serializer [
-	^ self serializerClass 
+LanguageLinkMapperFactory >> serializer [
+	^ serializerClass 
 				mappings: serializationMappings
 				executionHandler: executionHandler
 ]
 
-{ #category : #initialization }
-JSLinkMapperFactory >> serializerClass [
-	^ JSLinkSerializer
+{ #category : #accessing }
+LanguageLinkMapperFactory >> settings [ 
+
+	^ executionHandler settings
 ]

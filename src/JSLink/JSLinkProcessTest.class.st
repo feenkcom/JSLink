@@ -15,9 +15,8 @@ JSLinkProcessTest class >> isAbstract [
 
 { #category : #running }
 JSLinkProcessTest >> defaultSettings [
-	^ LanguageLinkSettings 
-		pharoSocketAddress: (LanguageLinkSocketAddress ipOrName: 'localhost' port: 6538)
-		javaScriptSocketAddress: (LanguageLinkSocketAddress ipOrName: 'localhost' port: 6539)
+	^ LanguageLinkSettings jsDefaultSettings
+
 ]
 
 { #category : #running }
@@ -32,10 +31,13 @@ JSLinkProcessTest >> processClass [
 
 { #category : #running }
 JSLinkProcessTest >> setUp [
+	| settings |
+
 	super setUp.
+	settings := self defaultSettings.
 	process := self processClass
-		settings: self defaultSettings
-		workingDirectory: self processClass workingDirectory.
+		settings: settings
+		workingDirectory: settings workingDirectory.
 
 ]
 

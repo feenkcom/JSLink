@@ -5,6 +5,9 @@ Class {
 		'settings',
 		'workingDirectory'
 	],
+	#classInstVars : [
+		'serverExecutable'
+	],
 	#category : #'JSLink-Platform'
 }
 
@@ -12,7 +15,7 @@ Class {
 LanguageLinkAbstractProcess class >> application: application [
 	^ self new
 		settings: application settings;
-		workingDirectory: (application settings platform folderForApplication: application);
+		workingDirectory: (application settings platform folderForApplication);
 		yourself
 ]
 
@@ -21,12 +24,16 @@ LanguageLinkAbstractProcess class >> platform [
 	self subclassResponsibility
 ]
 
+{ #category : #private }
+LanguageLinkAbstractProcess class >> resolveServerExecutable [
+
+	^ self subclassResponsibility 
+]
+
 { #category : #accessing }
-LanguageLinkAbstractProcess class >> settings: settings application: application [
-	^ self 
-		settings: settings 
-		workingDirectory: (JSLinkPlatform current folderForApplication: application)
-		debugMode: application class debugMode
+LanguageLinkAbstractProcess class >> serverExecutable [ 
+
+	^ serverExecutable ifNil: [ serverExecutable := self resolveServerExecutable ]
 ]
 
 { #category : #accessing }
@@ -37,18 +44,18 @@ LanguageLinkAbstractProcess class >> settings: settings workingDirectory: fileRe
 		yourself
 ]
 
-{ #category : #accessing }
-LanguageLinkAbstractProcess class >> settings: settings workingDirectory: fileRef debugMode: flag [
-	^ self new
-		settings: settings;
-		workingDirectory: fileRef;
-		debugMode: flag;
-		yourself
-]
+{ #category : #initialization }
+LanguageLinkAbstractProcess class >> signalCommandNotFound: commandString [
+	"JSLink use the unix command `which` to find the full path of the supplied command. From Pharo
+	we could not find the path, therefore you have to set it mannualy.
+		
+	To find the path of a command in your system run the command `which <command>` in the terminal.
+	To set the path in PythonBridge send the following message:
+	
+	JSLinkPharoNodejsProcess nodeJSPath: '/path/to/nodejs'.
+	JSLinkPharoNodejsProcess npmPath: '/path/to/npm'."
 
-{ #category : #hooks }
-LanguageLinkAbstractProcess class >> workingDirectory [
-	^ self platform folderForApplication: JSLinkApplication
+	Error signal: 'Error: ', commandString, ' command could not be found.'
 ]
 
 { #category : #accessing }
@@ -58,34 +65,13 @@ LanguageLinkAbstractProcess >> debugMode [
 ]
 
 { #category : #accessing }
-LanguageLinkAbstractProcess >> debugMode: anObject [
-	debugMode := anObject
-]
-
-{ #category : #accessing }
 LanguageLinkAbstractProcess >> errorMessage [
 	self subclassResponsibility
-]
-
-{ #category : #initialization }
-LanguageLinkAbstractProcess >> initialize [
-	super initialize.
-	debugMode := false
 ]
 
 { #category : #testing }
 LanguageLinkAbstractProcess >> isRunning [
 	self subclassResponsibility
-]
-
-{ #category : #accessing }
-LanguageLinkAbstractProcess >> javaScriptMainFile [
-	^ pythonMainFile ifNil: [ self workingDirectory / 'start_bridge.py' ]
-]
-
-{ #category : #accessing }
-LanguageLinkAbstractProcess >> javaScriptMainFile: anObject [
-	pythonMainFile := anObject
 ]
 
 { #category : #accessing }

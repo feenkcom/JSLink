@@ -89,8 +89,8 @@ LanguageLinkHttpMessageBroker >> prim_handle: req [
 				StringSignal emit: 'response: ', ansDict printString.
 				^ ZnResponse ok: (ZnEntity json: (self serializer serialize: ansDict)) ] 
 			on: Error 
-			do: [ :e | StringSignal emit: 'Error: ', e printString. self halt.
-				debugMode
+			do: [ :e | StringSignal emit: 'Error: ', e printString.
+				self debugMode
 							ifTrue: [ e pass ]
 							ifFalse: [ ZnResponse serverError: e printString  ] ] ]
 		ifFalse: [ 
@@ -118,7 +118,7 @@ LanguageLinkHttpMessageBroker >> setDebugMode [
 { #category : #'start-stop' }
 LanguageLinkHttpMessageBroker >> start [
 	server := ZnServer on: self port.
-	server debugMode: debugMode.
+	server debugMode: self debugMode.
 	server start.
 	self preventTestForkedPDestroyServer.
 	self

@@ -37,9 +37,8 @@ JSLinkMessageBrokerTest >> buildAndStartStubServer [
 
 { #category : #running }
 JSLinkMessageBrokerTest >> defaultSettings [
-	^ LanguageLinkSettings 
-		pharoSocketAddress: (LanguageLinkSocketAddress ipOrName: 'localhost' port: 6538)
-		javaScriptSocketAddress: (LanguageLinkSocketAddress ipOrName: 'localhost' port: 6539)
+	^ LanguageLinkSettings jsDefaultSettings
+
 ]
 
 { #category : #utils }

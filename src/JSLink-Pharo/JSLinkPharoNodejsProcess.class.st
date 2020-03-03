@@ -69,20 +69,6 @@ JSLinkPharoNodejsProcess class >> resolveNpmPath [
 		ifEmpty: [ self signalCommandNotFound: 'npm' ]
 ]
 
-{ #category : #initialization }
-JSLinkPharoNodejsProcess class >> signalCommandNotFound: commandString [
-	"JSLink use the unix command `which` to find the full path of the supplied command. From Pharo
-	we could not find the path, therefore you have to set it mannualy.
-		
-	To find the path of a command in your system run the command `which <command>` in the terminal.
-	To set the path in PythonBridge send the following message:
-	
-	JSLinkPharoNodejsProcess nodeJSPath: '/path/to/nodejs'.
-	JSLinkPharoNodejsProcess npmPath: '/path/to/npm'."
-
-	Error signal: 'Error: ', commandString, ' command could not be found.'
-]
-
 { #category : #accessing }
 JSLinkPharoNodejsProcess >> environmentVariables [
 	^ environmentVariables

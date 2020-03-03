@@ -1,5 +1,5 @@
 Class {
-	#name : #JSLinkMapper,
+	#name : #LanguageLinkMapper,
 	#superclass : #Object,
 	#instVars : [
 		'mappings',
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-JSLinkMapper class >> mappings: mappings executionHandler: handler [
+LanguageLinkMapper class >> mappings: mappings executionHandler: handler [
 	^ self new
 			mappings: mappings;
 			executionHandler: handler;
@@ -19,38 +19,38 @@ JSLinkMapper class >> mappings: mappings executionHandler: handler [
 ]
 
 { #category : #accessing }
-JSLinkMapper >> application [
+LanguageLinkMapper >> application [
 	^ executionHandler application
 ]
 
 { #category : #accessing }
-JSLinkMapper >> application: anObject [
+LanguageLinkMapper >> application: anObject [
 	application := anObject
 ]
 
 { #category : #accessing }
-JSLinkMapper >> executionHandler [
+LanguageLinkMapper >> executionHandler [
 	^ executionHandler
 ]
 
 { #category : #accessing }
-JSLinkMapper >> executionHandler: anObject [
+LanguageLinkMapper >> executionHandler: anObject [
 
 	executionHandler := anObject.
 	serializerWrapper := self application settings messageBrokerStrategy serializer
 ]
 
 { #category : #accessing }
-JSLinkMapper >> mappings [
+LanguageLinkMapper >> mappings [
 	^ mappings
 ]
 
 { #category : #accessing }
-JSLinkMapper >> mappings: anObject [
+LanguageLinkMapper >> mappings: anObject [
 	mappings := anObject
 ]
 
 { #category : #accessing }
-JSLinkMapper >> serializerWrapper: anObject [
+LanguageLinkMapper >> serializerWrapper: anObject [
 	serializerWrapper := anObject
 ]

@@ -13,7 +13,7 @@ JSLinkCommandTest >> testNewCommandHasEmtptyBindings [
 	command := application newCommand.
 	self assert: command id isString.
 	self assert: command id notEmpty.
-	self assert: command bindings equals: #().
+	self assert: command bindings isEmpty.
 ]
 
 { #category : #tests }

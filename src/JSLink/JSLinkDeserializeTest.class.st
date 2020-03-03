@@ -1,6 +1,6 @@
 Class {
 	#name : #JSLinkDeserializeTest,
-	#superclass : #JSLinkTestCase,
+	#superclass : #LanguageLinkTestCase,
 	#instVars : [
 		'mapper'
 	],
@@ -23,12 +23,12 @@ JSLinkDeserializeTest >> deserializer [
 JSLinkDeserializeTest >> setUp [
 
 	super setUp.
-	mapper := JSLinkMapperFactory forExecutionHandler: self application executionHandler
+	mapper := LanguageLinkMapperFactory forExecutionHandler: self application executionHandler
 ]
 
 { #category : #running }
 JSLinkDeserializeTest >> stubExecutionHandler [
-	^ LanguageLinkExecutionHandler new
+	^ JSLinkExecutionHandler new
 			application: self application;
 			yourself
 ]

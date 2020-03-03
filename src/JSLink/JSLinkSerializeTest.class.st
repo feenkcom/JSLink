@@ -1,6 +1,6 @@
 Class {
 	#name : #JSLinkSerializeTest,
-	#superclass : #JSLinkTestCase,
+	#superclass : #LanguageLinkTestCase,
 	#instVars : [
 		'mapper'
 	],
@@ -17,7 +17,7 @@ JSLinkSerializeTest >> serializer [
 { #category : #tests }
 JSLinkSerializeTest >> setUp [
 	super setUp.
-	mapper := JSLinkMapperFactory forExecutionHandler: self application executionHandler
+	mapper := LanguageLinkMapperFactory forExecutionHandler: self application executionHandler
 ]
 
 { #category : #tests }
