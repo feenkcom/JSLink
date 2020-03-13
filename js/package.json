@@ -1,12 +1,10 @@
 {
-  "name": "JSLink",
-  "version": "1.0.0",
+  "name": "jslink",
+  "version": "0.1.0",
   "description": "node.js server for Pharo JSLink",
   "repository": "https://github.com/feenkcom/JSLink",
-  "main": "index.js",
   "scripts": {
-    "start": "node src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +12,11 @@
   "dependencies": {
     "bent": "^7.0.6",
     "express": "^4.17.1",
+    "sqlite3": "^4.1.1",
     "uuid": "^3.4.0",
     "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "jest": "^25.1.0"
   }
 }
