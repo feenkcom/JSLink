@@ -211,6 +211,14 @@ JSLinkProxyObject >> javaScriptVariable: pyVar [
 	javaScriptVariable := pyVar
 ]
 
+{ #category : #serialization }
+JSLinkProxyObject >> neoJsonOn: aWriter [
+
+	{ '__class__' -> javaScriptClass.
+	'__registryid__' -> self id. } asDictionary
+		neoJsonOn: aWriter
+]
+
 { #category : #printing }
 JSLinkProxyObject >> printOn: str [
 	str 
