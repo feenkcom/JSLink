@@ -68,8 +68,8 @@ JSLinkPromise >> value [
 
 { #category : #signalling }
 JSLinkPromise >> waitForValue [
-	self isSignaled ifTrue: [ ^ self value ].
-	semaphore wait.
+
+	self isSignaled ifFalse: [ semaphore wait ].
 	(value isKindOf: Exception) ifTrue:
 		[ value copy signal ].
 	^ self value
