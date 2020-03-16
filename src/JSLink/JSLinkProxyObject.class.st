@@ -66,6 +66,18 @@ JSLinkProxyObject >> declarativeViews [
 	^ rawViews
 ]
 
+{ #category : #'as yet unclassified' }
+JSLinkProxyObject >> evaluateSourceSequence: aString [
+	| cf |
+
+	cf := self application newCommandFactory.
+	cf addBinding: (PharoLinkBinding key: 'this' wrap: self).
+	^ cf 
+		<< aString;
+		sendAndWait.
+
+]
+
 { #category : #'gt inspector' }
 JSLinkProxyObject >> getViewProxy [
 	"Answer a GtViewedProxy on the receiver"
@@ -89,6 +101,23 @@ JSLinkProxyObject >> gtLocalViewsFor: aView inContext: aContext [
 		views: (self gtViewsInContext: aContext))
 		labelled: title).
 	^ resultingView
+]
+
+{ #category : #ui }
+JSLinkProxyObject >> gtPlaygroundFor: aView [
+	<gtView>
+
+	^ aView textEditor
+		title: 'Playground' translated;
+		priority: 10;
+		text: [ '' asRopedText attributesBuilder attribute: (BlFontGenericFamilyAttribute monospace beNotOverwritableByStyler) ];
+		actionButtonIcon: BrGlamorousIcons playinspect  
+			action: [ :aButton |
+				| statements result |
+				statements := aButton phlow textViewContent asString.
+				result := self evaluateSourceSequence: statements.
+				aButton phlow spawnObject: result ].
+
 ]
 
 { #category : #'gt inspector' }
@@ -150,9 +179,14 @@ JSLinkProxyObject >> gtViewsFor: aView inContext: aContext [
 JSLinkProxyObject >> gtViewsInContext: aContext [
 	"This collects all views for the current object.
 	For a proxy we just want the Raw view renamed as 'Proxy'"
-	^ OrderedCollection 
-		with: (self gtProxyFor: GtPhlowEmptyView new)
-		with: (self gtProxyViewsFor: GtPhlowEmptyView new)
+	| emptyView |
+
+	emptyView := GtPhlowEmptyView new.
+	^ OrderedCollection new
+		add: (self gtProxyFor: emptyView);
+		add: (self gtProxyViewsFor: emptyView);
+		add: (self gtPlaygroundFor: emptyView);
+		yourself
 ]
 
 { #category : #'gt inspector' }
