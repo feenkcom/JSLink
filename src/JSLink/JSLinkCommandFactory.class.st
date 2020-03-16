@@ -7,6 +7,18 @@ Class {
 	#category : #'JSLink-Execution'
 }
 
+{ #category : #streaming }
+JSLinkCommandFactory >> << anObject [
+	| statements |
+
+	anObject isString ifFalse: [ ^ super << anObject ].
+
+	statements := (($; split: anObject) collect: [ :string | string trimBoth ])
+							reject: [ :string | string isEmpty ].
+	statements do: [ :statement |
+		super << (LLGExpression new expression: statement) ].
+]
+
 { #category : #configuration }
 JSLinkCommandFactory >> beImmediate [
 	"Set the receiver so that the object is returned, instead of a proxy"
