@@ -124,7 +124,7 @@ function serialize(obj, immediate) {
 		{ result = JSON.stringify(obj) }
 	else
 		{ result = JSON.stringify(obj, json_replacer); }
-	logger.silly("serialize: " + result);
+	logger.silly("serialize result: " + result);
 	return result; }
 
 
@@ -132,10 +132,10 @@ function deserialize(obj) {
 	let result;
 
 	logger.debug("deserialize: " + obj);
-	if (obj.__registryid__) {
-		result = the_registry.resolve(obj.__registryid__); }
-	else {
-		result = JSON.parse(obj) }
+	result = JSON.parse(obj);
+	if (result.__registryid__) {
+		result = the_registry.resolve(result.__registryid__);
+		 }
 	logger.debug("result = " + result);
 	return result; }
 
