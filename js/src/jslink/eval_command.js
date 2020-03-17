@@ -10,6 +10,7 @@ var object_registry = require('./object_registry');
 var registry = object_registry.registry;
 var the_registry = object_registry.the_registry;
 var addMapping = object_registry.addMapping;
+var deserialize = object_registry.deserialize;
 
 
 /*
@@ -23,23 +24,30 @@ class EvalCommand {
 		this.command_id = id; }
 
 	execute(globals) {
-		// Python porting convenience:
-		var None = null;
 		var command = this;
+		var thisObject = this;
+		var doIt;
 
 		try {
-			let boundStatements = "{\n";
-			boundStatements = boundStatements + "async function doIt() {\n";
+			if (this.bindings['this'] != undefined) {
+				thisObject = deserialize(this.bindings['this']);
+			}
+			let boundStatements = "doIt = async function() {\n";
 			for (const [key, value] of Object.entries(this.bindings)) {
-				boundStatements = boundStatements + "let " + key + "=" + value + ";\n"; }
+				if (key != "this") {
+					boundStatements = boundStatements + "let " + key + "=" + value + ";\n"; 
+				}
+			}
 			boundStatements = boundStatements + this.statements;
-			boundStatements = boundStatements + "}\n\n";
-			boundStatements = boundStatements + "doIt()\n";
-			boundStatements = boundStatements + "    .then(function() { logger.silly(\"doIt() done\"); })\n"
-			boundStatements = boundStatements + "    .catch(function(err) {\n";
-			boundStatements = boundStatements + "        notify_error(err, command) } ); }\n";
+			boundStatements = boundStatements + "}\n";
 			logger.debug('EvalCommand executing: ' + boundStatements);
-			eval(boundStatements); }
+			eval(boundStatements);
+			doIt.bind(thisObject)()
+				.then(function() { logger.silly("doIt() done"); })
+				.catch(function(err) {
+					logger.error(err);
+					notify_error(err, command) } ); 
+		}
 		catch(err) {
 			logger.error(err);
 			notify_error(err, this); } }
