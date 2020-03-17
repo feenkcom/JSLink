@@ -2,7 +2,7 @@ var winston = require('winston');
 
 var logger = winston.createLogger({
   level: 'warn',
-  defaultMeta: { service: 'jslink' },
+  // defaultMeta: { service: 'jslink' },
   transports: [
     new (winston.transports.Console)({ format: winston.format.simple() }) ],
   exceptionHandlers: [
