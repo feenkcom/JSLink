@@ -4,6 +4,7 @@ var CookiesView = require('./view_cookies');
 var CircularPackView = require('./view_circular_pack');
 var CookiesStencilView = require('./view_cookies_stencil');
 var TextEditorView = require('./view_texteditor');
+var SerialisableListView = require('./view_list_serialisable');
 
 
 class ViewBuilder {
@@ -29,6 +30,10 @@ class ViewBuilder {
 
     cookiesStencil() {
         return new CookiesStencilView();
+    }
+
+    serialisableList() {
+        return new SerialisableListView();
     }
 }
 

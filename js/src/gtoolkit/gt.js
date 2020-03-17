@@ -34,6 +34,16 @@ class GtViewedObject {
         });
         return viewMethods; }
 
+    getGtSerialisableViewMethodNames() {
+        let viewMethods = [];
+        Object.getOwnPropertyNames(Object.getPrototypeOf(this.object)).forEach(propertyName => {
+            let property = this.object[propertyName];
+            if(typeof property == "function" & propertyName.startsWith('gtSerialisable')) {
+                viewMethods.push(propertyName);
+             }
+        });
+        return viewMethods; }
+
 
 	getViewDeclaration(viewName) {
 		if (['gtViewRaw', 'gtViewPrint'].includes(viewName))
