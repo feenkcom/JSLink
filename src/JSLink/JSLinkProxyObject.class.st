@@ -68,11 +68,8 @@ JSLinkProxyObject >> declarativeViews [
 
 { #category : #'as yet unclassified' }
 JSLinkProxyObject >> evaluateSourceSequence: aString [
-	| cf |
 
-	cf := self application newCommandFactory.
-	cf addBinding: (PharoLinkBinding key: 'this' wrap: self).
-	^ cf 
+	^ self newCommandFactory
 		<< aString;
 		sendAndWait.
 
@@ -218,6 +215,14 @@ JSLinkProxyObject >> neoJsonOn: aWriter [
 	{ '__class__' -> javaScriptClass.
 	'__registryid__' -> self id. } asDictionary
 		neoJsonOn: aWriter
+]
+
+{ #category : #'instance creation' }
+JSLinkProxyObject >> newCommandFactory [
+
+	^ application newCommandFactory
+		addBinding: (PharoLinkBinding key: 'this' wrap: self);
+		yourself
 ]
 
 { #category : #printing }

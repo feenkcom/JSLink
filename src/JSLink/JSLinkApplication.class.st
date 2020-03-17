@@ -9,6 +9,12 @@ JSLinkApplication class >> baseApplication [
 	^ JSLinkApplication
 ]
 
+{ #category : #accessing }
+JSLinkApplication class >> defaultSettings [
+
+	^ LanguageLinkSettings jsDefaultSettings
+]
+
 { #category : #'start-stop' }
 JSLinkApplication class >> do: aBlockClosure [ 
 	| retVal |
