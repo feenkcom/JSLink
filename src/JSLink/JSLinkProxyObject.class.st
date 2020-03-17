@@ -111,6 +111,7 @@ JSLinkProxyObject >> gtPlaygroundFor: aView [
 		title: 'Playground' translated;
 		priority: 10;
 		text: [ '' asRopedText attributesBuilder attribute: (BlFontGenericFamilyAttribute monospace beNotOverwritableByStyler) ];
+		styler: application settings parserClass gtStyler;
 		actionButtonIcon: BrGlamorousIcons playinspect  
 			action: [ :aButton |
 				| statements result |
