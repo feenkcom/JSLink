@@ -73,7 +73,7 @@ async function notify_error(err, command) {
 	logger.debug("Notify Error: " + command.get_command_id());
 	logger.debug(err);
 	data['type'] = "ERR";
-	data['errMsg'] = err;
+	data['errMsg'] = err.message;
 	data['trace'] = err.stack;
 	data['commandId'] = command.get_command_id();
 	return await send_response(data); }
