@@ -1,6 +1,13 @@
+"
+JSLink currently only supports the HTTP message broker.
+
+The MsgPack broker tests are disabled by making this a subclass of Object, instead of JSLinkMessageBrokerTest.
+
+This should be moved back under JSLinkMessageBrokerTest when support for MsgPack is added.
+"
 Class {
 	#name : #JSLinkMsgPackPharoBrokerTest,
-	#superclass : #JSLinkMessageBrokerTest,
+	#superclass : #Object,
 	#instVars : [
 		'stubStream',
 		'stubThread'
@@ -62,7 +69,7 @@ JSLinkMsgPackPharoBrokerTest >> sendMessageToBroker: dict answerBlock: aBlock [
 
 { #category : #utils }
 JSLinkMsgPackPharoBrokerTest >> sleepAWhile [
-	(Delay forMilliseconds: 50) wait
+	(Delay forMilliseconds: 150) wait.
 ]
 
 { #category : #running }
