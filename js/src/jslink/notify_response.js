@@ -30,12 +30,18 @@ function observer(commandId, observerId) {
 
 async function notify(obj, notification_id) {
 	let data = {};
+	let sentObj = obj;
 
 	logger.debug("Notify: " + notification_id);
 	logger.debug(obj);
 	data["type"] = "EVAL";
 	data["id"] = notification_id;
-	data["value"] = serialize(obj, false);
+	// Undefined is often returned from functions / methods.
+	// Translate them as nil in Pharo
+	if (obj == undefined) {
+		sentObj = null;
+	}
+	data["value"] = serialize(sentObj, false);
 	return await send_response(data); }
 
 
