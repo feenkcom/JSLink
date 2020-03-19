@@ -11,10 +11,10 @@ JSLink provides a mechanism for Pharo to communicate with libraries and applicat
 - [Automated Tests](#automated-tests)
 - [ToDo](#todo)
 - [Futures](#futures)
-- [Acknowledgements and Thanks](acknowledgements-and-thanks)
+- [Acknowledgements and Thanks](#acknowledgements-and-thanks)
 
 
-## Getting Started 
+## Getting Started
 
 
 ### Installation
