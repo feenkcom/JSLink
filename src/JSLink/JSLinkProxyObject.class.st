@@ -52,11 +52,11 @@ JSLinkProxyObject >> declarativeViews [
 	| viewMethodNames rawViews viewDictionary |
 
 	self viewProxyDo: [ :viewProxy | 
-		viewMethodNames := JSLinkCF newCommandFactory
+		viewMethodNames := viewProxy newCommandFactory
 				<< (viewProxy => #getGtViewMethodNames) call;
 				sendAndWait.
 		rawViews := viewMethodNames collect: [ :viewSelector |
-				viewDictionary := JSLinkCF newCommandFactory
+				viewDictionary := viewProxy newCommandFactory
 					<< ((viewProxy => #getViewDeclaration) callWith: { viewSelector });
 					sendAndWait.
 				((GtDeclarativeView fromDictionary: viewDictionary)
