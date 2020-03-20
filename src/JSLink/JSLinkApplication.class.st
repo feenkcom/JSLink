@@ -101,6 +101,13 @@ JSLinkApplication >> initializeHandlers [
 	executionHandler := JSLinkExecutionHandler application: self
 ]
 
+{ #category : #utils }
+JSLinkApplication >> installModule: moduleName [ 
+	"Install the requested node.js module using npm"
+
+	^ self settings platform installModule: moduleName in: self.
+]
+
 { #category : #initialization }
 JSLinkApplication >> platformClass [
 

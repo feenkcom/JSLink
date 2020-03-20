@@ -41,7 +41,7 @@ JSLinkPharoPlatform >> ensureApplicationSymlinks: application [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 JSLinkPharoPlatform >> ensureEnvironmentForApp: anApplication [
 
 	self ensureApplicationSymlinks: anApplication.
@@ -96,6 +96,28 @@ JSLinkPharoPlatform >> installEnvironmentForApp: application [
 	folder := self folderForApplication.
 	(folder / 'node_modules') exists ifFalse: [ 
 		self forceInstallEnvironmentForApp: application ]
+]
+
+{ #category : #utils }
+JSLinkPharoPlatform >> installModule: moduleName in: application [
+	"Install the requested node.js module using npm"
+	| proc workingDir npm |
+
+	npm := JSLinkPharoNodejsProcess resolveNpmPath.
+	self assert: npm isEmptyOrNil not description: 
+'Unable to find the npm command.
+Please ensure it is installed and in the default path for the pharo process.'.
+	workingDir := self folderForApplication.
+	proc := OSSUnixSubprocess new
+				workingDirectory: workingDir resolve fullName;
+				command: npm;
+				arguments: { 'install'. moduleName. };
+				terminateOnShutdown.
+	self class subProcessEnvironmentDictionary keysAndValuesDo: [ :key :value |
+		proc environmentAt: key put: value ].
+	proc runAndWait.
+	proc isSuccess ifFalse: [ 
+		self signalInstallEnvFailed ]
 ]
 
 { #category : #hooks }
