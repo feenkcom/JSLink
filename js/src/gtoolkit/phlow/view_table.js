@@ -4,19 +4,13 @@ class TableView extends View {
     constructor() {
         super();
         this.itemsCallback = () => {[]};
-        this.columns = [];
-		// Default accessor is to return the item
+        this.columnNames = null;
+		// Default accessor is to return the selected row
 		this.accessor = (selection) => this.itemsCallback()[selection-1];
     }
 
     items(itemsCallback) {
         this.itemsCallback = itemsCallback;
-        return this;
-    }
-
-    column(columnTitle, columnFormatCallback) {
-        let tableColumn = new TableColumn(columnTitle, columnFormatCallback);
-        this.columns.push(tableColumn);
         return this;
     }
 
@@ -26,35 +20,13 @@ class TableView extends View {
 
     asDictionaryForExport() {
         let exportData = super.asDictionaryForExport();
-        exportData['viewName'] = 'GtDeclarativeColumnedList';
+        exportData['viewName'] = 'GtDeclarativeTable';
         exportData['dataTransport'] = 1;
-        exportData['columnWidths'] = this.columns.map(
-            column => null
-        );
-        exportData['columnTitles'] = this.columns.map(
-            column => column.getTitle()
-        );
-        exportData['items'] = this.computeItems().map(item => { 
-            return this.columns.map(
-                column => column.formatItem(item));
-        });
+        exportData['columnNames'] = this.columnNames;
+        exportData['items'] = this.computeItems();
         return exportData;
     }
 }
 
-class TableColumn {
-    constructor(title, formatCallback) {
-        this.title = title;
-        this.formatCallback = formatCallback;
-    }
-
-    getTitle() {
-        return this.title;
-    }
-  
-    formatItem(item) {
-        return this.formatCallback(item);
-    }
-}
 
 module.exports = TableView;

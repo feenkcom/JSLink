@@ -1,4 +1,5 @@
 var ListView = require('./view_list');
+var ColumnedListView = require('./view_columnedlist');
 var TableView = require('./view_table');
 var CookiesView = require('./view_cookies');
 var CircularPackView = require('./view_circular_pack');
@@ -14,6 +15,10 @@ class ViewBuilder {
 
     list() {
         return new ListView();
+    }
+
+    columnedList() {
+        return new ColumnedListView();
     }
 
     table() {

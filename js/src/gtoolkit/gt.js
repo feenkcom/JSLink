@@ -23,26 +23,38 @@ class GtViewedObject {
     }
 
 
+    // Answer the set of method names the receiver's object understands
+    getMethodNames() {
+        let methodNames = [];
+
+        Object.getOwnPropertyNames(Object.getPrototypeOf(this.object)).forEach(propertyName => {
+            // getter methods can throw exceptions.
+            // We're not interested in getter methods, so ignore any exceptions
+            try {
+                let property = this.object[propertyName];
+                if(typeof property == "function") {
+                    methodNames.push(propertyName);
+                }
+            }
+            catch (err) {}
+        });
+        return methodNames;
+    }
+
+
 	// Answer the set of methods that are Gt views
 	getGtViewMethodNames() {
-        let viewMethods = ['gtViewRaw', 'gtViewPrint'];
-        Object.getOwnPropertyNames(Object.getPrototypeOf(this.object)).forEach(propertyName => {
-            let property = this.object[propertyName];
-            if(typeof property == "function" & propertyName.startsWith('gtView')) {
-                viewMethods.push(propertyName);
-            }
-        });
-        return viewMethods; }
+        return this.getMethodNames()
+                    .filter((pN) => pN.startsWith('gtView'))
+                    .concat(['gtViewRaw', 'gtViewPrint']);
+    }
 
+
+    // Answer the set of moethds that are Gt serialisable views
     getGtSerialisableViewMethodNames() {
-        let viewMethods = [];
-        Object.getOwnPropertyNames(Object.getPrototypeOf(this.object)).forEach(propertyName => {
-            let property = this.object[propertyName];
-            if(typeof property == "function" & propertyName.startsWith('gtSerialisable')) {
-                viewMethods.push(propertyName);
-             }
-        });
-        return viewMethods; }
+        return this.getMethodNames()
+                    .filter((pN) => pN.startsWith('gtSerialisable'));
+    }
 
 
 	getViewDeclaration(viewName) {
@@ -62,7 +74,7 @@ class GtViewedObject {
 
 
     gtViewRaw(aBuilder) {
-        return aBuilder.table()
+        return aBuilder.columnedList()
             .title('Raw')
             .priority(9998)
             .items(() => this.attributesFor(this.object))
