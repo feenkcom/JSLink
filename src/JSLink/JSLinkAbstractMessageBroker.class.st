@@ -76,7 +76,7 @@ JSLinkAbstractMessageBroker >> port [
 
 { #category : #private }
 JSLinkAbstractMessageBroker >> resolveMessageFromType: aType [
-	^ JSLinkAbstractMessage allSubclasses 
+	^ LanguageLinkAbstractMessage allSubclasses 
 			detect: [ :cls | cls type = aType ] 
 			ifNone: [ Error signal: 'Message ' , aType , ' not understood.' ].
 ]
