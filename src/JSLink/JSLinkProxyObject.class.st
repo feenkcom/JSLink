@@ -114,7 +114,7 @@ JSLinkProxyObject >> gtPlaygroundFor: aView [
 				| statements result |
 				statements := aButton phlow textViewContent asString.
 				result := [ self evaluateSourceSequence: statements ]
-					on: PharoLinkLinkRemoteError  
+					on: PharoLinkRemoteError  
 					do: [ :ex | ex ].
 				aButton phlow spawnObject: result ].
 
