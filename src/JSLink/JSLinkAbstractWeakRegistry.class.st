@@ -4,12 +4,12 @@ Class {
 	#category : #'JSLink-Platform'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #registration }
 JSLinkAbstractWeakRegistry >> destroy [
 	self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #registration }
 JSLinkAbstractWeakRegistry >> registerObject: anObject finalizer: finalizer [
 	self subclassResponsibility
 ]

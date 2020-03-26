@@ -18,7 +18,7 @@ JSLinkPharoPlatform class >> uiManagerClass [
 
 { #category : #hooks }
 JSLinkPharoPlatform class >> weakRegistryClass [
-	^ JSLinkPharoWeakRegistry
+	^ LanguageLinkPharoWeakRegistry
 ]
 
 { #category : #'private - symlinks' }
