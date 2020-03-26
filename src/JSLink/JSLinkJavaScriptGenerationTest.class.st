@@ -29,7 +29,7 @@ JSLinkJavaScriptGenerationTest >> testBinding [
 { #category : #tests }
 JSLinkJavaScriptGenerationTest >> testObserverNotify [
 	| obs |
-	obs := JSLinkObserver callback: [ 32 ].
+	obs := LanguageLinkObserver callback: [ 32 ].
 	obs command: self application newCommand.
 	self 
 		assert: (self getJavaScriptCode: (obs javaScriptNotify: 'foobar')) 

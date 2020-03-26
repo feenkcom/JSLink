@@ -26,6 +26,17 @@ JSLinkCommandFactory >> beImmediate [
 	immediate := true.
 ]
 
+{ #category : #bindings }
+JSLinkCommandFactory >> bindingAt: varName put: anObject [
+	bindingsDictionary at: varName put: anObject.
+	^ JSLinkBinding key: varName wrap: anObject
+]
+
+{ #category : #bindings }
+JSLinkCommandFactory >> bindingWrap: anObject [
+	^ self addBinding: (JSLinkBinding wrap: anObject)
+]
+
 { #category : #initialization }
 JSLinkCommandFactory >> reset [
 

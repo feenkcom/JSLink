@@ -28,7 +28,7 @@ JSLinkObject class >> fromProxy: aProxy [
 { #category : #'instance creation' }
 JSLinkObject class >> newJavaScriptVar [
 
-	^ JSLinkUtils newVariable
+	^ LanguageLinkUtils newVariableName asJSGI 
 ]
 
 { #category : #initialization }

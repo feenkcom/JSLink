@@ -11,7 +11,7 @@ JSLinkExecutionHandler >> initializeHandler [
 	mapperFactory := LanguageLinkMapperFactory forExecutionHandler: self.
 	promiseRegistry := LanguageLinkPromiseRegistry new.
 	weakRegistry := self settings platform weakRegistry.
-	objectRegistry := JSLinkObjectRegistry new.
+	objectRegistry := LanguageLinkObjectRegistry new.
 
 	self communicationHandler
 		addHandler: [ :msg | self notifyHandler: msg ] forMessageClass: LanguageLinkUpdatePromiseMessage;
