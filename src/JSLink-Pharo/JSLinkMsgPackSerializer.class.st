@@ -1,6 +1,6 @@
 Class {
 	#name : #JSLinkMsgPackSerializer,
-	#superclass : #JSLinkAbstractSerializerWrapper,
+	#superclass : #LanguageLinkAbstractSerializerWrapper,
 	#category : #'JSLink-Pharo-MessageBroker'
 }
 
