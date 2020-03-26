@@ -1,6 +1,6 @@
 Class {
 	#name : #JSLinkMsgPackPharoBroker,
-	#superclass : #JSLinkAbstractMessageBroker,
+	#superclass : #PharoLinkAbstractMessageBroker,
 	#instVars : [
 		'serverSocket',
 		'handlerThread',
