@@ -4,8 +4,3 @@ Extension { #name : #SequenceableCollection }
 SequenceableCollection >> isJavaScriptGenerable [
 	^ true
 ]
-
-{ #category : #'*JSLink' }
-SequenceableCollection >> isLanguageLinkValue [
-	^ true
-]

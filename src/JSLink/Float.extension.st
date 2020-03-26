@@ -4,8 +4,3 @@ Extension { #name : #Float }
 Float >> isJavaScriptGenerable [
 	^ true
 ]
-
-{ #category : #'*JSLink' }
-Float >> isLanguageLinkValue [
-	^ true
-]

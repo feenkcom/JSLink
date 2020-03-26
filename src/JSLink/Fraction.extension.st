@@ -4,8 +4,3 @@ Extension { #name : #Fraction }
 Fraction >> isJavaScriptGenerable [
 	^ true
 ]
-
-{ #category : #'*JSLink' }
-Fraction >> isLanguageLinkValue [
-	^ true
-]

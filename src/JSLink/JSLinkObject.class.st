@@ -114,11 +114,6 @@ JSLinkObject >> isJavaScriptGenerable [
 	^ true
 ]
 
-{ #category : #p3generator }
-JSLinkObject >> isLanguageLinkValue [
-	^ true
-]
-
 { #category : #'as yet unclassified' }
 JSLinkObject >> javaScriptClass [
 	self subclassResponsibility

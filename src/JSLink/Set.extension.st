@@ -4,8 +4,3 @@ Extension { #name : #Set }
 Set >> isJavaScriptGenerable [
 	^ true
 ]
-
-{ #category : #'*JSLink' }
-Set >> isLanguageLinkValue [
-	^ true
-]

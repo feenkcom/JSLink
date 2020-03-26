@@ -4,8 +4,3 @@ Extension { #name : #UndefinedObject }
 UndefinedObject >> isJavaScriptGenerable [
 	^ true
 ]
-
-{ #category : #'*JSLink' }
-UndefinedObject >> isLanguageLinkValue [
-	^ true
-]

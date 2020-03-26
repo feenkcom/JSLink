@@ -4,8 +4,3 @@ Extension { #name : #False }
 False >> isJavaScriptGenerable [
 	^ true
 ]
-
-{ #category : #'*JSLink' }
-False >> isLanguageLinkValue [
-	^ true
-]

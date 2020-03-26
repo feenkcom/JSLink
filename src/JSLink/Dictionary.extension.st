@@ -4,8 +4,3 @@ Extension { #name : #Dictionary }
 Dictionary >> isJavaScriptGenerable [
 	^ true
 ]
-
-{ #category : #'*JSLink' }
-Dictionary >> isLanguageLinkValue [
-	^ true
-]

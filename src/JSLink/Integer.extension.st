@@ -4,8 +4,3 @@ Extension { #name : #Integer }
 Integer >> isJavaScriptGenerable [
 	^ true
 ]
-
-{ #category : #'*JSLink' }
-Integer >> isLanguageLinkValue [
-	^ true
-]
