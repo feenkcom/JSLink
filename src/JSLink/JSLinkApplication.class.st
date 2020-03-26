@@ -37,11 +37,6 @@ JSLinkApplication class >> module [
 	^ self uniqueInstance module
 ]
 
-{ #category : #'pipenv setup' }
-JSLinkApplication class >> platform [
-	^ JSLinkPlatform current
-]
-
 { #category : #'python hooks file' }
 JSLinkApplication class >> repositoryFileReference [
 	^ self platform folderForApplication

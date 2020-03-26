@@ -44,7 +44,7 @@ JSLinkHttpMessageBrokerTest >> primHandle: aRequest [
 		] on: Error do: [ :e | 
 			handlerException := e.
 			^ self errorResponse ].
-	answer := [ JSLinkNeoJsonSerializer new serialize: answer ] on: Error do: [ '{}' ].
+	answer := [ LanguageLinkNeoJsonSerializer new serialize: answer ] on: Error do: [ '{}' ].
 	^ ZnResponse ok: (ZnEntity json: answer)
 ]
 

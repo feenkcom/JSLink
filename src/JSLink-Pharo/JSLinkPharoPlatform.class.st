@@ -13,7 +13,7 @@ JSLinkPharoPlatform class >> socketMessageBrokerClass [
 
 { #category : #private }
 JSLinkPharoPlatform class >> uiManagerClass [
-	^ JSLinkPharoUiManager
+	^ LanguageLinkPharoUiManager
 ]
 
 { #category : #hooks }
