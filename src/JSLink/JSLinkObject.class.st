@@ -114,6 +114,11 @@ JSLinkObject >> isJavaScriptGenerable [
 	^ true
 ]
 
+{ #category : #testing }
+JSLinkObject >> isLanguageLinkValue [
+	^ true
+]
+
 { #category : #'as yet unclassified' }
 JSLinkObject >> javaScriptClass [
 	self subclassResponsibility

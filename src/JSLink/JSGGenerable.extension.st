@@ -4,3 +4,8 @@ Extension { #name : #JSGGenerable }
 JSGGenerable >> isJavaScriptGenerable [
 	^ true
 ]
+
+{ #category : #'*JSLink' }
+JSGGenerable >> isLanguageLinkValue [
+	^ true
+]
