@@ -1,7 +1,6 @@
 Trait {
 	#name : #JSLinkJavaScriptValueTrait,
 	#traits : 'JSGAttributeAccess',
-	#classTraits : 'JSGAttributeAccess classTrait',
 	#category : #'JSLink-JSGenerator'
 }
 

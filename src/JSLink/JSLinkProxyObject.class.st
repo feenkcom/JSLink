@@ -66,7 +66,7 @@ JSLinkProxyObject >> declarativeViews [
 	^ rawViews
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #ui }
 JSLinkProxyObject >> evaluateSourceSequence: aString [
 
 	^ self newCommandFactory
