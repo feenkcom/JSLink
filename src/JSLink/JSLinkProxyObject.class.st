@@ -244,7 +244,7 @@ JSLinkProxyObject >> viewProxyDo: aBlock [
 	viewProxy := javaScriptClass = #GtViewedObject
 		ifTrue: [ self ]
 		ifFalse: [ self getViewProxy ].
-	aBlock value: viewProxy.
+	^ aBlock value: viewProxy.
 
 ]
 
