@@ -24,9 +24,20 @@ Requirements:
 JSLink has been tested with:
 
 - Pharo 8
-- node.js 8.x
+- node.js 12.x
 
-To install JSLink in Pharo evaluate:
+To install JSLink in an existing Gtoolkit image:
+
+```smalltalk
+EpMonitor disableDuring: [ 
+Metacello new
+	repository: 'github://feenkcom/gtoolkit-remote/src';
+	baseline: 'Gt4JSLink';
+	load ]
+```
+
+
+To install JSLink in a vanilla Pharo image:
 
 ```smalltalk
 EpMonitor disableDuring: [ 
