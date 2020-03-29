@@ -117,7 +117,7 @@ JSLinkBridgeBootstrap >> createRepository [
 { #category : #'create classes' }
 JSLinkBridgeBootstrap >> createTestCase [
 	| cls |
-	cls := LanguageLinkTestCase subclass: self testCaseName
+	cls := JSLinkTestCase subclass: self testCaseName
 				instanceVariableNames: ''
 				classVariableNames: ''
 				package: packageName.

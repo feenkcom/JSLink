@@ -1,6 +1,6 @@
 Class {
 	#name : #JSLinkDeserializeTest,
-	#superclass : #LanguageLinkTestCase,
+	#superclass : #JSLinkTestCase,
 	#instVars : [
 		'mapper'
 	],

@@ -1,6 +1,6 @@
 Class {
 	#name : #JSLinkJavaScriptGenerationTest,
-	#superclass : #LanguageLinkTestCase,
+	#superclass : #JSLinkTestCase,
 	#category : #'JSLink-Tests'
 }
 

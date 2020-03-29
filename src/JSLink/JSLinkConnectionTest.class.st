@@ -1,6 +1,6 @@
 Class {
 	#name : #JSLinkConnectionTest,
-	#superclass : #LanguageLinkTestCase,
+	#superclass : #JSLinkTestCase,
 	#category : #'JSLink-Tests'
 }
 

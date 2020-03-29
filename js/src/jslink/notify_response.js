@@ -67,8 +67,6 @@ async function notify_observer(obj, command_id, observer_id) {
 	data['observerId'] = observer_id;
 	data['value'] = serialize(obj);
 	let response = await send_response(data);
-	logger.debug("Notify Observer: response = ");
-	logger.debug(response);
 	return deserialize(response.value); }
 
 

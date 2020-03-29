@@ -1,6 +1,6 @@
 Class {
 	#name : #JSLinkExcecutionHandlerTest,
-	#superclass : #LanguageLinkTestCase,
+	#superclass : #JSLinkTestCase,
 	#instVars : [
 		'execHandler'
 	],

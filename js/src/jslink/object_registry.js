@@ -133,9 +133,9 @@ function deserialize(obj) {
 
 	logger.debug("deserialize: " + obj);
 	result = JSON.parse(obj);
-	if (result.__registryid__) {
+	if (result != null && result.__registryid__) {
 		result = the_registry.resolve(result.__registryid__);
-		 }
+	}
 	logger.debug("result = " + result);
 	return result; }
 
