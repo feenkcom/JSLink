@@ -6,7 +6,8 @@ var CircularPackView = require('./view_circular_pack');
 var CookiesStencilView = require('./view_cookies_stencil');
 var TextEditorView = require('./view_texteditor');
 var SerialisableListView = require('./view_list_serialisable');
-
+var SerialisableColumnedListView = require('./view_columnedlist_serialisable');
+var SerialisableTreeMapView = require('./view_treemap_serialisable');
 
 class ViewBuilder {
     textEditor() {
@@ -40,6 +41,15 @@ class ViewBuilder {
     serialisableList() {
         return new SerialisableListView();
     }
+
+    serialisableColumnedList() {
+        return new SerialisableColumnedListView();
+    }
+
+    serialisableTreeMap() {
+        return new SerialisableTreeMapView();
+    }
+    
 }
 
 module.exports = ViewBuilder;
