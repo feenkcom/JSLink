@@ -6,6 +6,7 @@ class SerialisableTreeMapView extends View {
         this.itemsComputation = [];
         this.itemsGroupingComputatin = {};
         this.groupLabelComputation = [];
+        this.colorMapComputation = {};
     }
 
     items(itemsComputation) {
@@ -23,6 +24,11 @@ class SerialisableTreeMapView extends View {
         return this;
     }
 
+    colorMap(colorMapComputation) {
+        this.colorMapComputation = colorMapComputation;
+        return this;
+    }
+
     asDictionaryForExport() {
         let exportData = super.asDictionaryForExport();
         exportData['type'] = 'treemap';
@@ -30,6 +36,7 @@ class SerialisableTreeMapView extends View {
         exportData['items'] = this.itemsComputation;
         exportData['grouping'] = this.itemsGroupingComputatin;
         exportData['groupLabel'] = this.groupLabelComputation;
+        exportData['colorMap'] = this.colorMapComputation;
 
         return exportData;
     }
