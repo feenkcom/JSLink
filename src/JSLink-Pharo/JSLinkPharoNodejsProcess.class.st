@@ -3,7 +3,8 @@ Class {
 	#superclass : #LanguageLinkAbstractProcess,
 	#instVars : [
 		'process',
-		'environmentVariables'
+		'environmentVariables',
+		'serverDebugger'
 	],
 	#classVars : [
 		'NodejsPath'
@@ -69,6 +70,12 @@ JSLinkPharoNodejsProcess class >> resolveNpmPath [
 		ifEmpty: [ self signalCommandNotFound: 'npm' ]
 ]
 
+{ #category : #'start-stop' }
+JSLinkPharoNodejsProcess >> debuggerPausedAction [
+
+	^ [ serverDebugger inspect ]
+]
+
 { #category : #accessing }
 JSLinkPharoNodejsProcess >> environmentVariables [
 	^ environmentVariables
@@ -119,7 +126,9 @@ JSLinkPharoNodejsProcess >> processArguments [
 	| args |
 
 	args := OrderedCollection new.
-	args
+	self settings serverDebugMode ifTrue: 
+		[ args add: '--inspect' ].
+	args 
 		add: (self workingDirectory / 'src/app.js') resolve fullName;
 		add: self settings serverSocketAddress port asString;
 		add: self settings clientSocketAddress port asString.
@@ -136,6 +145,19 @@ JSLinkPharoNodejsProcess >> setDefaultEnvironmentVariables [
 JSLinkPharoNodejsProcess >> start [
 	process := self newProcess.
 	process run.
+	self settings serverDebugMode ifTrue:
+		[ self startServerDebugger ].
+]
+
+{ #category : #'start-stop' }
+JSLinkPharoNodejsProcess >> startServerDebugger [
+	"Start the debugger, tell the server to run and set up inspection on halt"
+
+	"Give the server time to start"
+	1 second wait.
+	serverDebugger := NodeJSDebuggerServer new endPoints first connect.
+	serverDebugger announcer when: NodeJSDebuggerPaused do: self debuggerPausedAction.
+	"serverDebugger resume."
 ]
 
 { #category : #'start-stop' }
@@ -145,4 +167,12 @@ JSLinkPharoNodejsProcess >> stop [
 		on: Error 
 		do: [ :e | "Do nothing."].
 	process closeAndCleanStreams
+]
+
+{ #category : #'start-stop' }
+JSLinkPharoNodejsProcess >> stopServerDebugger [
+	"Close the debugger and deregister"
+self halt.
+	serverDebugger close.
+	serverDebugger announcer unsubscribe: self debuggerPausedAction
 ]
