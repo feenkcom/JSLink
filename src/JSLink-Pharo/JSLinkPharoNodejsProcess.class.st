@@ -72,8 +72,12 @@ JSLinkPharoNodejsProcess class >> resolveNpmPath [
 
 { #category : #'start-stop' }
 JSLinkPharoNodejsProcess >> debuggerPausedAction [
+	"Respond to the debugger paused notification.
+	The basic action is to inspect the debugger so that the state can be inspected.
+	Since the Bloc UI process may be waiting on a response, signal all promises that the debugger has been paused."
 
-	^ [ serverDebugger inspect ]
+	^ [ self application notifyDebuggerPaused: serverDebugger.
+		serverDebugger inspect ]
 ]
 
 { #category : #accessing }
@@ -155,8 +159,8 @@ JSLinkPharoNodejsProcess >> startServerDebugger [
 
 	"Give the server time to start"
 	1 second wait.
-	serverDebugger := NodeJSDebuggerServer new endPoints first connect.
-	serverDebugger announcer when: NodeJSDebuggerPaused do: self debuggerPausedAction.
+	serverDebugger := CDTDebuggerServer new endPoints first connect.
+	serverDebugger announcer when: CDTDebuggerPaused do: self debuggerPausedAction.
 	"serverDebugger resume."
 ]
 
