@@ -167,7 +167,9 @@ JSLinkPharoNodejsProcess >> startServerDebugger [
 { #category : #'start-stop' }
 JSLinkPharoNodejsProcess >> stop [
 	process ifNil: [ ^ self ].
-	[process queryExitStatus ifNil: [ process terminate ]] 
+	[ 	self settings serverDebugMode ifTrue:
+		[ self stopServerDebugger ].
+	process queryExitStatus ifNil: [ process terminate ]] 
 		on: Error 
 		do: [ :e | "Do nothing."].
 	process closeAndCleanStreams
@@ -176,7 +178,7 @@ JSLinkPharoNodejsProcess >> stop [
 { #category : #'start-stop' }
 JSLinkPharoNodejsProcess >> stopServerDebugger [
 	"Close the debugger and deregister"
-self halt.
+
 	serverDebugger close.
 	serverDebugger announcer unsubscribe: self debuggerPausedAction
 ]
