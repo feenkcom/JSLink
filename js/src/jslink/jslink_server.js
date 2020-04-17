@@ -29,7 +29,8 @@ class JSLinkServer {
         });
 
         this.app.post('/ENQUEUE', (req, res) => {
-            res.json(this.handleEnqueue(req));
+            res.json({});
+            this.handleEnqueue(req);
         });
     }
 
@@ -43,13 +44,13 @@ class JSLinkServer {
         return runningServer;
     }
 
-    handleEnqueue(request) {
+    async handleEnqueue(request) {
 		// Python version queues and dequeues.
 		// We're just executing immediately for now.
 		this.logRequest(request, null);
 		let cmd = new EvalCommand(request.body.commandId, request.body.statements, request.body.bindings);
 		cmd.execute(globals);
-        return {};
+        return Promise.resolve({});
     }
 
     logRequest(req, res) {
