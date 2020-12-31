@@ -77,6 +77,21 @@ JSLinkProxyObject >> newCommandFactory [
 		yourself
 ]
 
+{ #category : #introspection }
+JSLinkProxyObject >> objectVarNamed: aString [ 
+	"Answer the receiver's attribute named aString"
+	| command |
+
+	command := String streamContents: [ :stream |
+		stream
+			<< 'this[''';
+			<< aString;
+			<< ''']' ].
+	^ self newCommandFactory 
+		<< command;
+		sendAndWait
+]
+
 { #category : #printing }
 JSLinkProxyObject >> printOn: str [
 	str 
