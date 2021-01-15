@@ -36,11 +36,9 @@ JSLinkPharoPlatform >> createSymlinkFor: originalFile on: targetFile [
 { #category : #hooks }
 JSLinkPharoPlatform >> ensureApplicationDirectory: application [
 	"If the runtimeFolder doesn't exist, attempt to symlink to the respository directory"
-	| runtimeFolder |
-
-	runtimeFolder := self runtimeFolder.
-	runtimeFolder exists ifFalse:
-		[ self ensureFolderSymlinkFor: runtimeFolder ].
+	
+	self folderForApplication exists ifFalse:
+		[ self ensureFolderSymlinkFor: self jsRepositoryFolder ].
 
 ]
 
@@ -59,16 +57,11 @@ JSLinkPharoPlatform >> ensureFolderSymlinkFor: aFolder [
 		self createSymlinkFor: aFolder on: symlinkRef ]
 ]
 
-{ #category : #utils }
+{ #category : #accessing }
 JSLinkPharoPlatform >> folderForApplication [
-	"Answer the js directory where the JSLink repository is typically cloned"
+	"Answer the directory where JSLink runs from"
 
-	^ (IceRepository registry 
-			detect: [ :each | each includesPackageNamed: self class package name ] 
-			ifNone: [ 
-				self inform: 'Please add a clone of this project to Iceberg to access to the resources'.
-				"For travis!"
-				^ '.' asFileReference ]) location / 'js'
+	^ FileLocator imageDirectory / 'js'
 ]
 
 { #category : #utils }
@@ -81,7 +74,7 @@ Please ensure it is installed and in the default path for the pharo process.'.
 	self assert: npm isEmptyOrNil not description: 
 'Unable to find the npm command.
 Please ensure it is installed and in the default path for the pharo process.'.
-	workingDir := self runtimeFolder.
+	workingDir := self folderForApplication.
 	proc := OSSUnixSubprocess new
 				workingDirectory: workingDir resolve fullName;
 				command: npm;
@@ -97,7 +90,7 @@ Please ensure it is installed and in the default path for the pharo process.'.
 { #category : #utils }
 JSLinkPharoPlatform >> installEnvironmentForApp: application [
 	| folder |
-	folder := self runtimeFolder.
+	folder := self folderForApplication.
 	(folder / 'node_modules') exists ifFalse: [ 
 		self forceInstallEnvironmentForApp: application ]
 ]
@@ -111,7 +104,7 @@ JSLinkPharoPlatform >> installModule: moduleName in: application [
 	self assert: npm isEmptyOrNil not description: 
 'Unable to find the npm command.
 Please ensure it is installed and in the default path for the pharo process.'.
-	workingDir := self runtimeFolder.
+	workingDir := self folderForApplication.
 	proc := OSSUnixSubprocess new
 				workingDirectory: workingDir resolve fullName;
 				command: npm;
@@ -124,16 +117,21 @@ Please ensure it is installed and in the default path for the pharo process.'.
 		self signalInstallEnvFailed ]
 ]
 
+{ #category : #utils }
+JSLinkPharoPlatform >> jsRepositoryFolder [
+	"Answer the js directory where the JSLink repository is typically cloned"
+
+	^ (IceRepository registry 
+			detect: [ :each | each includesPackageNamed: self class package name ] 
+			ifNone: [ 
+				self inform: 'Please add a clone of this project to Iceberg to access to the resources'.
+				"For travis!"
+				^ '.' asFileReference ]) location / 'js'
+]
+
 { #category : #hooks }
 JSLinkPharoPlatform >> newRandomName [
 	^ 'js' , UUID new asString36
-]
-
-{ #category : #accessing }
-JSLinkPharoPlatform >> runtimeFolder [
-	"Answer the directory where JSLink runs from"
-
-	^ FileLocator imageDirectory / 'js'
 ]
 
 { #category : #private }
