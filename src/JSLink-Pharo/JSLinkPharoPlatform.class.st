@@ -67,11 +67,12 @@ JSLinkPharoPlatform >> folderForApplication [
 { #category : #utils }
 JSLinkPharoPlatform >> forceInstallEnvironmentForApp: application [
 	| proc workingDir npm |
-	self assert: JSLinkPharoNodejsProcess nodejsPath isEmptyOrNil not description: 
+
+	self assert: (JSLinkPharoNodejsProcess nodejsPathForApplication: application) isNotNil description:
 'Unable to find the nodejs command.
 Please ensure it is installed and in the default path for the pharo process.'.
-	npm := JSLinkPharoNodejsProcess resolveNpmPath.
-	self assert: npm isEmptyOrNil not description: 
+	npm := JSLinkPharoNodejsProcess npmPathForApplication: application.
+	self assert: npm isNotNil description: 
 'Unable to find the npm command.
 Please ensure it is installed and in the default path for the pharo process.'.
 	workingDir := self folderForApplication.

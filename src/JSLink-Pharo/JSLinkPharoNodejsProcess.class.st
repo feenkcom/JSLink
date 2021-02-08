@@ -14,14 +14,39 @@ Class {
 
 { #category : #initialization }
 JSLinkPharoNodejsProcess class >> nodejsPath [
-	^ NodejsPath isEmptyOrNil 
-			ifTrue: [ NodejsPath := self resolveNodejsPath ]
-			ifFalse: [ NodejsPath ]
+	^ NodejsPath 
+			ifNil: [ NodejsPath := self resolveNodejsPath ]
+			ifNotNil: [ NodejsPath ]
 ]
 
 { #category : #initialization }
 JSLinkPharoNodejsProcess class >> nodejsPath: aString [
 	NodejsPath := aString
+]
+
+{ #category : #accessing }
+JSLinkPharoNodejsProcess class >> nodejsPathForApplication: aJSApplication [
+	"Answer the NodeJS path for the supplied application.
+	This currently assumes a single installation per machine"
+
+	NodejsPath ifNotNil: [ ^ NodejsPath ].
+	NodejsPath := aJSApplication settings serverExecutable.
+	(NodejsPath isNil or: [ NodejsPath exists not ]) ifTrue:
+		[ NodejsPath := self resolveNodejsPath ].
+	^ NodejsPath.
+]
+
+{ #category : #accessing }
+JSLinkPharoNodejsProcess class >> npmPathForApplication: aJSApplication [
+	"Answer the npm path for the supplied application.
+	Assume it is in the same directory as the nodejs executable.  If not, search the PATH."
+	| npmPath nodejsPath |
+
+	nodejsPath := self nodejsPathForApplication: aJSApplication.
+	nodejsPath ifNotNil: 
+		[ npmPath := nodejsPath parent / 'npm'.
+		npmPath exists ifTrue: [ ^ npmPath ] ].
+	^ self resolveNpmPath.
 ]
 
 { #category : #accessing }
@@ -36,7 +61,7 @@ JSLinkPharoNodejsProcess class >> resolveNodejsPath [
 	path := self resolveNodejsPath: 'nodejs'.
 	path ifEmpty: [ path := self resolveNodejsPath: 'node' ].
 	path ifEmpty: [ self signalCommandNotFound: 'nodejs/node' ].
-	^path asFileReference
+	^ path asFileReference
 ]
 
 { #category : #initialization }
