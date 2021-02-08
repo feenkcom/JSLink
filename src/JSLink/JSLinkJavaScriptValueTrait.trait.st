@@ -1,8 +1,13 @@
 Trait {
 	#name : #JSLinkJavaScriptValueTrait,
-	#traits : 'JSGAttributeAccess',
 	#category : #'JSLink-JSGenerator'
 }
+
+{ #category : #'attribute access' }
+JSLinkJavaScriptValueTrait >> => aString [
+	"Shortcut for #attributeNamed:."
+	^ self attributeNamed: aString
+]
 
 { #category : #'attribute access' }
 JSLinkJavaScriptValueTrait >> attributeNamed: aString [
