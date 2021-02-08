@@ -36,7 +36,7 @@ JSLinkPharoNodejsProcess class >> resolveNodejsPath [
 	path := self resolveNodejsPath: 'nodejs'.
 	path ifEmpty: [ path := self resolveNodejsPath: 'node' ].
 	path ifEmpty: [ self signalCommandNotFound: 'nodejs/node' ].
-	^path
+	^path asFileReference
 ]
 
 { #category : #initialization }
@@ -108,7 +108,7 @@ JSLinkPharoNodejsProcess >> isRunning [
 JSLinkPharoNodejsProcess >> newProcess [
 	| newProcess |
 	newProcess := OSSUnixSubprocess new
-				command: self class nodejsPath;
+				command: self nodejsPath fullName;
 				arguments: self processArguments;
 				workingDirectory: self workingDirectory resolve fullName;
 "				redirectStdout;
@@ -118,6 +118,16 @@ JSLinkPharoNodejsProcess >> newProcess [
 	environmentVariables associationsDo: [ :assoc |
 		newProcess environmentAt: assoc key put: assoc value ].
 	^ newProcess
+]
+
+{ #category : #accessing }
+JSLinkPharoNodejsProcess >> nodejsPath [
+	| path |
+
+	path := self settings serverExecutable.
+	(path isNil or: [ path exists not ]) ifTrue:
+		[ path := self class nodejsPath ].
+	^ path.
 ]
 
 { #category : #accessing }
