@@ -21,6 +21,33 @@ JSLinkPharoPlatform class >> weakRegistryClass [
 	^ LanguageLinkPharoWeakRegistry
 ]
 
+{ #category : #copying }
+JSLinkPharoPlatform >> copyApplicationTo: appFolder application: application [
+	"Copy the PythonBridge runtime environment to the specified folder"
+	| srcDir cpCommand proc |
+
+	srcDir := self jsRepositoryFolder.
+	(srcDir exists and: [ srcDir ~= appFolder ]) ifFalse: 
+		[ srcDir := self folderForApplication ].
+	srcDir exists ifFalse: 
+		[ self error: 'Unable to locate JSLink runtime files' ].
+
+	"Copy the runtime directory"
+	cpCommand := String streamContents: [ :stream |
+		stream
+			<< 'cp -ar ';
+			<< srcDir fullName;
+			<< '/* ';
+			<< appFolder fullName;
+			<< '/' ].
+	proc := OSSUnixSubprocess new 
+		shellCommand: cpCommand;
+		runAndWait.
+	proc isSuccess ifFalse:
+		[ self error: 'Unable to install JSLink runtime' ].
+
+]
+
 { #category : #'private - symlinks' }
 JSLinkPharoPlatform >> createSymlinkFor: originalFile on: targetFile [
 	OSSUnixSubprocess new
@@ -36,9 +63,20 @@ JSLinkPharoPlatform >> createSymlinkFor: originalFile on: targetFile [
 { #category : #hooks }
 JSLinkPharoPlatform >> ensureApplicationDirectory: application [
 	"If the runtimeFolder doesn't exist, attempt to symlink to the respository directory"
-	
-	self folderForApplication exists ifFalse:
-		[ self ensureFolderSymlinkFor: self jsRepositoryFolder ].
+
+	application settings workingDirectory exists ifFalse:
+		[ self ensureApplicationDirectoryFor: application ].
+
+]
+
+{ #category : #'as yet unclassified' }
+JSLinkPharoPlatform >> ensureApplicationDirectoryFor: application [
+	| appFolder |
+
+	appFolder := application settings workingDirectory.
+	appFolder exists ifTrue: [ ^ self ].
+	appFolder ensureCreateDirectory.
+	self copyApplicationTo: appFolder application: application.
 
 ]
 
@@ -75,7 +113,7 @@ Please ensure it is installed and in the default path for the pharo process.'.
 	self assert: npm isNotNil description: 
 'Unable to find the npm command.
 Please ensure it is installed and in the default path for the pharo process.'.
-	workingDir := self folderForApplication.
+	workingDir := application settings workingDirectory.
 	proc := OSSUnixSubprocess new
 				workingDirectory: workingDir resolve fullName;
 				command: npm fullName;
@@ -91,7 +129,7 @@ Please ensure it is installed and in the default path for the pharo process.'.
 { #category : #utils }
 JSLinkPharoPlatform >> installEnvironmentForApp: application [
 	| folder |
-	folder := self folderForApplication.
+	folder := application settings workingDirectory.
 	(folder / 'node_modules') exists ifFalse: [ 
 		self forceInstallEnvironmentForApp: application ]
 ]
@@ -133,6 +171,14 @@ JSLinkPharoPlatform >> jsRepositoryFolder [
 { #category : #hooks }
 JSLinkPharoPlatform >> newRandomName [
 	^ 'js' , UUID new asString36
+]
+
+{ #category : #accessing }
+JSLinkPharoPlatform >> runtimeFolderForApplication: application [
+	"Answer the directory where the PythonBridge runtime files are located"
+
+	^ application settings workingDirectory ifNil:
+		[ self folderForApplication ]
 ]
 
 { #category : #private }
