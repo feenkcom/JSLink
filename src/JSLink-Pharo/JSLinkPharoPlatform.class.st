@@ -139,14 +139,11 @@ JSLinkPharoPlatform >> installModule: moduleName in: application [
 	"Install the requested node.js module using npm"
 	| proc workingDir npm |
 
-	npm := JSLinkPharoNodejsProcess resolveNpmPath.
-	self assert: npm isEmptyOrNil not description: 
-'Unable to find the npm command.
-Please ensure it is installed and in the default path for the pharo process.'.
-	workingDir := self folderForApplication.
+	npm := JSLinkPharoNodejsProcess npmPathForApplication: application.
+	workingDir := application settings workingDirectory.
 	proc := OSSUnixSubprocess new
 				workingDirectory: workingDir resolve fullName;
-				command: npm;
+				command: npm fullName;
 				arguments: { 'install'. moduleName. };
 				terminateOnShutdown.
 	self class subProcessEnvironmentDictionary keysAndValuesDo: [ :key :value |
