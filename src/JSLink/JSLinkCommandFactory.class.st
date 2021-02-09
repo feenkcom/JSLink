@@ -53,5 +53,5 @@ JSLinkCommandFactory >> setNotifyToInstruction: aLLInstruction [
 		ifTrue: [ 'notify_immediate' ]
 		ifFalse: [ 'notify' ].
 	^ method asJSGIdentifier 
-			callWith: (Array with: aLLInstruction with: command id)
+			jsCallWith: (Array with: aLLInstruction with: command id)
 ]

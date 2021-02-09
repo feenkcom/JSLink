@@ -78,7 +78,7 @@ Please ensure it is installed and in the default path for the pharo process.'.
 	workingDir := self folderForApplication.
 	proc := OSSUnixSubprocess new
 				workingDirectory: workingDir resolve fullName;
-				command: npm;
+				command: npm fullName;
 				arguments: { 'install' };
 				terminateOnShutdown.
 	self class subProcessEnvironmentDictionary keysAndValuesDo: [ :key :value |

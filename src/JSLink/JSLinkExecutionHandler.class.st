@@ -21,10 +21,10 @@ JSLinkExecutionHandler >> initializeHandler [
 
 { #category : #registry }
 JSLinkExecutionHandler >> registryExpression [
-	^ #registry callWith: #()
+	^ #registry jsCallWith: #()
 ]
 
 { #category : #registry }
 JSLinkExecutionHandler >> removeId: anId [
-	^ self registryExpression => #clean callWith: (Array with: anId)
+	^ self registryExpression => #clean jsCallWith: (Array with: anId)
 ]

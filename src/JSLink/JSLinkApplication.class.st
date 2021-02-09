@@ -85,7 +85,7 @@ JSLinkApplication class >> test [
 { #category : #utils }
 JSLinkApplication >> addMapping: jsType to: mapFunction [
 	self newCommandFactory 
-		send: (#addMapping callWith: { jsType. mapFunction. })
+		send: (#addMapping jsCallWith: { jsType. mapFunction. })
 ]
 
 { #category : #initialization }
