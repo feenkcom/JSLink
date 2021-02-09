@@ -79,16 +79,6 @@ JSLinkObject >> basicCreateObjectExpr: anExpression [
 	cf send.
 ]
 
-{ #category : #call }
-JSLinkObject >> callWith: anArrayOrADictionary [
-	^ anArrayOrADictionary jsgCallArgumentsOf: self
-]
-
-{ #category : #call }
-JSLinkObject >> callWith: anArray with: aDictionary [
-	^ JSGCall target: self positionalArguments: anArray keywordArguments: aDictionary
-]
-
 { #category : #'as yet unclassified' }
 JSLinkObject >> createObject [
 	self subclassResponsibility
@@ -136,7 +126,7 @@ JSLinkObject >> javaScriptConstructor [
 
 { #category : #'as yet unclassified' }
 JSLinkObject >> javaScriptRegistryExpression [
-	^ #registry callWith: #()
+	^ #registry jsCallWith: #()
 ]
 
 { #category : #accessing }
@@ -156,7 +146,7 @@ JSLinkObject >> newJavaScriptVar [
 
 { #category : #'as yet unclassified' }
 JSLinkObject >> registerIdJSExpression: objExpr [
-	^ self javaScriptRegistryExpression => #register_with_id callWith: (Array with: objExpr with: self id)
+	^ self javaScriptRegistryExpression => #register_with_id jsCallWith: (Array with: objExpr with: self id)
 ]
 
 { #category : #'as yet unclassified' }
@@ -166,11 +156,11 @@ JSLinkObject >> registerObject [
 
 { #category : #'as yet unclassified' }
 JSLinkObject >> resolveIdJSExpression [
-	^ self javaScriptRegistryExpression => #resolve callWith: (Array with: self id)
+	^ self javaScriptRegistryExpression => #resolve jsCallWith: (Array with: self id)
 ]
 
 { #category : #'as yet unclassified' }
-JSLinkObject >> writeLinkLanguageOn: aStream [
+JSLinkObject >> writeJavaScriptOn: aStream [
 	self assert: self isCreated.
-	self resolveIdJSExpression writeLinkLanguageOn: aStream
+	self resolveIdJSExpression writeJavaScriptOn: aStream
 ]

@@ -15,6 +15,6 @@ JSLinkBinding >> javaScriptVariable [
 ]
 
 { #category : #testing }
-JSLinkBinding >> writeLinkLanguageOn: aStream [
-	self javaScriptVariable writeLinkLanguageOn: aStream
+JSLinkBinding >> writeJavaScriptOn: aStream [
+	self javaScriptVariable writeJavaScriptOn: aStream
 ]

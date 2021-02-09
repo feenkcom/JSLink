@@ -27,7 +27,7 @@ JSLinkSimpleApplicationTest >> testDoubleRetrieveValue [
 JSLinkSimpleApplicationTest >> testSimpleLambda [
 	self cf << ((JSGLambda 
 						argument: #a asJSGI
-						expression: #a asJSGI + 1) callWith: #( 2 )).
+						expression: #a asJSGI + 1) jsCallWith: #( 2 )).
 	self assert: self cf send waitForValue equals: 3
 ]
 
@@ -37,7 +37,7 @@ JSLinkSimpleApplicationTest >> testSimpleMapping [
 
 	self cf << (#TestClass asJSGI <- #'./dummy' require) beVarDeclaration.
 	"self cf << (JSGExpression new expression: 'new TestClass()')."
-	self cf << #TestClass call new.
+	self cf << #TestClass jsCall new.
 	obj := self cf sendAndWait.
 	type := self cf sendAndWait: (obj => #constructor => #name).
 	self application addMapping: type to: (JSGLambda 

@@ -31,13 +31,11 @@ JSLinkProcessTest >> processClass [
 
 { #category : #running }
 JSLinkProcessTest >> setUp [
-	| settings |
+	| application |
 
 	super setUp.
-	settings := self defaultSettings.
-	process := self processClass
-		settings: settings
-		workingDirectory: settings workingDirectory.
+	application := JSLinkApplication newWith: self defaultSettings.
+	process := self processClass application: application.
 
 ]
 

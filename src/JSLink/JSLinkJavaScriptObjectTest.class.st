@@ -7,12 +7,13 @@ Class {
 { #category : #tests }
 JSLinkJavaScriptObjectTest >> stubJavaScriptObjectExpression [
 
-	^ #registry asJSGI callWith: #()
+	^ #registry asJSGI  jsCallWith: #()
 ]
 
 { #category : #tests }
 JSLinkJavaScriptObjectTest >> testProxyIdentity [
 	| obj |
+
 	self cf << self stubJavaScriptObjectExpression.
 	obj := self cfSend waitForValue.
 	self assert: obj class equals: JSLinkProxyObject.
@@ -48,7 +49,7 @@ JSLinkJavaScriptObjectTest >> testSimpleProxy [
 	obj := self cfSend waitForValue.
 	self assert: obj class equals: JSLinkProxyObject.
 	self assertInstanceClass: obj name: 'Registry'.
-	self assertExpression: (obj => #hasId callWith: #(0)) equals: false.
+	self assertExpression: (obj => #hasId jsCallWith: #(0)) equals: false.
 
 	"Manually remove the item from the registry as the GC may not have kicked in before the next test is run."
 	self cf << (self application executionHandler removeId: obj id).

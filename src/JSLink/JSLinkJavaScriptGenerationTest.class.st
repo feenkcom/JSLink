@@ -6,7 +6,7 @@ Class {
 
 { #category : #private }
 JSLinkJavaScriptGenerationTest >> getJavaScriptCode: aPythonExpression [
-	^ self getJavaScriptCodeUsingStream: [ :str | aPythonExpression writeLinkLanguageOn: str ]
+	^ self getJavaScriptCodeUsingStream: [ :str | aPythonExpression writeJavaScriptOn: str ]
 ]
 
 { #category : #private }

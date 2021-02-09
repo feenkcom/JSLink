@@ -9,7 +9,7 @@ Class {
 
 { #category : #asserting }
 JSLinkObjectFinalizationTest >> idInRegistry: anId [
-	^ self registryExpression => #hasId callWith: (Array with: anId)
+	^ self registryExpression => #hasId jsCallWith: (Array with: anId)
 ]
 
 { #category : #running }
