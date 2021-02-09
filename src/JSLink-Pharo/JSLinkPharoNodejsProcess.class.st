@@ -147,12 +147,12 @@ JSLinkPharoNodejsProcess >> newProcess [
 
 { #category : #accessing }
 JSLinkPharoNodejsProcess >> nodejsPath [
-	| path |
+	| fileReference |
 
-	path := self settings serverExecutable.
-	(path isNil or: [ path exists not ]) ifTrue:
-		[ path := self class nodejsPath ].
-	^ path.
+	fileReference := self settings serverExecutable.
+	fileReference ifNil: [ fileReference := self class nodejsPath ].
+	fileReference isExecutable ifFalse: [ self class signalCommandNotFound: fileReference fullName ].
+	^ fileReference.
 ]
 
 { #category : #accessing }
