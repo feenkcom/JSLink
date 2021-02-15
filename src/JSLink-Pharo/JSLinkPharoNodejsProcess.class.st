@@ -12,6 +12,12 @@ Class {
 	#category : #'JSLink-Pharo-Processes'
 }
 
+{ #category : #'class initialization' }
+JSLinkPharoNodejsProcess class >> initialize [ 
+
+	SessionManager default registerUserClassNamed: self name.
+]
+
 { #category : #initialization }
 JSLinkPharoNodejsProcess class >> nodejsPath [
 	^ NodejsPath 
@@ -93,6 +99,14 @@ JSLinkPharoNodejsProcess class >> resolveNpmPath [
 		proc environmentAt: key put: value ].
 	(proc 	runAndWaitOnExitDo: [ :command :outString | ^ outString trim ]) 
 		ifEmpty: [ self signalCommandNotFound: 'npm' ]
+]
+
+{ #category : #'system startup' }
+JSLinkPharoNodejsProcess class >> startUp: resuming [
+	"On startup any instances saved during the last session will be invalid (since the processes are terminated on shutdown).  Mark them as stopped."
+
+	resuming ifTrue: 
+		[ self allInstancesDo: [ :each | each stop ] ]
 ]
 
 { #category : #'start-stop' }
@@ -207,7 +221,8 @@ JSLinkPharoNodejsProcess >> stop [
 	process queryExitStatus ifNil: [ process terminate ]] 
 		on: Error 
 		do: [ :e | "Do nothing."].
-	process closeAndCleanStreams
+	process closeAndCleanStreams.
+	process := nil.
 ]
 
 { #category : #'start-stop' }
