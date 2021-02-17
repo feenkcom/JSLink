@@ -27,22 +27,30 @@ class EvalCommand {
 		var command = this;
 		var thisObject = this;
 		var doIt;
+		var deserializedBindings = {};
 
 		try {
+			// 'this' is bound when calling the function
 			if (this.bindings['this'] != undefined) {
 				thisObject = deserialize(this.bindings['this']);
 			}
-			let boundStatements = "doIt = async function() {\n";
+			// Deserialise the remaining bound objects
 			for (const [key, value] of Object.entries(this.bindings)) {
 				if (key != "this") {
-					boundStatements = boundStatements + "let " + key + "=" + value + ";\n"; 
+					deserializedBindings[key] = deserialize(value); 
 				}
+			}
+			// Construct the function source
+			let boundStatements = "doIt = async function(bindings) {\n";
+			for (const [key, value] of Object.entries(deserializedBindings)) {
+					boundStatements = boundStatements + "let " + key + " = bindings['" + key + "'];\n"; 
 			}
 			boundStatements = boundStatements + this.statements;
 			boundStatements = boundStatements + "}\n";
+			// Actually evaluate
 			logger.debug('EvalCommand executing: ' + boundStatements);
 			eval(boundStatements);
-			doIt.bind(thisObject)()
+			doIt.bind(thisObject)(deserializedBindings)
 				.then(function() { logger.silly("doIt() done"); })
 				.catch(function(err) {
 					logger.error(err);
