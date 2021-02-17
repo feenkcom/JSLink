@@ -115,8 +115,7 @@ JSLinkPharoNodejsProcess >> debuggerPausedAction [
 	The basic action is to inspect the debugger so that the state can be inspected.
 	Since the Bloc UI process may be waiting on a response, signal all promises that the debugger has been paused."
 
-	^ [ self application notifyDebuggerPaused: serverDebugger.
-		serverDebugger inspect ]
+	^ [ self application notifyDebuggerPaused: serverDebugger ]
 ]
 
 { #category : #accessing }
