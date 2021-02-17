@@ -131,12 +131,10 @@ function serialize(obj, immediate) {
 function deserialize(obj) {
 	let result;
 
-	logger.debug("deserialize: " + obj);
 	result = JSON.parse(obj);
 	if (result != null && result.__registryid__) {
 		result = the_registry.resolve(result.__registryid__);
 	}
-	logger.debug("result = " + result);
 	return result; }
 
 
