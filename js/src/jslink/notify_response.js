@@ -17,7 +17,7 @@ async function send_response(data) {
 	logger.debug("send_response() to: " + url + " " + data['__sync']);
 	let result = await getJSON(url, data);
 	logger.debug("send_response() returning from: " + data['__sync']);
-	logger.debug(result);
+	//logger.debug(result);
 	return result; }
 
 
@@ -33,7 +33,7 @@ async function notify(obj, notification_id) {
 	let sentObj = obj;
 
 	logger.debug("Notify: " + notification_id);
-	logger.debug(obj);
+	//logger.debug(obj);
 	data["type"] = "EVAL";
 	data["id"] = notification_id;
 	// Undefined is often returned from functions / methods.
