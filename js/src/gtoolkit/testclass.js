@@ -26,6 +26,16 @@ class TestClass {
 	getNumber() {
 		return this.number; }
 
+	// A recursive factorial that allows a stack to be built and traversed,
+	// for debugging testing.
+	factorial(aNumber) {
+		let result;
+		if (aNumber == 1)
+			{ result = 1; debugger; }
+		else
+			{ result = aNumber * this.factorial(aNumber - 1); }
+		return result; }
+
     gtViewList(builder) {
         return builder.list()
             .title('Simple List')
