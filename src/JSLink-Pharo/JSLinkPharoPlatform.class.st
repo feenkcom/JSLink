@@ -73,7 +73,6 @@ JSLinkPharoPlatform >> ensureApplicationDirectoryFor: application [
 
 	appFolder := application settings workingDirectory.
 	appFolder exists ifTrue: [ ^ self ].
-	appFolder ensureCreateDirectory.
 	self copyApplicationTo: appFolder application: application.
 
 ]
