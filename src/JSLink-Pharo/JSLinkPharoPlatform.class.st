@@ -31,15 +31,13 @@ JSLinkPharoPlatform >> copyApplicationTo: appFolder application: application [
 		[ srcDir := self folderForApplication ].
 	srcDir exists ifFalse: 
 		[ self error: 'Unable to locate JSLink runtime files' ].
-
 	"Copy the runtime directory"
 	cpCommand := String streamContents: [ :stream |
 		stream
 			<< 'cp -a ';
 			<< srcDir fullName;
-			<< '/ ';
-			<< appFolder fullName;
-			<< '/' ].
+			<< ' ';
+			<< appFolder fullName ].
 	proc := OSSUnixSubprocess new 
 		shellCommand: cpCommand;
 		runAndWait.
