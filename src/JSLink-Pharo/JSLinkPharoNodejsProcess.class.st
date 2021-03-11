@@ -111,9 +111,8 @@ JSLinkPharoNodejsProcess class >> startUp: resuming [
 
 { #category : #'start-stop' }
 JSLinkPharoNodejsProcess >> debuggerPausedAction [
-	"Respond to the debugger paused notification.
-	The basic action is to inspect the debugger so that the state can be inspected.
-	Since the Bloc UI process may be waiting on a response, signal all promises that the debugger has been paused."
+	"Respond to the debugger state changed notification.
+	Signal all promises that the debugger has been paused."
 
 	^ [ self application notifyDebuggerPaused: serverDebugger ]
 ]
