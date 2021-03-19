@@ -203,12 +203,14 @@ JSLinkPharoNodejsProcess >> start [
 { #category : #'start-stop' }
 JSLinkPharoNodejsProcess >> startServerDebugger [
 	"Start the debugger, tell the server to run and set up inspection on halt"
+	| cdtDebugger |
 
 	"Give the server time to start"
 	1 second wait.
-	serverDebugger := CDTDebuggerServer new endPoints first connect.
-	serverDebugger announcer when: CDTDebuggerPaused do: self debuggerPausedAction.
-	"serverDebugger resume."
+	cdtDebugger := CDTDebuggerServer new endPoints first connect.
+	cdtDebugger announcer when: CDTDebuggerPaused do: self debuggerPausedAction.
+
+	serverDebugger := DAPJavaScriptDebugger new cdtDebugger: cdtDebugger.
 ]
 
 { #category : #'start-stop' }
