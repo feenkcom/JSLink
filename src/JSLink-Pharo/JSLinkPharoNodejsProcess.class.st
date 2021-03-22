@@ -203,11 +203,19 @@ JSLinkPharoNodejsProcess >> start [
 { #category : #'start-stop' }
 JSLinkPharoNodejsProcess >> startServerDebugger [
 	"Start the debugger, tell the server to run and set up inspection on halt"
-	| cdtDebugger |
+	| cdtDebugger retries |
 
-	"Give the server time to start"
-	1 second wait.
-	cdtDebugger := CDTDebuggerServer new endPoints first connect.
+	retries := 10.
+	300 milliSeconds wait.
+	[ cdtDebugger := CDTDebuggerServer new endPoints first connect ]
+		on: ConnectionTimedOut
+		do: [ :ex |
+			retries > 0 ifTrue:
+				[ retries := retries - 1.
+				300 milliSeconds wait.
+				ex retry ]
+			ifFalse:
+				[ ex pass ] ].
 	cdtDebugger announcer when: CDTDebuggerPaused do: self debuggerPausedAction.
 
 	serverDebugger := DAPJavaScriptDebugger new cdtDebugger: cdtDebugger.
@@ -216,7 +224,7 @@ JSLinkPharoNodejsProcess >> startServerDebugger [
 { #category : #'start-stop' }
 JSLinkPharoNodejsProcess >> stop [
 	process ifNil: [ ^ self ].
-	[ 	self settings serverDebugMode ifTrue:
+	[ 	serverDebugger ifNotNil:
 		[ self stopServerDebugger ].
 	process queryExitStatus ifNil: [ process terminate ]] 
 		on: Error 
