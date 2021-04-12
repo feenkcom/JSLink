@@ -14,8 +14,8 @@ class ColumnedListView extends View {
         return this;
     }
 
-    column(columnTitle, columnFormatCallback) {
-        let tableColumn = new ListColumn(columnTitle, columnFormatCallback);
+    column(columnTitle, columnFormatCallback, columnWidth) {
+        let tableColumn = new ListColumn(columnTitle, columnFormatCallback, columnWidth);
         this.columns.push(tableColumn);
         return this;
     }
@@ -29,7 +29,7 @@ class ColumnedListView extends View {
         exportData['viewName'] = 'GtDeclarativeColumnedList';
         exportData['dataTransport'] = 1;
         exportData['columnWidths'] = this.columns.map(
-            column => null
+            column => column.width
         );
         exportData['columnTitles'] = this.columns.map(
             column => column.getTitle()
@@ -43,9 +43,10 @@ class ColumnedListView extends View {
 }
 
 class ListColumn {
-    constructor(title, formatCallback) {
+    constructor(title, formatCallback, width) {
         this.title = title;
         this.formatCallback = formatCallback;
+        this.width = width;
     }
 
     getTitle() {
