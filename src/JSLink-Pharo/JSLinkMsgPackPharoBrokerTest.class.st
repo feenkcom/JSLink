@@ -4,6 +4,7 @@ JSLink currently only supports the HTTP message broker.
 The MsgPack broker tests are disabled by making this a subclass of Object, instead of JSLinkMessageBrokerTest.
 
 This should be moved back under JSLinkMessageBrokerTest when support for MsgPack is added.
+
 "
 Class {
 	#name : #JSLinkMsgPackPharoBrokerTest,
