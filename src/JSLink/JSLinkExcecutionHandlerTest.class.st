@@ -1,3 +1,7 @@
+"
+This class contains tests
+
+"
 Class {
 	#name : #JSLinkExcecutionHandlerTest,
 	#superclass : #JSLinkTestCase,
