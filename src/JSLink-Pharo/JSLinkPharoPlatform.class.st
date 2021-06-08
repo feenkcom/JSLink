@@ -156,10 +156,11 @@ JSLinkPharoPlatform >> jsRepositoryFolder [
 
 	^ (IceRepository registry 
 			detect: [ :each | each includesPackageNamed: self class package name ] 
+			ifFound: [ :repository | repository location ]
 			ifNone: [ 
 				self inform: 'Please add a clone of this project to Iceberg to access to the resources'.
 				"For travis!"
-				^ '.' asFileReference ]) location / 'js'
+				'.' asFileReference ]) / 'js'
 ]
 
 { #category : #hooks }
