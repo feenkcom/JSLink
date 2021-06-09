@@ -1,8 +1,26 @@
 Class {
 	#name : #JSLinkPharoPlatform,
 	#superclass : #JSLinkPlatform,
+	#classVars : [
+		'RuntimeSourceDirectory'
+	],
 	#category : #'JSLink-Pharo-Platform'
 }
+
+{ #category : #accessing }
+JSLinkPharoPlatform class >> runtimeSourceDirectory [
+	<return: #AbstractFileReference>
+
+	^ RuntimeSourceDirectory
+]
+
+{ #category : #accessing }
+JSLinkPharoPlatform class >> runtimeSourceDirectory: anAbstractFileReference [
+	"Set the directory the contains the runtime files.
+	nil = not specified"
+
+	RuntimeSourceDirectory := anAbstractFileReference
+]
 
 { #category : #hooks }
 JSLinkPharoPlatform class >> socketMessageBrokerClass [
@@ -26,11 +44,9 @@ JSLinkPharoPlatform >> copyApplicationTo: appFolder application: application [
 	"Copy the PythonBridge runtime environment to the specified folder"
 	| srcDir cpCommand proc |
 
-	srcDir := self jsRepositoryFolder.
-	(srcDir exists and: [ srcDir ~= appFolder ]) ifFalse: 
-		[ srcDir := self folderForApplication ].
-	srcDir exists ifFalse: 
-		[ self error: 'Unable to locate JSLink runtime files' ].
+	srcDir := self runtimeSourceDirectoryFor: application.
+	srcDir resolve = appFolder resolve ifTrue: [ ^ self ].
+
 	"Copy the runtime directory"
 	cpCommand := String streamContents: [ :stream |
 		stream
@@ -44,18 +60,6 @@ JSLinkPharoPlatform >> copyApplicationTo: appFolder application: application [
 	proc isSuccess ifFalse:
 		[ self error: 'Unable to install JSLink runtime' ].
 
-]
-
-{ #category : #'private - symlinks' }
-JSLinkPharoPlatform >> createSymlinkFor: originalFile on: targetFile [
-	OSSUnixSubprocess new
-				command: '/bin/ln';
-				arguments: (Array 
-									with: '-s' 
-									with: originalFile asFileReference fullName 
-									with: targetFile asFileReference fullName);
-				terminateOnShutdown;
-				runAndWaitOnExitDo: [ :command | ^ self ].
 ]
 
 { #category : #hooks }
@@ -82,14 +86,6 @@ JSLinkPharoPlatform >> ensureEnvironmentForApp: anApplication [
 
 	self ensureApplicationDirectory: anApplication.
 	self installEnvironmentForApp: anApplication.
-]
-
-{ #category : #'private - symlinks' }
-JSLinkPharoPlatform >> ensureFolderSymlinkFor: aFolder [
-	| symlinkRef |
-	symlinkRef := aFolder basename asFileReference.
-	symlinkRef exists ifFalse: [ 
-		self createSymlinkFor: aFolder on: symlinkRef ]
 ]
 
 { #category : #accessing }
@@ -150,19 +146,6 @@ JSLinkPharoPlatform >> installModule: moduleName in: application [
 		self signalInstallEnvFailed ]
 ]
 
-{ #category : #utils }
-JSLinkPharoPlatform >> jsRepositoryFolder [
-	"Answer the js directory where the JSLink repository is typically cloned"
-
-	^ (IceRepository registry 
-			detect: [ :each | each includesPackageNamed: self class package name ] 
-			ifFound: [ :repository | repository location ]
-			ifNone: [ 
-				self inform: 'Please add a clone of this project to Iceberg to access to the resources'.
-				"For travis!"
-				'.' asFileReference ]) / 'js'
-]
-
 { #category : #hooks }
 JSLinkPharoPlatform >> newRandomName [
 	^ 'js' , UUID new asString36
@@ -174,6 +157,28 @@ JSLinkPharoPlatform >> runtimeFolderForApplication: application [
 
 	^ application settings workingDirectory ifNil:
 		[ self folderForApplication ]
+]
+
+{ #category : #utils }
+JSLinkPharoPlatform >> runtimeSourceDirectoryFor: aJSLinkApplication [
+	"Answer the source directory containing the runtime files.
+	This is the first of:
+	1. RuntimeSourceDirectory (if specified)
+	2. The git repository copy.
+	3. An existing copy in the image directory"
+	| fileReference |
+
+	(RuntimeSourceDirectory isNotNil and: [ RuntimeSourceDirectory exists ]) ifTrue: 
+		[ ^ RuntimeSourceDirectory ].
+	IceRepository registry 
+			detect: [ :each | each includesPackageNamed: aJSLinkApplication class package name ] 
+			ifFound: [ :repository | 
+					fileReference := repository location / 'js'.
+					fileReference exists ifTrue: [ ^ fileReference ] ]
+			ifNone: [ ].
+	fileReference := self folderForApplication.
+	fileReference exists ifTrue: [ ^ fileReference ].
+	self error: 'Unable to locate JSLink runtime source'.
 ]
 
 { #category : #private }
