@@ -19,8 +19,9 @@ JSLinkPharoNodejsProcess class >> initialize [
 ]
 
 { #category : #initialization }
-JSLinkPharoNodejsProcess class >> nodejsPath: aString [
-	NodejsPath := aString
+JSLinkPharoNodejsProcess class >> nodejsPath: aFileReference [
+
+	NodejsPath := aFileReference
 ]
 
 { #category : #accessing }
@@ -128,9 +129,24 @@ JSLinkPharoNodejsProcess >> errorMessage [
 ]
 
 { #category : #accessing }
+JSLinkPharoNodejsProcess >> exitCode [
+
+	^ process
+		ifNil: [ nil ]
+		ifNotNil: [ process exitCode ]
+]
+
+{ #category : #accessing }
 JSLinkPharoNodejsProcess >> exitStatusInterpreter [
 
 	^ process exitStatusInterpreter
+]
+
+{ #category : #testing }
+JSLinkPharoNodejsProcess >> hasProcess [
+	"Answer a boolean indicating whether the receiver has a process object"
+
+	^ process isNotNil
 ]
 
 { #category : #initialization }
@@ -186,7 +202,6 @@ JSLinkPharoNodejsProcess >> serverPath [
 
 	fileReference := self settings serverExecutable.
 	fileReference ifNil: [ fileReference := self class serverPath ].
-	fileReference isExecutable ifFalse: [ self class signalCommandNotFound: fileReference fullName ].
 	^ fileReference.
 ]
 
