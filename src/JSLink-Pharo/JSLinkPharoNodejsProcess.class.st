@@ -19,15 +19,9 @@ JSLinkPharoNodejsProcess class >> initialize [
 ]
 
 { #category : #initialization }
-JSLinkPharoNodejsProcess class >> nodejsPath [
-	^ NodejsPath 
-			ifNil: [ NodejsPath := self resolveNodejsPath ]
-			ifNotNil: [ NodejsPath ]
-]
+JSLinkPharoNodejsProcess class >> nodejsPath: aFileReference [
 
-{ #category : #initialization }
-JSLinkPharoNodejsProcess class >> nodejsPath: aString [
-	NodejsPath := aString
+	NodejsPath := aFileReference
 ]
 
 { #category : #accessing }
@@ -101,6 +95,13 @@ JSLinkPharoNodejsProcess class >> resolveNpmPath [
 		ifEmpty: [ self signalCommandNotFound: 'npm' ]
 ]
 
+{ #category : #initialization }
+JSLinkPharoNodejsProcess class >> serverPath [
+	^ NodejsPath 
+			ifNil: [ NodejsPath := self resolveNodejsPath ]
+			ifNotNil: [ NodejsPath ]
+]
+
 { #category : #'system startup' }
 JSLinkPharoNodejsProcess class >> startUp: resuming [
 	"On startup any instances saved during the last session will be invalid (since the processes are terminated on shutdown).  Mark them as stopped."
@@ -127,6 +128,27 @@ JSLinkPharoNodejsProcess >> errorMessage [
 	^ process stderrStream contents
 ]
 
+{ #category : #accessing }
+JSLinkPharoNodejsProcess >> exitCode [
+
+	^ process
+		ifNil: [ nil ]
+		ifNotNil: [ process exitCode ]
+]
+
+{ #category : #accessing }
+JSLinkPharoNodejsProcess >> exitStatusInterpreter [
+
+	^ process exitStatusInterpreter
+]
+
+{ #category : #testing }
+JSLinkPharoNodejsProcess >> hasProcess [
+	"Answer a boolean indicating whether the receiver has a process object"
+
+	^ process isNotNil
+]
+
 { #category : #initialization }
 JSLinkPharoNodejsProcess >> initialize [
 	super initialize.
@@ -144,27 +166,15 @@ JSLinkPharoNodejsProcess >> isRunning [
 { #category : #private }
 JSLinkPharoNodejsProcess >> newProcess [
 	| newProcess |
-	newProcess := OSSUnixSubprocess new
-				command: self nodejsPath fullName;
+	newProcess := GtUnixSubprocess new
+				command: self serverPath fullName;
 				arguments: self processArguments;
 				workingDirectory: self workingDirectory resolve fullName;
-"				redirectStdout;
-				redirectStderr;"
 				terminateOnShutdown;
 				yourself.
 	environmentVariables associationsDo: [ :assoc |
 		newProcess environmentAt: assoc key put: assoc value ].
 	^ newProcess
-]
-
-{ #category : #accessing }
-JSLinkPharoNodejsProcess >> nodejsPath [
-	| fileReference |
-
-	fileReference := self settings serverExecutable.
-	fileReference ifNil: [ fileReference := self class nodejsPath ].
-	fileReference isExecutable ifFalse: [ self class signalCommandNotFound: fileReference fullName ].
-	^ fileReference.
 ]
 
 { #category : #accessing }
@@ -184,6 +194,15 @@ JSLinkPharoNodejsProcess >> processArguments [
 		add: self settings serverSocketAddress port asString;
 		add: self settings clientSocketAddress port asString.
 	^ args
+]
+
+{ #category : #accessing }
+JSLinkPharoNodejsProcess >> serverPath [
+	| fileReference |
+
+	fileReference := self settings serverExecutable.
+	fileReference ifNil: [ fileReference := self class serverPath ].
+	^ fileReference.
 ]
 
 { #category : #initialization }
@@ -219,6 +238,20 @@ JSLinkPharoNodejsProcess >> startServerDebugger [
 	cdtDebugger announcer when: CDTDebuggerPaused do: self debuggerPausedAction.
 
 	serverDebugger := DAPJavaScriptDebugger new cdtDebugger: cdtDebugger.
+]
+
+{ #category : #accessing }
+JSLinkPharoNodejsProcess >> stderr [
+	"Answer the process stderr contents"
+
+	^ process stderr
+]
+
+{ #category : #accessing }
+JSLinkPharoNodejsProcess >> stdout [ 
+	"Answer the process stdout contents"
+
+	^ process stdout
 ]
 
 { #category : #'start-stop' }
