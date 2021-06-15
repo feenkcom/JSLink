@@ -42,7 +42,7 @@ JSLinkPharoPlatform class >> weakRegistryClass [
 { #category : #copying }
 JSLinkPharoPlatform >> copyApplicationTo: appFolder application: application [
 	"Copy the PythonBridge runtime environment to the specified folder"
-	| srcDir cpCommand proc |
+	| srcDir cpCommand proc error |
 
 	srcDir := self runtimeSourceDirectoryFor: application.
 	srcDir resolve = appFolder resolve ifTrue: [ ^ self ].
@@ -54,30 +54,28 @@ JSLinkPharoPlatform >> copyApplicationTo: appFolder application: application [
 			<< srcDir fullName;
 			<< ' ';
 			<< appFolder fullName ].
-	proc := OSSUnixSubprocess new 
+	proc := GtUnixSubprocess new 
 		shellCommand: cpCommand;
 		runAndWait.
 	proc isSuccess ifFalse:
-		[ self error: 'Unable to install JSLink runtime' ].
+		[ error := LanguageLinkProcessError new
+			messageText: 'Unable to install JSLink runtime';
+			application: application;
+			process: proc.
+		error signal ].
 
 ]
 
 { #category : #hooks }
 JSLinkPharoPlatform >> ensureApplicationDirectory: application [
 	"If the runtimeFolder doesn't exist, attempt to symlink to the respository directory"
-
-	application settings workingDirectory exists ifFalse:
-		[ self ensureApplicationDirectoryFor: application ].
-
-]
-
-{ #category : #'as yet unclassified' }
-JSLinkPharoPlatform >> ensureApplicationDirectoryFor: application [
 	| appFolder |
 
-	appFolder := application settings workingDirectory.
-	appFolder exists ifTrue: [ ^ self ].
-	self copyApplicationTo: appFolder application: application.
+	application settings workingDirectory exists ifFalse:
+		[ appFolder := application settings workingDirectory.
+		appFolder exists ifTrue: [ ^ self ].
+		self copyApplicationTo: appFolder application: application ].
+	self setExecutableFor: application.
 
 ]
 
@@ -97,7 +95,7 @@ JSLinkPharoPlatform >> folderForApplication [
 
 { #category : #utils }
 JSLinkPharoPlatform >> forceInstallEnvironmentForApp: application [
-	| proc workingDir npm |
+	| proc workingDir npm error |
 
 	self assert: (JSLinkPharoNodejsProcess nodejsPathForApplication: application) isNotNil description:
 'Unable to find the nodejs command.
@@ -107,7 +105,7 @@ Please ensure it is installed and in the default path for the pharo process.'.
 'Unable to find the npm command.
 Please ensure it is installed and in the default path for the pharo process.'.
 	workingDir := application settings workingDirectory.
-	proc := OSSUnixSubprocess new
+	proc := GtUnixSubprocess new
 				workingDirectory: workingDir resolve fullName;
 				command: npm fullName;
 				arguments: { 'install' };
@@ -115,8 +113,13 @@ Please ensure it is installed and in the default path for the pharo process.'.
 	self class subProcessEnvironmentDictionary keysAndValuesDo: [ :key :value |
 		proc environmentAt: key put: value ].
 	proc runAndWait.
-	proc isSuccess ifFalse: [ 
-		self signalInstallEnvFailed ]
+	proc isSuccess ifFalse:
+		[ error := LanguageLinkProcessError new
+			messageText: 'Unable to install npm modules';
+			application: application;
+			process: proc.
+		error signal ].
+
 ]
 
 { #category : #utils }
@@ -130,11 +133,11 @@ JSLinkPharoPlatform >> installEnvironmentForApp: application [
 { #category : #utils }
 JSLinkPharoPlatform >> installModule: moduleName in: application [
 	"Install the requested node.js module using npm"
-	| proc workingDir npm |
+	| proc workingDir npm error |
 
 	npm := JSLinkPharoNodejsProcess npmPathForApplication: application.
 	workingDir := application settings workingDirectory.
-	proc := OSSUnixSubprocess new
+	proc := GtUnixSubprocess new
 				workingDirectory: workingDir resolve fullName;
 				command: npm fullName;
 				arguments: { 'install'. moduleName. };
@@ -142,8 +145,13 @@ JSLinkPharoPlatform >> installModule: moduleName in: application [
 	self class subProcessEnvironmentDictionary keysAndValuesDo: [ :key :value |
 		proc environmentAt: key put: value ].
 	proc runAndWait.
-	proc isSuccess ifFalse: [ 
-		self signalInstallEnvFailed ]
+	proc isSuccess ifFalse:
+		[ error := LanguageLinkProcessError new
+			messageText: 'Unable to install module: ', moduleName asString;
+			application: application;
+			process: proc.
+		error signal ].
+
 ]
 
 { #category : #hooks }
@@ -182,8 +190,24 @@ JSLinkPharoPlatform >> runtimeSourceDirectoryFor: aJSLinkApplication [
 ]
 
 { #category : #private }
-JSLinkPharoPlatform >> signalInstallEnvFailed [
-	"The attempt to install all the required packages with npm failed for some reason"
+JSLinkPharoPlatform >> setExecutableFor: application [
+	"Copy the PythonBridge runtime environment to the specified folder"
+	| chmodCommand proc error appFolderString |
 
-	Error signal: 'npm install failed.'
+	appFolderString := application settings workingDirectory resolve fullName copyReplaceAll: '"' with: '\"'.
+	chmodCommand := String streamContents: [ :stream |
+		stream
+			<< 'chmod +x "';
+			<< appFolderString;
+			<< '"/*.sh' ].
+	proc := GtUnixSubprocess new 
+		shellCommand: chmodCommand;
+		runAndWait.
+	proc isSuccess ifFalse:
+		[ error := LanguageLinkProcessError new
+			messageText: 'Unable to set JSLink runtime executable bits';
+			application: application;
+			process: proc.
+		error signal ].
+
 ]
