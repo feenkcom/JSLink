@@ -39,7 +39,7 @@ JSLinkSimpleApplicationTest >> testSimpleLambda [
 JSLinkSimpleApplicationTest >> testSimpleMapping [
 	| obj type |
 
-	self cf << (#TestClass asJSGI <- #'./dummy' require) beVarDeclaration.
+	self cf << (#TestClass asJSGI <- #'../gtoolkit/testclass' require) beVarDeclaration.
 	"self cf << (JSGExpression new expression: 'new TestClass()')."
 	self cf << #TestClass jsCall new.
 	obj := self cf sendAndWait.
