@@ -17,7 +17,7 @@ class TextEditorView extends View {
 
     asDictionaryForExport() {
         let exportData = super.asDictionaryForExport();
-        exportData['viewName'] = 'GtDeclarativeTextEditor';
+        exportData['viewName'] = 'GtPhlowDeclarativeTextEditorView';
         exportData['dataTransport'] = 1;
         exportData['string'] = this.getString();
         return exportData;
