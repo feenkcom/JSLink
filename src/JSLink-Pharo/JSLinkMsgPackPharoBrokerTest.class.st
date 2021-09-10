@@ -7,31 +7,31 @@ This should be moved back under JSLinkMessageBrokerTest when support for MsgPack
 
 "
 Class {
-	#name : #JSLinkMsgPackPharoBrokerTest,
-	#superclass : #Object,
+	#name : 'JSLinkMsgPackPharoBrokerTest',
+	#superclass : 'Object',
 	#instVars : [
 		'stubStream',
 		'stubThread'
 	],
-	#category : #'JSLink-Pharo-MessageBroker'
+	#category : 'JSLink-Pharo-MessageBroker'
 }
 
-{ #category : #utils }
+{ #category : 'utils' }
 JSLinkMsgPackPharoBrokerTest >> answer [
 	"MsgPack socket broker does not answer empty messages."
 ]
 
-{ #category : #utils }
+{ #category : 'utils' }
 JSLinkMsgPackPharoBrokerTest >> answer: dict [
 	self primSendMessageToBroker: dict
 ]
 
-{ #category : #utils }
+{ #category : 'utils' }
 JSLinkMsgPackPharoBrokerTest >> assertCommunicationError: aBlock [
 	"Message pack does not raise CommunicationError on exceptions at the other side"
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 JSLinkMsgPackPharoBrokerTest >> buildAndStartStubServer [
 	stubStream := JSLinkMsgPackUtils openConnectionToHost: #[ 127 0 0 1 ] port: broker port.
 	stubStream := JSLinkMsgPackSocketStream on: stubStream.
@@ -41,45 +41,45 @@ JSLinkMsgPackPharoBrokerTest >> buildAndStartStubServer [
 	
 ]
 
-{ #category : #utils }
+{ #category : 'utils' }
 JSLinkMsgPackPharoBrokerTest >> errorResponse [
 	^ ZnResponse serverError: 'ERROR'
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 JSLinkMsgPackPharoBrokerTest >> messageBrokerClass [
 	^ JSLinkMsgPackPharoBroker
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackPharoBrokerTest >> primSendMessageToBroker: dict [
 	stubStream nextPut: dict
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 JSLinkMsgPackPharoBrokerTest >> sendMessageToBroker: dict [
 	self sendMessageToBroker: dict answerBlock: [ :ans | self assert: false ]
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 JSLinkMsgPackPharoBrokerTest >> sendMessageToBroker: dict answerBlock: aBlock [
 	self setHandler: aBlock.
 	self primSendMessageToBroker: dict.
 	self sleepAWhile.
 ]
 
-{ #category : #utils }
+{ #category : 'utils' }
 JSLinkMsgPackPharoBrokerTest >> sleepAWhile [
 	(Delay forMilliseconds: 150) wait.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 JSLinkMsgPackPharoBrokerTest >> stopStubServer [
 	stubThread ifNotNil: [ stubThread terminate ].
 	stubStream ifNotNil: [ stubStream close ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackPharoBrokerTest >> stubPrimHandle: msgDict [
 	handlerBlock value: (msgDict at: #type) -> msgDict
 ]

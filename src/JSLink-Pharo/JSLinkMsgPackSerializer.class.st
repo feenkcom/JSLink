@@ -1,15 +1,15 @@
 Class {
-	#name : #JSLinkMsgPackSerializer,
-	#superclass : #LanguageLinkAbstractSerializerWrapper,
-	#category : #'JSLink-Pharo-MessageBroker'
+	#name : 'JSLinkMsgPackSerializer',
+	#superclass : 'LanguageLinkAbstractSerializerWrapper',
+	#category : 'JSLink-Pharo-MessageBroker'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSerializer >> deserialize: aByteArray [
 	^ MpDecoder decode: aByteArray
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSerializer >> serialize: anObject [
 	^ MpEncoder encode: anObject
 ]
