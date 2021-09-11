@@ -1,1 +1,1 @@
-Package { #name : #'JSLink-Pharo' }
+Package { #name : 'JSLink-Pharo' }

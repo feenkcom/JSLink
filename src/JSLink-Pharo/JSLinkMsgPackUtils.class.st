@@ -1,17 +1,17 @@
 Class {
-	#name : #JSLinkMsgPackUtils,
-	#superclass : #Object,
-	#category : #'JSLink-Pharo-MessageBroker'
+	#name : 'JSLinkMsgPackUtils',
+	#superclass : 'Object',
+	#category : 'JSLink-Pharo-MessageBroker'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 JSLinkMsgPackUtils class >> listenBacklogSize [
 	"Server socket backlog size (number of pending connection waiting to be accepted)"
 	
 	^ 32
 ]
 
-{ #category : #'socket creation' }
+{ #category : 'socket creation' }
 JSLinkMsgPackUtils class >> openConnectionToHost: address port: port [
 	| stream |
 	stream := SocketStream openConnectionToHost: address port: port.
@@ -19,7 +19,7 @@ JSLinkMsgPackUtils class >> openConnectionToHost: address port: port [
 	^ stream
 ]
 
-{ #category : #'socket creation' }
+{ #category : 'socket creation' }
 JSLinkMsgPackUtils class >> primStreamFromSocket: aSocket [
 	| stream |
 	stream := SocketStream on: aSocket.
@@ -27,7 +27,7 @@ JSLinkMsgPackUtils class >> primStreamFromSocket: aSocket [
 	^ stream
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackUtils class >> setReferenceSocketStreamOptions: stream [
 	stream
 		binary;
@@ -37,14 +37,14 @@ JSLinkMsgPackUtils class >> setReferenceSocketStreamOptions: stream [
 		timeout: JSLinkMsgPackUtils socketStreamTimeout
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 JSLinkMsgPackUtils class >> socketBufferSize [
 	"Size in bytes for Sockets and SocketStream IO buffers"
 
 	^ 4096
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 JSLinkMsgPackUtils class >> socketStreamTimeout [
 	"Slightly less than a year. In other words, this socket doesn't timeout"
 	^ 30000000

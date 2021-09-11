@@ -3,12 +3,12 @@ This class contains tests
 
 "
 Class {
-	#name : #JSLinkMsgPackSocketStreamTest,
-	#superclass : #TestCase,
-	#category : #'JSLink-Pharo-MessageBroker'
+	#name : 'JSLinkMsgPackSocketStreamTest',
+	#superclass : 'TestCase',
+	#category : 'JSLink-Pharo-MessageBroker'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> assertSerialize: anObject [
 	self connectStreams: [ :serverStream :clientStream |
 		clientStream nextPut: anObject.
@@ -16,7 +16,7 @@ JSLinkMsgPackSocketStreamTest >> assertSerialize: anObject [
 		self deny: serverStream atEnd ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> connectStreams: aBlock [
 	| semaphore clientSocket serverStream clientStream |
 	self serverSocket: [ :serverSocket |
@@ -34,24 +34,24 @@ JSLinkMsgPackSocketStreamTest >> connectStreams: aBlock [
 		ensure: [ clientStream close ]. ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> listenBacklogSize [
 	"Server socket backlog size (number of pending connection waiting to be accepted)"
 	
 	^ 32
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> port [
 	^ 1332
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> serverPriority [
 	^ Processor lowIOPriority
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> serverSocket: aBlock [
 	| serverSocket |
 	[	serverSocket := self serverSocketOn: self port.
@@ -62,7 +62,7 @@ JSLinkMsgPackSocketStreamTest >> serverSocket: aBlock [
 			serverSocket closeAndDestroy ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> serverSocketOn: port [
 	| socket |
 	(socket := Socket newTCP)
@@ -75,25 +75,25 @@ JSLinkMsgPackSocketStreamTest >> serverSocketOn: port [
 	^ socket
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> socketBufferSize [
 	"Size in bytes for Sockets and SocketStream IO buffers"
 
 	^ 4096
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> socketStreamTimeout [
 	^ 30
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> testAssertError [
 	self should: [ self connectStreams: [ :serverStream :clientStream | 
 			Error signal ] ] raise: Error.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> testBidirectionality [
 	self connectStreams: [ :serverStream :clientStream |
 		serverStream nextPut: 'Foo'.
@@ -102,37 +102,37 @@ JSLinkMsgPackSocketStreamTest >> testBidirectionality [
 		self assert: clientStream next equals: 'Foo' ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> testByteArray [
 	self assertSerialize: #[ 1 23 54 ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> testConnect [
 	self connectStreams: [ :serverStream :clientStream | ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> testDictionary [
 	self assertSerialize: { #foo -> #(#err 4). 4 -> 16} asDictionary
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> testInteger [
 	self assertSerialize: 3
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> testLargerString [
 	self assertSerialize: 'pb6f6l7aqhz80ksi8i90e5iexer'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> testLargerStringRaw [
 	self assertSerialize: 'pb6f6l7aqhz80ksi8i90e5iexer'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JSLinkMsgPackSocketStreamTest >> testString [
 	self assertSerialize: 'FooBarZork'
 ]
