@@ -88,6 +88,13 @@ JSLinkApplication >> addMapping: jsType to: mapFunction [
 		send: (#addMapping jsCallWith: { jsType. mapFunction. })
 ]
 
+{ #category : #debugging }
+JSLinkApplication >> debuggerClientFor: anException [
+	"Answer the debugger client to be used by the Gt Post Mortem debugger"
+
+	^ GtJavaScriptPostMortemDebugger new exception: anException
+]
+
 { #category : #initialization }
 JSLinkApplication >> initializeHandlers [
 	loggingHandler := LanguageLinkLoggingHandler application: self.
