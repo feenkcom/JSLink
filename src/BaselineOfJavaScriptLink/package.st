@@ -1,1 +1,1 @@
-Package { #name : 'BaselineOfJavaScriptLink' }
+Package { #name : #BaselineOfJavaScriptLink }

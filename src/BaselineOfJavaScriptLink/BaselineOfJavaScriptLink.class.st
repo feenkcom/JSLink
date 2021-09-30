@@ -1,10 +1,10 @@
 Class {
-	#name : 'BaselineOfJavaScriptLink',
-	#superclass : 'BaselineOf',
-	#category : 'BaselineOfJavaScriptLink'
+	#name : #BaselineOfJavaScriptLink,
+	#superclass : #BaselineOf,
+	#category : #BaselineOfJavaScriptLink
 }
 
-{ #category : 'baseline' }
+{ #category : #baseline }
 BaselineOfJavaScriptLink >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
@@ -13,7 +13,7 @@ BaselineOfJavaScriptLink >> baseline: spec [
 				spec repository: 'github://feenkcom/JavaScriptGenerator:v0.5.129/repository' ].
 		spec
 			baseline: 'PharoLink' with: [
-				spec repository: 'github://feenkcom/PharoLink:v0.8.107/src' ].
+				spec repository: 'github://feenkcom/PharoLink:v0.8.108/src' ].
 
 		spec package: 'JSLink' with: [
 			spec requires: #('PharoLink' 'JavaScriptGenerator') ].
