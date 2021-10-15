@@ -1,6 +1,6 @@
 Class {
-	#name : 'JSLinkPharoNodejsProcess',
-	#superclass : 'LanguageLinkAbstractProcess',
+	#name : #JSLinkPharoNodejsProcess,
+	#superclass : #LanguageLinkAbstractProcess,
 	#instVars : [
 		'process',
 		'environmentVariables',
@@ -9,22 +9,22 @@ Class {
 	#classVars : [
 		'NodejsPath'
 	],
-	#category : 'JSLink-Pharo-Processes'
+	#category : #'JSLink-Pharo-Processes'
 }
 
-{ #category : 'class initialization' }
+{ #category : #'class initialization' }
 JSLinkPharoNodejsProcess class >> initialize [ 
 
 	SessionManager default registerUserClassNamed: self name.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 JSLinkPharoNodejsProcess class >> nodejsPath: aFileReference [
 
 	NodejsPath := aFileReference
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoNodejsProcess class >> nodejsPathForApplication: aJSApplication [
 	"Answer the NodeJS path for the supplied application.
 	This currently assumes a single installation per machine"
@@ -36,7 +36,7 @@ JSLinkPharoNodejsProcess class >> nodejsPathForApplication: aJSApplication [
 	^ NodejsPath.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoNodejsProcess class >> npmPathForApplication: aJSApplication [
 	"Answer the npm path for the supplied application.
 	Assume it is in the same directory as the nodejs executable.  If not, search the PATH."
@@ -49,12 +49,12 @@ JSLinkPharoNodejsProcess class >> npmPathForApplication: aJSApplication [
 	^ self resolveNpmPath.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoNodejsProcess class >> platform [
 	^ JSLinkPharoPlatform current
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 JSLinkPharoNodejsProcess class >> resolveNodejsPath [
 	| path |
 
@@ -64,45 +64,48 @@ JSLinkPharoNodejsProcess class >> resolveNodejsPath [
 	^ path asFileReference
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 JSLinkPharoNodejsProcess class >> resolveNodejsPath: commandName [
 	| proc |
 	
-	proc := OSSUnixSubprocess new
+	proc := GtSubprocessWithInMemoryOutput new
 				command: 'which';
-				arguments: (Array with: commandName);
-				redirectStdout;
-				terminateOnShutdown.
+				arguments: (Array with: commandName).
 	JSLinkPharoPlatform subProcessEnvironmentDictionary keysAndValuesDo: [ :key :value |
 		proc environmentAt: key put: value ].
-	proc runAndWaitOnExitDo: [ :command :outString | ^ outString trim ]
+	proc runAndWait.
+	(#(0 1) includes: proc exitCode) ifFalse:
+		[ self error: 'Unable to request ', commandName asString, ' location' ].
+	^ proc stdout trim.
 
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 JSLinkPharoNodejsProcess class >> resolveNpmPath [
-	| proc |
+	| proc path |
 
-	proc := OSSUnixSubprocess new
+	proc := GtSubprocessWithInMemoryOutput new
 				command: 'which';
 				arguments: (Array with: 'npm');
-				addAllEnvVariablesFromParentWithoutOverride;
-				redirectStdout;
 				terminateOnShutdown.
 	JSLinkPharoPlatform subProcessEnvironmentDictionary keysAndValuesDo: [ :key :value |
 		proc environmentAt: key put: value ].
-	(proc 	runAndWaitOnExitDo: [ :command :outString | ^ outString trim ]) 
-		ifEmpty: [ self signalCommandNotFound: 'npm' ]
+	proc runAndWait.
+	(#(0 1) includes: proc exitCode) ifFalse:
+		[ self error: 'Unable to determine npm path' ].
+	path := proc stdout trim.
+	path ifEmpty: [ self signalCommandNotFound: 'npm' ].
+	^ path
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 JSLinkPharoNodejsProcess class >> serverPath [
 	^ NodejsPath 
 			ifNil: [ NodejsPath := self resolveNodejsPath ]
 			ifNotNil: [ NodejsPath ]
 ]
 
-{ #category : 'system startup' }
+{ #category : #'system startup' }
 JSLinkPharoNodejsProcess class >> startUp: resuming [
 	"On startup any instances saved during the last session will be invalid (since the processes are terminated on shutdown).  Mark them as stopped."
 
@@ -110,7 +113,7 @@ JSLinkPharoNodejsProcess class >> startUp: resuming [
 		[ self allInstancesDo: [ :each | each stop ] ]
 ]
 
-{ #category : 'start-stop' }
+{ #category : #'start-stop' }
 JSLinkPharoNodejsProcess >> debuggerPausedAction [
 	"Respond to the debugger state changed notification.
 	Signal all promises that the debugger has been paused."
@@ -118,17 +121,17 @@ JSLinkPharoNodejsProcess >> debuggerPausedAction [
 	^ [ self application notifyDebuggerPaused: serverDebugger ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoNodejsProcess >> environmentVariables [
 	^ environmentVariables
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoNodejsProcess >> errorMessage [
 	^ process stderrStream contents
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoNodejsProcess >> exitCode [
 
 	^ process
@@ -136,37 +139,37 @@ JSLinkPharoNodejsProcess >> exitCode [
 		ifNotNil: [ process exitCode ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoNodejsProcess >> exitStatusInterpreter [
 
 	^ process exitStatusInterpreter
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 JSLinkPharoNodejsProcess >> hasProcess [
 	"Answer a boolean indicating whether the receiver has a process object"
 
 	^ process isNotNil
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 JSLinkPharoNodejsProcess >> initialize [
 	super initialize.
 	environmentVariables := Dictionary new.
 	self setDefaultEnvironmentVariables
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 JSLinkPharoNodejsProcess >> isRunning [
 	^ process
 		ifNil: [ false ]
 		ifNotNil: [ process isRunning ]
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkPharoNodejsProcess >> newProcess [
 	| newProcess |
-	newProcess := GtUnixSubprocess new
+	newProcess := GtSubprocessWithInMemoryOutput new
 				command: self serverPath fullName;
 				arguments: self processArguments;
 				workingDirectory: self workingDirectory resolve fullName;
@@ -177,12 +180,12 @@ JSLinkPharoNodejsProcess >> newProcess [
 	^ newProcess
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoNodejsProcess >> process [
 	^ process
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkPharoNodejsProcess >> processArguments [
 	| args |
 
@@ -196,7 +199,7 @@ JSLinkPharoNodejsProcess >> processArguments [
 	^ args
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoNodejsProcess >> serverPath [
 	| fileReference |
 
@@ -205,13 +208,13 @@ JSLinkPharoNodejsProcess >> serverPath [
 	^ fileReference.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 JSLinkPharoNodejsProcess >> setDefaultEnvironmentVariables [
 
 	environmentVariables := JSLinkPharoPlatform subProcessEnvironmentDictionary.
 ]
 
-{ #category : 'start-stop' }
+{ #category : #'start-stop' }
 JSLinkPharoNodejsProcess >> start [
 	process := self newProcess.
 	process run.
@@ -219,7 +222,7 @@ JSLinkPharoNodejsProcess >> start [
 		[ self startServerDebugger ].
 ]
 
-{ #category : 'start-stop' }
+{ #category : #'start-stop' }
 JSLinkPharoNodejsProcess >> startServerDebugger [
 	"Start the debugger, tell the server to run and set up inspection on halt"
 	| cdtDebugger retries |
@@ -240,21 +243,21 @@ JSLinkPharoNodejsProcess >> startServerDebugger [
 	serverDebugger := DAPJavaScriptDebugger new cdtDebugger: cdtDebugger.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoNodejsProcess >> stderr [
 	"Answer the process stderr contents"
 
 	^ process stderr
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoNodejsProcess >> stdout [ 
 	"Answer the process stdout contents"
 
 	^ process stdout
 ]
 
-{ #category : 'start-stop' }
+{ #category : #'start-stop' }
 JSLinkPharoNodejsProcess >> stop [
 	process ifNil: [ ^ self ].
 	[ 	serverDebugger ifNotNil:
@@ -266,7 +269,7 @@ JSLinkPharoNodejsProcess >> stop [
 	process := nil.
 ]
 
-{ #category : 'start-stop' }
+{ #category : #'start-stop' }
 JSLinkPharoNodejsProcess >> stopServerDebugger [
 	"Close the debugger and deregister"
 

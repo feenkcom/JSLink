@@ -1,20 +1,20 @@
 Class {
-	#name : 'JSLinkPharoPlatform',
-	#superclass : 'JSLinkPlatform',
+	#name : #JSLinkPharoPlatform,
+	#superclass : #JSLinkPlatform,
 	#classVars : [
 		'RuntimeSourceDirectory'
 	],
-	#category : 'JSLink-Pharo-Platform'
+	#category : #'JSLink-Pharo-Platform'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoPlatform class >> runtimeSourceDirectory [
 	<return: #AbstractFileReference>
 
 	^ RuntimeSourceDirectory
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoPlatform class >> runtimeSourceDirectory: anAbstractFileReference [
 	"Set the directory the contains the runtime files.
 	nil = not specified"
@@ -22,24 +22,24 @@ JSLinkPharoPlatform class >> runtimeSourceDirectory: anAbstractFileReference [
 	RuntimeSourceDirectory := anAbstractFileReference
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 JSLinkPharoPlatform class >> socketMessageBrokerClass [
 
 	"^ JSLinkMsgPackPharoBroker"
 	^ LanguageLinkHttpMessageBroker 
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkPharoPlatform class >> uiManagerClass [
 	^ LanguageLinkPharoUiManager
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 JSLinkPharoPlatform class >> weakRegistryClass [
 	^ LanguageLinkPharoWeakRegistry
 ]
 
-{ #category : 'copying' }
+{ #category : #copying }
 JSLinkPharoPlatform >> copyApplicationTo: appFolder application: application [
 	"Copy the PythonBridge runtime environment to the specified folder"
 	| srcDir cpCommand proc error |
@@ -55,7 +55,7 @@ JSLinkPharoPlatform >> copyApplicationTo: appFolder application: application [
 			<< '" "';
 			<< appFolder fullName;
 			<< '"' ].
-	proc := GtUnixSubprocess new 
+	proc := GtSubprocessWithInMemoryOutput new 
 		shellCommand: cpCommand;
 		runAndWait.
 	proc isSuccess ifFalse:
@@ -67,7 +67,7 @@ JSLinkPharoPlatform >> copyApplicationTo: appFolder application: application [
 
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 JSLinkPharoPlatform >> ensureApplicationDirectory: application [
 	"If the runtimeFolder doesn't exist, attempt to symlink to the respository directory"
 	| appFolder |
@@ -80,21 +80,21 @@ JSLinkPharoPlatform >> ensureApplicationDirectory: application [
 
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkPharoPlatform >> ensureEnvironmentForApp: anApplication [
 
 	self ensureApplicationDirectory: anApplication.
 	self installEnvironmentForApp: anApplication.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoPlatform >> folderForApplication [
 	"Answer the directory where JSLink runs from"
 
 	^ FileLocator imageDirectory / 'js'
 ]
 
-{ #category : 'utils' }
+{ #category : #utils }
 JSLinkPharoPlatform >> forceInstallEnvironmentForApp: application [
 	| proc workingDir npm error |
 
@@ -106,7 +106,7 @@ Please ensure it is installed and in the default path for the pharo process.'.
 'Unable to find the npm command.
 Please ensure it is installed and in the default path for the pharo process.'.
 	workingDir := application settings workingDirectory.
-	proc := GtUnixSubprocess new
+	proc := GtSubprocessWithInMemoryOutput new
 				workingDirectory: workingDir resolve fullName;
 				command: npm fullName;
 				arguments: { 'install' };
@@ -123,7 +123,7 @@ Please ensure it is installed and in the default path for the pharo process.'.
 
 ]
 
-{ #category : 'utils' }
+{ #category : #utils }
 JSLinkPharoPlatform >> installEnvironmentForApp: application [
 	| folder |
 	folder := application settings workingDirectory.
@@ -131,14 +131,14 @@ JSLinkPharoPlatform >> installEnvironmentForApp: application [
 		self forceInstallEnvironmentForApp: application ]
 ]
 
-{ #category : 'utils' }
+{ #category : #utils }
 JSLinkPharoPlatform >> installModule: moduleName in: application [
 	"Install the requested node.js module using npm"
 	| proc workingDir npm error |
 
 	npm := JSLinkPharoNodejsProcess npmPathForApplication: application.
 	workingDir := application settings workingDirectory.
-	proc := GtUnixSubprocess new
+	proc := GtSubprocessWithInMemoryOutput new
 				workingDirectory: workingDir resolve fullName;
 				command: npm fullName;
 				arguments: { 'install'. moduleName. };
@@ -155,12 +155,12 @@ JSLinkPharoPlatform >> installModule: moduleName in: application [
 
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 JSLinkPharoPlatform >> newRandomName [
 	^ 'js' , UUID new asString36
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkPharoPlatform >> runtimeFolderForApplication: application [
 	"Answer the directory where the PythonBridge runtime files are located"
 
@@ -168,7 +168,7 @@ JSLinkPharoPlatform >> runtimeFolderForApplication: application [
 		[ self folderForApplication ]
 ]
 
-{ #category : 'utils' }
+{ #category : #utils }
 JSLinkPharoPlatform >> runtimeSourceDirectoryFor: aJSLinkApplication [
 	"Answer the source directory containing the runtime files.
 	This is the first of:
@@ -190,7 +190,7 @@ JSLinkPharoPlatform >> runtimeSourceDirectoryFor: aJSLinkApplication [
 	self error: 'Unable to locate JSLink runtime source'.
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkPharoPlatform >> setExecutableFor: application [
 	"Copy the PythonBridge runtime environment to the specified folder"
 	| chmodCommand proc error appFolderString |
@@ -201,7 +201,7 @@ JSLinkPharoPlatform >> setExecutableFor: application [
 			<< 'chmod +x "';
 			<< appFolderString;
 			<< '"/*.sh' ].
-	proc := GtUnixSubprocess new 
+	proc := GtSubprocessWithInMemoryOutput new 
 		shellCommand: chmodCommand;
 		runAndWait.
 	proc isSuccess ifFalse:
