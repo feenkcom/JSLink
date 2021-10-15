@@ -1,6 +1,6 @@
 Class {
-	#name : 'JSLinkMsgPackSocketStream',
-	#superclass : 'Object',
+	#name : #JSLinkMsgPackSocketStream,
+	#superclass : #Object,
 	#instVars : [
 		'socketStream',
 		'encoder',
@@ -11,19 +11,19 @@ Class {
 	#category : 'JSLink-Pharo-MessageBroker'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 JSLinkMsgPackSocketStream class >> on: socketStream [
 	^ self new
 		on: socketStream;
 		yourself
 ]
 
-{ #category : 'streaming' }
+{ #category : #streaming }
 JSLinkMsgPackSocketStream >> atEnd [
 	^ decoderSemaphore critical: [ decoder atEnd ]
 ]
 
-{ #category : 'streaming' }
+{ #category : #streaming }
 JSLinkMsgPackSocketStream >> close [
 	| ans |
 	ans := socketStream socket ifNotNil: #closeAndDestroy.
@@ -32,34 +32,34 @@ JSLinkMsgPackSocketStream >> close [
 	^ ans
 ]
 
-{ #category : 'streaming' }
+{ #category : #streaming }
 JSLinkMsgPackSocketStream >> flush [
 	^ socketStream flush
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 JSLinkMsgPackSocketStream >> initialize [
 	super initialize.
 	decoderSemaphore := Semaphore forMutualExclusion.
 	encoderSemaphore := Semaphore forMutualExclusion.
 ]
 
-{ #category : 'streaming' }
+{ #category : #streaming }
 JSLinkMsgPackSocketStream >> isConnected [
 	^ socketStream isConnected
 ]
 
-{ #category : 'streaming' }
+{ #category : #streaming }
 JSLinkMsgPackSocketStream >> isStream [
 	^true
 ]
 
-{ #category : 'streaming' }
+{ #category : #streaming }
 JSLinkMsgPackSocketStream >> next [
 	^ decoderSemaphore critical: [ decoder next ]
 ]
 
-{ #category : 'streaming' }
+{ #category : #streaming }
 JSLinkMsgPackSocketStream >> nextPut: anObject [
 	| result |
 	result := encoderSemaphore critical: [ 
@@ -68,7 +68,7 @@ JSLinkMsgPackSocketStream >> nextPut: anObject [
 	^ result
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 JSLinkMsgPackSocketStream >> on: aSocketStream [
 	socketStream := aSocketStream.
 	self setSocketStreamOptions: socketStream.
@@ -76,7 +76,7 @@ JSLinkMsgPackSocketStream >> on: aSocketStream [
 	decoder := MpDecoder on: socketStream
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkMsgPackSocketStream >> setSocketStreamOptions: stream [
 	stream
 		binary;
@@ -86,14 +86,14 @@ JSLinkMsgPackSocketStream >> setSocketStreamOptions: stream [
 		timeout: JSLinkMsgPackUtils socketStreamTimeout
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkMsgPackSocketStream >> socketBufferSize [
 	"Size in bytes for Sockets and SocketStream IO buffers"
 
 	^ 4096
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkMsgPackSocketStream >> socketStreamTimeout [
 	^ 30
 ]

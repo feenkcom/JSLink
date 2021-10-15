@@ -3,42 +3,42 @@ This class contains tests
 
 "
 Class {
-	#name : 'JSLinkHttpMessageBrokerTest',
-	#superclass : 'JSLinkMessageBrokerTest',
+	#name : #JSLinkHttpMessageBrokerTest,
+	#superclass : #JSLinkMessageBrokerTest,
 	#instVars : [
 		'stubServer'
 	],
 	#category : 'JSLink-Pharo-MessageBroker'
 }
 
-{ #category : 'utils' }
+{ #category : #utils }
 JSLinkHttpMessageBrokerTest >> answer: aDictionary [
 	^ aDictionary
 ]
 
-{ #category : 'utils' }
+{ #category : #utils }
 JSLinkHttpMessageBrokerTest >> buildAndStartStubServer [
 	stubServer := ZnServer on: settings serverSocketAddress port.
 	stubServer start.
 	stubServer onRequestRespond: [ :req | self primHandle: req ]
 ]
 
-{ #category : 'utils' }
+{ #category : #utils }
 JSLinkHttpMessageBrokerTest >> decodeAnswer: jsonText [
 	^ NeoJSONReader fromString: jsonText
 ]
 
-{ #category : 'utils' }
+{ #category : #utils }
 JSLinkHttpMessageBrokerTest >> errorResponse [
 	^ ZnResponse serverError: 'ERROR'
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 JSLinkHttpMessageBrokerTest >> messageBrokerClass [
 	^ LanguageLinkHttpMessageBroker
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkHttpMessageBrokerTest >> primHandle: aRequest [
 	| answer |
 	answer := [
@@ -52,12 +52,12 @@ JSLinkHttpMessageBrokerTest >> primHandle: aRequest [
 	^ ZnResponse ok: (ZnEntity json: answer)
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 JSLinkHttpMessageBrokerTest >> sendMessageToBroker: dict [
 	self sendMessageToBroker: dict answerEquals: Dictionary new
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 JSLinkHttpMessageBrokerTest >> sendMessageToBroker: dict answerBlock: aBlock [
 	| ans |
 	ans := ZnEasy 
@@ -67,12 +67,12 @@ JSLinkHttpMessageBrokerTest >> sendMessageToBroker: dict answerBlock: aBlock [
 	aBlock value: (self decodeAnswer: ans contents)
 ]
 
-{ #category : 'utils' }
+{ #category : #utils }
 JSLinkHttpMessageBrokerTest >> sleepAWhile [
 	"With HTTP there is no need to sleep."
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 JSLinkHttpMessageBrokerTest >> stopStubServer [
 	stubServer ifNotNil: [ stubServer stop ]
 ]

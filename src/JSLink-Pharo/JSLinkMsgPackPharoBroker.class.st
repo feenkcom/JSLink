@@ -1,6 +1,6 @@
 Class {
-	#name : 'JSLinkMsgPackPharoBroker',
-	#superclass : 'PharoLinkAbstractMessageBroker',
+	#name : #JSLinkMsgPackPharoBroker,
+	#superclass : #PharoLinkAbstractMessageBroker,
 	#instVars : [
 		'serverSocket',
 		'handlerThread',
@@ -10,23 +10,23 @@ Class {
 	#category : 'JSLink-Pharo-MessageBroker'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkMsgPackPharoBroker class >> javaScriptMethodArg [
 	^ 'msgpack'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 JSLinkMsgPackPharoBroker class >> serializerClass [
 	^ JSLinkMsgPackSerializer
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkMsgPackPharoBroker >> _primHandle: dict [
 	"Remove ifCurtailed: [ ^ self ]"
 	^ self primHandle: dict
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkMsgPackPharoBroker >> handleAnswerMessage: dict [
 	| assoc message semaphore |
 	assoc := syncRegistry at: (dict at: #__sync).
@@ -36,18 +36,18 @@ JSLinkMsgPackPharoBroker >> handleAnswerMessage: dict [
 	semaphore signal
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 JSLinkMsgPackPharoBroker >> initialize [
 	super initialize.
 	syncRegistry := Dictionary new
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 JSLinkMsgPackPharoBroker >> isRunning [
 	^ msgStream notNil and: [ msgStream isConnected ]
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkMsgPackPharoBroker >> preventTestForkedPDestroyServer [
 	| env |
 	env := CurrentExecutionEnvironment value.
@@ -57,7 +57,7 @@ JSLinkMsgPackPharoBroker >> preventTestForkedPDestroyServer [
 			ifAbsent: [  ] ]
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkMsgPackPharoBroker >> primHandle: dict [
 	| msgClass |
 	msgClass := self resolveMessageFromType: (dict at: #type).
@@ -69,13 +69,13 @@ JSLinkMsgPackPharoBroker >> primHandle: dict [
 			self handleAnswerMessage: dict ]
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkMsgPackPharoBroker >> primSendMessage: dict [
 	msgStream ifNil: [ LanguageLinkCommunicationError signal ].
 	msgStream nextPut: dict
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkMsgPackPharoBroker >> registerSemaphoreForMessage: message [
 	| semaphore |
 	semaphore := Semaphore new.
@@ -83,7 +83,7 @@ JSLinkMsgPackPharoBroker >> registerSemaphoreForMessage: message [
 	^ semaphore
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 JSLinkMsgPackPharoBroker >> retrieveAnswerForSyncId: syncId [
 	| msgAnswer |
 	msgAnswer := syncRegistry at: syncId.
@@ -91,12 +91,12 @@ JSLinkMsgPackPharoBroker >> retrieveAnswerForSyncId: syncId [
 	^ msgAnswer
 ]
 
-{ #category : 'messaging' }
+{ #category : #messaging }
 JSLinkMsgPackPharoBroker >> sendAsyncMessage: msg [
 	self primSendMessage: msg encode.
 ]
 
-{ #category : 'messaging' }
+{ #category : #messaging }
 JSLinkMsgPackPharoBroker >> sendSyncMessage: msg [
 	| syncSemaphore ansDict |
 	syncSemaphore := self registerSemaphoreForMessage: msg. 
@@ -106,7 +106,7 @@ JSLinkMsgPackPharoBroker >> sendSyncMessage: msg [
 	^ msg createAnswer decode: ansDict
 ]
 
-{ #category : 'private - utils' }
+{ #category : #'private - utils' }
 JSLinkMsgPackPharoBroker >> serverSocketOn: port [
 	| socket |
 	(socket := Socket newTCP)
@@ -119,7 +119,7 @@ JSLinkMsgPackPharoBroker >> serverSocketOn: port [
 	^ socket
 ]
 
-{ #category : 'start-stop' }
+{ #category : #'start-stop' }
 JSLinkMsgPackPharoBroker >> start [
 	serverSocket := self serverSocketOn: self port.
 	handlerThread := [	| bindSocket |	
@@ -135,7 +135,7 @@ JSLinkMsgPackPharoBroker >> start [
 	self preventTestForkedPDestroyServer
 ]
 
-{ #category : 'start-stop' }
+{ #category : #'start-stop' }
 JSLinkMsgPackPharoBroker >> stop [
 	msgStream ifNotNil: [ msgStream close ].
 	serverSocket ifNotNil: [ serverSocket closeAndDestroy ].

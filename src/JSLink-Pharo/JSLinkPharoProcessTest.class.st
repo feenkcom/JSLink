@@ -3,12 +3,12 @@ This class contains tests
 
 "
 Class {
-	#name : 'JSLinkPharoProcessTest',
-	#superclass : 'JSLinkProcessTest',
+	#name : #JSLinkPharoProcessTest,
+	#superclass : #JSLinkProcessTest,
 	#category : 'JSLink-Pharo-Processes'
 }
 
-{ #category : 'utils' }
+{ #category : #utils }
 JSLinkPharoProcessTest >> createTmpJavaScriptFile [
 	| file |
 	file := FileLocator workingDirectory / 'tmp.js'.
@@ -16,17 +16,17 @@ JSLinkPharoProcessTest >> createTmpJavaScriptFile [
 	^ file
 ]
 
-{ #category : 'utils' }
+{ #category : #utils }
 JSLinkPharoProcessTest >> defaultTmpFile [
 	^ 'tmp.py' asFileReference
 ]
 
-{ #category : 'utils' }
+{ #category : #utils }
 JSLinkPharoProcessTest >> destroyTmpFile: aFile [
 	aFile deleteIfAbsent: [  ]
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 JSLinkPharoProcessTest >> processClass [
 	^ JSLinkPharoNodejsProcess
 ]
