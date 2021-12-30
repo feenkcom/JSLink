@@ -7,7 +7,7 @@ Class {
 { #category : #initialization }
 JSLinkExecutionHandler >> initializeHandler [
 
-	commandQueue := LanguageLinkCommandQueue executionHandler: self.
+	commandQueue := LanguageLinkCommandRegistry executionHandler: self.
 	mapperFactory := LanguageLinkMapperFactory forExecutionHandler: self.
 	promiseRegistry := LanguageLinkPromiseRegistry new.
 	weakRegistry := self settings platform weakRegistry.
