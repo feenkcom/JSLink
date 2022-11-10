@@ -13,7 +13,7 @@ BaselineOfJavaScriptLink >> baseline: spec [
 				spec repository: 'github://feenkcom/JavaScriptGenerator:v0.5.130/repository' ].
 		spec
 			baseline: 'PharoLink' with: [
-				spec repository: 'github://feenkcom/PharoLink:v0.8.253/src' ].
+				spec repository: 'github://feenkcom/PharoLink:v0.8.254/src' ].
 
 		spec package: 'JSLink' with: [
 			spec requires: #('PharoLink' 'JavaScriptGenerator') ].
