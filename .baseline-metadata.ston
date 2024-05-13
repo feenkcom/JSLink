@@ -1,6 +1,6 @@
 {
 	"repositories" : {
-		"github://feenkcom/PharoLink/src" : "v0.8.381",
+		"github://feenkcom/PharoLink/src" : "v0.8.382",
 		"github://feenkcom/JavaScriptGenerator/repository" : "v0.5.131"
 	}
 }
