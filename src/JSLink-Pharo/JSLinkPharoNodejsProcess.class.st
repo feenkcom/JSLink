@@ -230,7 +230,7 @@ JSLinkPharoNodejsProcess >> startServerDebugger [
 	retries := 10.
 	300 milliSeconds wait.
 	[ cdtDebugger := CDTDebuggerServer new endPoints first connect ]
-		on: ConnectionTimedOut
+		on: ConnectionTimedOut, ConnectionClosed
 		do: [ :ex |
 			retries > 0 ifTrue:
 				[ retries := retries - 1.
