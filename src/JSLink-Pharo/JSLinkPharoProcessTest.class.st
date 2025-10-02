@@ -5,7 +5,7 @@ This class contains tests
 Class {
 	#name : #JSLinkPharoProcessTest,
 	#superclass : #JSLinkProcessTest,
-	#category : 'JSLink-Pharo-Processes'
+	#category : #'JSLink-Pharo-Processes'
 }
 
 { #category : #utils }
