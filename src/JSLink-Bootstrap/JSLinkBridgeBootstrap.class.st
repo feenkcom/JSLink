@@ -45,13 +45,12 @@ JSLinkBridgeBootstrap >> create [
 	self createFiles.
 ]
 
-{ #category : #'create classes' }
+{ #category : #creation }
 JSLinkBridgeBootstrap >> createApplication [
 	| cls |
-	cls := JSLinkApplication subclass: self applicationName
-				instanceVariableNames: ''
-				classVariableNames: ''
-				package: packageName.
+	cls := ((JSLinkApplication << self applicationName)
+		slots: {};
+		package: packageName) install.
 	cls compile: 
 'commandFactory
 	^ ' , self commandFactoryName.
@@ -61,13 +60,12 @@ JSLinkBridgeBootstrap >> createApplication [
 	'
 ]
 
-{ #category : #'create classes' }
+{ #category : #creation }
 JSLinkBridgeBootstrap >> createCF [
 	| cls |
-	cls := JSLinkCF subclass: self commandFactoryName
-				instanceVariableNames: ''
-				classVariableNames: ''
-				package: packageName.
+	cls := ((JSLinkCF << self commandFactoryName)
+		slots: {};
+		package: packageName) install.
 	cls class compile: 
 'applicationClass
 	^ ' , self applicationName
@@ -91,13 +89,12 @@ JSLinkBridgeBootstrap >> createFiles [
 	JSLinkApplication repositoryFileReference / 'install_env.sh' copyTo: folder / 'install_env.sh'.
 ]
 
-{ #category : #'create classes' }
+{ #category : #creation }
 JSLinkBridgeBootstrap >> createObject [
 	| cls |
-	cls := JSLinkObject subclass: self objectName
-				instanceVariableNames: ''
-				classVariableNames: ''
-				package: packageName.
+	cls := ((JSLinkObject << self objectName)
+		slots: {};
+		package: packageName) install.
 	cls compile: 
 'applicationClass
 	^ ' , self applicationName
@@ -114,13 +111,12 @@ JSLinkBridgeBootstrap >> createRepository [
 	repo workingCopy addPackageNamed: self packageName
 ]
 
-{ #category : #'create classes' }
+{ #category : #creation }
 JSLinkBridgeBootstrap >> createTestCase [
 	| cls |
-	cls := JSLinkTestCase subclass: self testCaseName
-				instanceVariableNames: ''
-				classVariableNames: ''
-				package: packageName.
+	cls := ((JSLinkTestCase << self testCaseName)
+		slots: {};
+		package: packageName) install.
 	cls compile: 
 'applicationClass
 	^ ' , self applicationName.
@@ -129,13 +125,12 @@ JSLinkBridgeBootstrap >> createTestCase [
 	^ ' , self testResourceName
 ]
 
-{ #category : #'create classes' }
+{ #category : #creation }
 JSLinkBridgeBootstrap >> createTestResource [
 	| cls |
-	cls := JSLinkApplicationTestResource subclass: self testResourceName
-				instanceVariableNames: ''
-				classVariableNames: ''
-				package: packageName.
+	cls := ((JSLinkApplicationTestResource << self testResourceName)
+		slots: {};
+		package: packageName) install.
 	cls compile: 
 'applicationClass
 	^ ' , self applicationName
